@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Syne:wght@400;500;600;700;800&amp;family=Manrope:wght@300;400;500;600;700;800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-on-surface": "#2f3035",
+                        "inverse-surface": "#e3e2e8",
+                        "tertiary-fixed-dim": "#28dfb5",
+                        "on-surface": "#e3e2e8",
+                        "on-tertiary-fixed-variant": "#00513f",
+                        "surface-container-lowest": "#0d0e12",
+                        "on-primary": "#002a78",
+                        "surface-container": "#1f1f24",
+                        "on-tertiary": "#00382b",
+                        "surface": "#121317",
+                        "tertiary-fixed": "#55fcd0",
+                        "background": "#121317",
+                        "on-tertiary-container": "#003025",
+                        "tertiary-container": "#00a483",
+                        "surface-bright": "#38393e",
+                        "surface-container-high": "#292a2e",
+                        "primary-fixed-dim": "#b4c5ff",
+                        "secondary-fixed": "#e6deff",
+                        "on-surface-variant": "#c3c6d7",
+                        "surface-tint": "#b4c5ff",
+                        "secondary-fixed-dim": "#cabeff",
+                        "surface-container-highest": "#343439",
+                        "on-secondary-fixed-variant": "#481ac7",
+                        "outline": "#8d90a0",
+                        "error": "#ffb4ab",
+                        "outline-variant": "#434654",
+                        "on-background": "#e3e2e8",
+                        "surface-dim": "#121317",
+                        "on-error": "#690005",
+                        "on-secondary-container": "#b9aaff",
+                        "error-container": "#93000a",
+                        "surface-variant": "#343439",
+                        "on-primary-container": "#00246a",
+                        "on-error-container": "#ffdad6",
+                        "on-primary-fixed": "#00174b",
+                        "on-secondary-fixed": "#1c0062",
+                        "on-tertiary-fixed": "#002118",
+                        "primary": "#b4c5ff",
+                        "secondary": "#cabeff",
+                        "surface-container-low": "#1a1b20",
+                        "tertiary": "#28dfb5",
+                        "inverse-primary": "#1554d4",
+                        "primary-fixed": "#dbe1ff",
+                        "secondary-container": "#481ac7",
+                        "primary-container": "#618bff",
+                        "on-primary-fixed-variant": "#003ea8",
+                        "on-secondary": "#31009a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Syne", "sans-serif"],
+                        "body": ["Manrope", "sans-serif"],
+                        "label": ["Manrope", "sans-serif"],
+                        "space": ["Space Grotesk", "sans-serif"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #121317;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.02'/%3E%3C/svg%3E");
+            font-family: 'Manrope', sans-serif;
+            color: #e3e2e8;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .syne-font { font-family: 'Syne', sans-serif; }
+        .glass {
+            background: rgba(41, 42, 46, 0.7);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="flex min-h-screen overflow-x-hidden">
+<!-- SideNavBar -->
+<aside class="w-[240px] h-screen fixed left-0 top-0 bg-[#121317] flex flex-col py-6 px-4 z-50">
+<div class="flex items-center gap-2 mb-10 px-4">
+<div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#4F7FFF] to-[#7B5CFA] flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-xl">vibration</span>
+</div>
+<span class="text-2xl font-bold tracking-tighter text-[#4F7FFF] flex items-center gap-2 syne-font">Vocalia</span>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 text-[#C3C6D7] hover:text-white px-4 py-2 hover:bg-[#1A1B20] transition-colors duration-200 font-['Space_Grotesk'] text-sm tracking-wide rounded-lg" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+                Tableau de bord
+            </a>
+<a class="flex items-center gap-3 text-[#C3C6D7] hover:text-white px-4 py-2 hover:bg-[#1A1B20] transition-colors duration-200 font-['Space_Grotesk'] text-sm tracking-wide rounded-lg" href="#">
+<span class="material-symbols-outlined">smart_toy</span>
+                Agents
+            </a>
+<a class="flex items-center gap-3 text-[#C3C6D7] hover:text-white px-4 py-2 hover:bg-[#1A1B20] transition-colors duration-200 font-['Space_Grotesk'] text-sm tracking-wide rounded-lg" href="#">
+<span class="material-symbols-outlined">forum</span>
+                Conversations
+            </a>
+<a class="flex items-center gap-3 text-[#4F7FFF] font-semibold bg-[#1A1B20] rounded-lg px-4 py-2 font-['Space_Grotesk'] text-sm tracking-wide" href="#">
+<span class="material-symbols-outlined">campaign</span>
+                Campagnes
+            </a>
+<a class="flex items-center gap-3 text-[#C3C6D7] hover:text-white px-4 py-2 hover:bg-[#1A1B20] transition-colors duration-200 font-['Space_Grotesk'] text-sm tracking-wide rounded-lg" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+                Base de connaissances
+            </a>
+<a class="flex items-center gap-3 text-[#C3C6D7] hover:text-white px-4 py-2 hover:bg-[#1A1B20] transition-colors duration-200 font-['Space_Grotesk'] text-sm tracking-wide rounded-lg" href="#">
+<span class="material-symbols-outlined">call</span>
+                Numéros
+            </a>
+<div class="pt-4 mt-4 border-t border-white/5">
+<a class="flex items-center gap-3 text-[#C3C6D7] hover:text-white px-4 py-2 hover:bg-[#1A1B20] transition-colors duration-200 font-['Space_Grotesk'] text-sm tracking-wide rounded-lg" href="#">
+<span class="material-symbols-outlined">code</span>
+                    API &amp; Webhooks
+                </a>
+<a class="flex items-center gap-3 text-[#C3C6D7] hover:text-white px-4 py-2 hover:bg-[#1A1B20] transition-colors duration-200 font-['Space_Grotesk'] text-sm tracking-wide rounded-lg" href="#">
+<span class="material-symbols-outlined">description</span>
+                    Documentation
+                </a>
+<a class="flex items-center gap-3 text-[#C3C6D7] hover:text-white px-4 py-2 hover:bg-[#1A1B20] transition-colors duration-200 font-['Space_Grotesk'] text-sm tracking-wide rounded-lg" href="#">
+<span class="material-symbols-outlined">settings</span>
+                    Paramètres
+                </a>
+</div>
+</nav>
+<div class="px-4 py-4 bg-[#1A1B20] rounded-xl flex items-center gap-3 mt-6">
+<div class="w-8 h-8 rounded-full bg-gradient-to-br from-primary-container to-secondary overflow-hidden">
+<img alt="User Avatar" class="w-full h-full object-cover" data-alt="close up profile photo of a modern professional with neutral background, minimalist aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAGTnprrgAHHx5YqzflnGVq7SjNuBCEyaNfvX30EK88GadavieoiAIurKYwDYsRDEhBFvcPehe3stjQttzOdCVXzYa7-JHsz30Txmuk7XobTzrUszwrxBXhxMEASYRvTmA6Gb_28GwGIJmkw01tujxnYB-upVfbpPlKEEXh7rrc52tn9CidmnzOX7i2C0LMXBGGeI5iXT1bZZHJZdOHaW1uqqigElK_aCFg-fv4NuM48xAh1yO-LvQ06c_zEp7Jr5qVbBkKmsKjVf-Z"/>
+</div>
+<div class="flex flex-col">
+<span class="text-xs font-bold text-on-surface leading-none">Alex Rivers</span>
+<span class="text-[10px] text-on-surface-variant uppercase tracking-widest mt-1">PRO PLAN</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-[240px] flex-1 relative min-h-screen">
+<!-- TopNavBar -->
+<header class="h-16 fixed top-0 right-0 left-[240px] z-40 bg-[#121317]/70 backdrop-blur-xl border-b border-white/10 flex justify-between items-center px-8 w-full">
+<h1 class="text-lg font-semibold text-[#C3C6D7] font-['Space_Grotesk']">Vocalia Agency / Campagnes</h1>
+<div class="flex items-center gap-6">
+<button class="text-[#C3C6D7] hover:opacity-80 transition-opacity flex items-center gap-2">
+<span class="material-symbols-outlined text-xl">notifications</span>
+</button>
+<div class="h-8 w-[1px] bg-white/10"></div>
+<div class="flex items-center gap-3">
+<div class="text-right hidden sm:block">
+<div class="text-xs font-medium text-white">Workstation 01</div>
+<div class="text-[10px] text-tertiary flex items-center justify-end gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary animate-pulse"></span>
+                            Système Actif
+                        </div>
+</div>
+</div>
+</div>
+</header>
+<!-- Content Canvas -->
+<div class="pt-24 px-8 pb-12 max-w-7xl mx-auto">
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-10">
+<div>
+<h2 class="text-4xl font-bold syne-font text-white tracking-tight">Campagnes</h2>
+<p class="text-on-surface-variant mt-2 max-w-md">Gérez vos séquences d'appels automatisées et suivez les performances de vos agents en temps réel.</p>
+</div>
+<button class="bg-gradient-to-r from-[#4F7FFF] to-[#7B5CFA] hover:shadow-[0_0_20px_rgba(79,127,255,0.3)] text-white px-6 py-3 rounded-lg font-bold flex items-center gap-2 transition-all duration-300 active:scale-95">
+<span class="material-symbols-outlined">add_circle</span>
+                    Nouvelle campagne
+                </button>
+</div>
+<!-- Dashboard Bento Grid - Summary -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+<div class="bg-surface-container-low p-6 rounded-2xl border-l-4 border-primary">
+<div class="flex justify-between items-start mb-4">
+<span class="text-on-surface-variant text-xs font-bold uppercase tracking-widest">Appels Total</span>
+<span class="material-symbols-outlined text-primary">call</span>
+</div>
+<div class="text-3xl font-bold syne-font text-white">12,840</div>
+<div class="text-xs text-tertiary mt-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+                        +14.2% vs mois dernier
+                    </div>
+</div>
+<div class="bg-surface-container-low p-6 rounded-2xl border-l-4 border-secondary">
+<div class="flex justify-between items-start mb-4">
+<span class="text-on-surface-variant text-xs font-bold uppercase tracking-widest">Taux de Conversion</span>
+<span class="material-symbols-outlined text-secondary">conversion_path</span>
+</div>
+<div class="text-3xl font-bold syne-font text-white">8.4%</div>
+<div class="text-xs text-tertiary mt-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+                        +2.1% cette semaine
+                    </div>
+</div>
+<div class="bg-surface-container-low p-6 rounded-2xl border-l-4 border-tertiary">
+<div class="flex justify-between items-start mb-4">
+<span class="text-on-surface-variant text-xs font-bold uppercase tracking-widest">Temps Moyen d'Appel</span>
+<span class="material-symbols-outlined text-tertiary">timer</span>
+</div>
+<div class="text-3xl font-bold syne-font text-white">2:45m</div>
+<div class="text-xs text-on-surface-variant mt-2 flex items-center gap-1">
+                        Stable sur 24h
+                    </div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Campaigns List (Main Column) -->
+<div class="lg:col-span-2 space-y-6">
+<h3 class="text-xl font-bold syne-font text-white mb-4">Campagnes Actives</h3>
+<!-- Campaign Card 1 - En cours -->
+<div class="bg-[#0F1117] rounded-xl overflow-hidden transition-all duration-300 hover:bg-[#1A1B20] group">
+<div class="p-6">
+<div class="flex justify-between items-start mb-6">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl">rocket_launch</span>
+</div>
+<div>
+<h4 class="text-white font-bold text-lg">Prospection Q4 - SaaS Enterprise</h4>
+<div class="flex items-center gap-2 mt-1">
+<span class="text-xs text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">person</span>
+                                                Agent: Sarah AI
+                                            </span>
+<span class="text-white/20 text-xs">•</span>
+<span class="text-xs text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">group</span>
+                                                1,200 Contacts
+                                            </span>
+</div>
+</div>
+</div>
+<span class="bg-tertiary/10 text-tertiary px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
+<span class="w-1.5 h-1.5 bg-tertiary rounded-full animate-pulse"></span>
+                                    En cours
+                                </span>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-xs font-medium mb-1">
+<span class="text-on-surface-variant">Progression</span>
+<span class="text-white">68% (816/1200)</span>
+</div>
+<div class="w-full bg-surface-container-lowest h-2 rounded-full overflow-hidden">
+<div class="bg-gradient-to-r from-primary to-secondary h-full rounded-full" style="width: 68%"></div>
+</div>
+</div>
+<div class="mt-6 pt-6 border-t border-white/5 flex justify-between items-center">
+<div class="flex -space-x-2">
+<img class="w-6 h-6 rounded-full border border-[#0F1117]" data-alt="minimalist user avatar icon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1CYTlGJEjT-NDozTLXIN_magmcJvBO4p33pHJOaA0hB3cmEwEIs30C7P_a7M2w5O4PScBd9L4euHRRZBSDh_nYgZ9psOcFJV-UD-dWUDFagK7675-bu0VZ7F71RxUgyXGJh9iXcO6opn0n0AUQ3Oa6TPQ6gds-n6c_PA2JZLOIogMGrSTIXviKTShWYOT8upnY9tc4wncO8XH_2CbbDG8e5pHTw4-uB1y_BN39Pcr4voTWJPZXbwjhqDUMwu1iN8odw_YsU8sQRmz"/>
+<img class="w-6 h-6 rounded-full border border-[#0F1117]" data-alt="minimalist user avatar icon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2f7gI5_hLrj9C6TTlPv0CDBeKoZ58U-Eh8wki7zeDN3o8ZrVc89UmfTtCfqTIeMjThjdFDZis35mMIwG_VRz0Xjuy_iU1erokGnzP9o4HRFXmWeYs5CJJTuV6NdGJmu7Ci3pKf5Pxh2W7yacC5tx-xG5oDlfth3S5-jDovS_ygs7F7ALHIdEG-WRPONZbjNQCLtvp22uo9RIkEJdbU-8jcy4obg6XGLsHXl4t-rK57XDMtSZ_JgVzQhu1ZFBkid-4XZJRyeJkUZyw"/>
+<div class="w-6 h-6 rounded-full border border-[#0F1117] bg-surface-container-high flex items-center justify-center text-[10px] text-on-surface-variant">+3</div>
+</div>
+<div class="flex gap-2">
+<button class="p-2 hover:bg-surface-container-high rounded-lg transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined">pause</span>
+</button>
+<button class="p-2 hover:bg-surface-container-high rounded-lg transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<button class="p-2 hover:bg-surface-container-high rounded-lg transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined">analytics</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Campaign Card 2 - Planifiée -->
+<div class="bg-[#0F1117] rounded-xl overflow-hidden transition-all duration-300 hover:bg-[#1A1B20] group">
+<div class="p-6">
+<div class="flex justify-between items-start mb-6">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-3xl">event_upcoming</span>
+</div>
+<div>
+<h4 class="text-white font-bold text-lg">Follow-up Webinaires Nov</h4>
+<div class="flex items-center gap-2 mt-1">
+<span class="text-xs text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">person</span>
+                                                Agent: Marco AI
+                                            </span>
+<span class="text-white/20 text-xs">•</span>
+<span class="text-xs text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">group</span>
+                                                450 Contacts
+                                            </span>
+</div>
+</div>
+</div>
+<span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">
+                                    Planifiée
+                                </span>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-xs font-medium mb-1">
+<span class="text-on-surface-variant">Début prévu</span>
+<span class="text-white">Demain, 09:00</span>
+</div>
+<div class="w-full bg-surface-container-lowest h-2 rounded-full overflow-hidden opacity-30">
+<div class="bg-primary h-full rounded-full" style="width: 0%"></div>
+</div>
+</div>
+<div class="mt-6 pt-6 border-t border-white/5 flex justify-end gap-2">
+<button class="px-4 py-2 hover:bg-surface-container-high rounded-lg transition-colors text-xs text-on-surface-variant border border-white/5">
+                                    Éditer schedule
+                                </button>
+<button class="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-lg transition-colors text-xs text-white">
+                                    Lancer maintenant
+                                </button>
+</div>
+</div>
+</div>
+<!-- Campaign Card 3 - Terminée -->
+<div class="bg-[#0F1117] rounded-xl overflow-hidden transition-all duration-300 hover:bg-[#1A1B20] opacity-80 group">
+<div class="p-6">
+<div class="flex justify-between items-start mb-6">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-3xl">check_circle</span>
+</div>
+<div>
+<h4 class="text-white font-bold text-lg">Nettoyage Base Leads 2023</h4>
+<div class="flex items-center gap-2 mt-1">
+<span class="text-xs text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">person</span>
+                                                Agent: Clara AI
+                                            </span>
+<span class="text-white/20 text-xs">•</span>
+<span class="text-xs text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">group</span>
+                                                2,500 Contacts
+                                            </span>
+</div>
+</div>
+</div>
+<span class="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">
+                                    Terminée
+                                </span>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-xs font-medium mb-1">
+<span class="text-on-surface-variant">Succès</span>
+<span class="text-white">100% (2500/2500)</span>
+</div>
+<div class="w-full bg-surface-container-lowest h-2 rounded-full overflow-hidden">
+<div class="bg-on-surface-variant/40 h-full rounded-full" style="width: 100%"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Sidebar - Action Panel -->
+<div class="space-y-8">
+<!-- Import Section -->
+<section class="bg-surface-container-low p-6 rounded-2xl border border-white/5">
+<h3 class="text-lg font-bold syne-font text-white mb-4">Action Rapide</h3>
+<div class="space-y-4">
+<div class="p-8 border-2 border-dashed border-outline-variant/30 rounded-xl flex flex-col items-center justify-center text-center hover:border-primary/50 transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-4xl text-on-surface-variant group-hover:text-primary transition-colors mb-2">upload_file</span>
+<p class="text-sm font-bold text-white mb-1">Importer des contacts</p>
+<p class="text-[10px] text-on-surface-variant">Glissez un CSV ou Excel ici</p>
+</div>
+<div class="space-y-4 pt-4">
+<label class="block">
+<span class="text-xs font-bold text-on-surface-variant uppercase tracking-widest block mb-2">Planification</span>
+<div class="relative">
+<input class="w-full bg-surface-container-lowest border-none rounded-lg text-sm text-white px-4 py-3 focus:ring-1 focus:ring-primary" type="text" value="Aujourd'hui, 14:00"/>
+<span class="material-symbols-outlined absolute right-3 top-2.5 text-on-surface-variant text-lg">calendar_today</span>
+</div>
+</label>
+<div>
+<span class="text-xs font-bold text-on-surface-variant uppercase tracking-widest block mb-4">Règles de relance</span>
+<div class="space-y-3">
+<div class="flex items-center justify-between p-3 bg-surface-container-lowest rounded-lg">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary">replay</span>
+<span class="text-xs text-on-surface">Nombre d'essais</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="w-6 h-6 rounded-full bg-surface-container-high flex items-center justify-center text-xs">-</button>
+<span class="text-xs font-bold text-white w-4 text-center">3</span>
+<button class="w-6 h-6 rounded-full bg-surface-container-high flex items-center justify-center text-xs">+</button>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-lowest rounded-lg">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary">hourglass_empty</span>
+<span class="text-xs text-on-surface">Intervalle (heures)</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="w-6 h-6 rounded-full bg-surface-container-high flex items-center justify-center text-xs">-</button>
+<span class="text-xs font-bold text-white w-4 text-center">24</span>
+<button class="w-6 h-6 rounded-full bg-surface-container-high flex items-center justify-center text-xs">+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<button class="w-full py-4 bg-surface-container-high hover:bg-surface-container-highest transition-all rounded-xl font-bold text-sm text-white mt-4">
+                                Configurer l'Automate
+                            </button>
+</div>
+</section>
+<!-- System Pulse/Help Card -->
+<div class="bg-gradient-to-br from-primary/10 to-secondary/10 p-6 rounded-2xl border border-white/5 relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-primary blur-[40px] opacity-20 group-hover:opacity-40 transition-opacity"></div>
+<h4 class="font-bold text-white mb-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary">lightbulb</span>
+                            Conseil IA
+                        </h4>
+<p class="text-xs text-on-surface-variant leading-relaxed mb-4">
+                            Les campagnes lancées entre **09h et 11h le mardi** affichent un taux de réponse 24% plus élevé pour le secteur SaaS Enterprise.
+                        </p>
+<a class="text-xs text-primary font-bold hover:underline flex items-center gap-1" href="#">
+                            Voir plus d'insights
+                            <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating AI Bubble (Decorative) -->
+<div class="fixed bottom-8 right-8 z-50">
+<button class="w-14 h-14 rounded-full bg-gradient-to-br from-[#4F7FFF] to-[#7B5CFA] flex items-center justify-center shadow-2xl hover:scale-110 transition-transform duration-300">
+<span class="material-symbols-outlined text-white text-3xl">auto_awesome</span>
+</button>
+</div>
+</body></html>

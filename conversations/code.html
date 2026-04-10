@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@300;400;500;600;700;800&amp;family=Syne:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-on-surface": "#2f3035",
+                        "inverse-surface": "#e3e2e8",
+                        "tertiary-fixed-dim": "#28dfb5",
+                        "on-surface": "#e3e2e8",
+                        "on-tertiary-fixed-variant": "#00513f",
+                        "surface-container-lowest": "#0d0e12",
+                        "on-primary": "#002a78",
+                        "surface-container": "#1f1f24",
+                        "on-tertiary": "#00382b",
+                        "surface": "#121317",
+                        "tertiary-fixed": "#55fcd0",
+                        "background": "#121317",
+                        "on-tertiary-container": "#003025",
+                        "tertiary-container": "#00a483",
+                        "surface-bright": "#38393e",
+                        "surface-container-high": "#292a2e",
+                        "primary-fixed-dim": "#b4c5ff",
+                        "secondary-fixed": "#e6deff",
+                        "on-surface-variant": "#c3c6d7",
+                        "surface-tint": "#b4c5ff",
+                        "secondary-fixed-dim": "#cabeff",
+                        "surface-container-highest": "#343439",
+                        "on-secondary-fixed-variant": "#481ac7",
+                        "outline": "#8d90a0",
+                        "error": "#ffb4ab",
+                        "outline-variant": "#434654",
+                        "on-background": "#e3e2e8",
+                        "surface-dim": "#121317",
+                        "on-error": "#690005",
+                        "on-secondary-container": "#b9aaff",
+                        "error-container": "#93000a",
+                        "surface-variant": "#343439",
+                        "on-primary-container": "#00246a",
+                        "on-error-container": "#ffdad6",
+                        "on-primary-fixed": "#00174b",
+                        "on-secondary-fixed": "#1c0062",
+                        "on-tertiary-fixed": "#002118",
+                        "primary": "#b4c5ff",
+                        "secondary": "#cabeff",
+                        "surface-container-low": "#1a1b20",
+                        "tertiary": "#28dfb5",
+                        "inverse-primary": "#1554d4",
+                        "primary-fixed": "#dbe1ff",
+                        "secondary-container": "#481ac7",
+                        "primary-container": "#618bff",
+                        "on-primary-fixed-variant": "#003ea8",
+                        "on-secondary": "#31009a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Syne", "Space Grotesk", "sans-serif"],
+                        "body": ["Manrope", "sans-serif"],
+                        "label": ["Manrope", "sans-serif"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #121317;
+            background-image: radial-gradient(circle at 50% 50%, rgba(79, 127, 255, 0.03) 0%, transparent 100%);
+            font-family: 'Manrope', sans-serif;
+        }
+        .syne { font-family: 'Syne', sans-serif; }
+        .space-grotesk { font-family: 'Space Grotesk', sans-serif; }
+        .noise {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            opacity: 0.02;
+            z-index: 9999;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .primary-gradient {
+            background: linear-gradient(135deg, #4F7FFF 0%, #7B5CFA 100%);
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #0d0e12; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #434654; border-radius: 10px; }
+    </style>
+</head>
+<body class="text-on-surface">
+<div class="noise"></div>
+<!-- SideNavBar Shell -->
+<aside class="w-[240px] h-screen fixed left-0 top-0 bg-[#121317] flex flex-col py-6 px-4 z-50">
+<div class="flex items-center gap-2 mb-10 px-4">
+<div class="w-8 h-8 primary-gradient rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-xl">graphic_eq</span>
+</div>
+<span class="text-2xl font-bold tracking-tighter text-[#4F7FFF] syne">Vocalia</span>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="text-[#C3C6D7] hover:text-white hover:bg-[#1A1B20] transition-colors duration-200 px-4 py-2 rounded-lg flex items-center gap-3 font-['Space_Grotesk'] text-sm tracking-wide" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+                Tableau de bord
+            </a>
+<a class="text-[#C3C6D7] hover:text-white hover:bg-[#1A1B20] transition-colors duration-200 px-4 py-2 rounded-lg flex items-center gap-3 font-['Space_Grotesk'] text-sm tracking-wide" href="#">
+<span class="material-symbols-outlined">smart_toy</span>
+                Agents
+            </a>
+<a class="text-[#4F7FFF] font-semibold bg-[#1A1B20] rounded-lg px-4 py-2 flex items-center gap-3 font-['Space_Grotesk'] text-sm tracking-wide" href="#">
+<span class="material-symbols-outlined">forum</span>
+                Conversations
+            </a>
+<a class="text-[#C3C6D7] hover:text-white hover:bg-[#1A1B20] transition-colors duration-200 px-4 py-2 rounded-lg flex items-center gap-3 font-['Space_Grotesk'] text-sm tracking-wide" href="#">
+<span class="material-symbols-outlined">campaign</span>
+                Campagnes
+            </a>
+<a class="text-[#C3C6D7] hover:text-white hover:bg-[#1A1B20] transition-colors duration-200 px-4 py-2 rounded-lg flex items-center gap-3 font-['Space_Grotesk'] text-sm tracking-wide" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+                Base de connaissances
+            </a>
+<a class="text-[#C3C6D7] hover:text-white hover:bg-[#1A1B20] transition-colors duration-200 px-4 py-2 rounded-lg flex items-center gap-3 font-['Space_Grotesk'] text-sm tracking-wide" href="#">
+<span class="material-symbols-outlined">call</span>
+                Numéros
+            </a>
+<div class="pt-4 mt-4 border-t border-white/5">
+<a class="text-[#C3C6D7] hover:text-white hover:bg-[#1A1B20] transition-colors duration-200 px-4 py-2 rounded-lg flex items-center gap-3 font-['Space_Grotesk'] text-sm tracking-wide" href="#">
+<span class="material-symbols-outlined">code</span>
+                    API &amp; Webhooks
+                </a>
+<a class="text-[#C3C6D7] hover:text-white hover:bg-[#1A1B20] transition-colors duration-200 px-4 py-2 rounded-lg flex items-center gap-3 font-['Space_Grotesk'] text-sm tracking-wide" href="#">
+<span class="material-symbols-outlined">description</span>
+                    Documentation
+                </a>
+<a class="text-[#C3C6D7] hover:text-white hover:bg-[#1A1B20] transition-colors duration-200 px-4 py-2 rounded-lg flex items-center gap-3 font-['Space_Grotesk'] text-sm tracking-wide" href="#">
+<span class="material-symbols-outlined">settings</span>
+                    Paramètres
+                </a>
+</div>
+</nav>
+<div class="mt-auto p-4 bg-[#1A1B20] rounded-xl flex items-center gap-3">
+<img alt="User Avatar" class="w-10 h-10 rounded-full border-2 border-[#4F7FFF]/30" data-alt="close-up portrait of a professional male digital profile avatar with sharp features and a friendly modern aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTpS6kEV0uM0H_Dc-ur_fsHYILaFf3prXkRDiaZCIVsVMvnGjMC-lrVjhhzipPf1qZ5l-Zw35VqVSVngQeQDTE6xtWtBth993NsneIS9XWLwS2JcSXkOs6PNwkF2g9m3bQILY5G2aDIWG2BPJwD3kRJAFgrHcYJGCUTEaosz6vctuXgj-VBSn9J2pwTI_gVri6uMxcO-9e460A5W1HABCoiwstbShaRezT-7pY3gpDMeoJdQQ4fJ7OlSB7oPJLd4VUKKA3y9i7ABhK"/>
+<div class="overflow-hidden">
+<p class="text-white text-xs font-bold truncate">Marc Lefebvre</p>
+<p class="text-[#C3C6D7] text-[10px] truncate">Admin Enterprise</p>
+</div>
+</div>
+</aside>
+<!-- TopAppBar Shell -->
+<header class="h-16 fixed top-0 right-0 left-[240px] bg-[#121317]/70 backdrop-blur-xl z-40 border-b border-white/10 flex justify-between items-center px-8 w-auto">
+<div class="flex items-center gap-4">
+<h1 class="text-lg font-semibold text-[#C3C6D7] syne">Conversations</h1>
+<div class="h-4 w-[1px] bg-white/10"></div>
+<span class="text-xs text-[#C3C6D7]/60 font-medium">1,248 appels total ce mois</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center text-[#C3C6D7] hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="primary-gradient px-4 py-2 rounded-lg text-white text-xs font-bold syne tracking-wide flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">add</span>
+                NOUVEL APPEL
+            </button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-[240px] pt-16 pr-[400px] min-h-screen">
+<div class="p-8">
+<!-- Filter Bar -->
+<div class="flex items-center gap-4 mb-8">
+<div class="flex-1 flex items-center gap-4 bg-surface-container-low p-2 rounded-xl">
+<div class="flex items-center gap-2 px-3 py-1.5 bg-surface-container-high rounded-lg text-sm text-on-surface-variant cursor-pointer hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-sm">smart_toy</span>
+<span>Tous les Agents</span>
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</div>
+<div class="flex items-center gap-2 px-3 py-1.5 bg-surface-container-high rounded-lg text-sm text-on-surface-variant cursor-pointer hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-sm">calendar_month</span>
+<span>Dernières 24h</span>
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</div>
+<div class="flex items-center gap-2 px-3 py-1.5 bg-surface-container-high rounded-lg text-sm text-on-surface-variant cursor-pointer hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-sm">filter_list</span>
+<span>Tous les Statuts</span>
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</div>
+<div class="h-6 w-[1px] bg-white/10 mx-2"></div>
+<div class="flex-1 flex items-center gap-2 px-4">
+<span class="material-symbols-outlined text-sm text-outline">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm text-on-surface w-full placeholder:text-outline/50" placeholder="Rechercher un numéro, un nom..." type="text"/>
+</div>
+</div>
+<button class="px-4 py-2.5 rounded-xl border border-white/10 hover:bg-white/5 text-[#C3C6D7] flex items-center gap-2 transition-all">
+<span class="material-symbols-outlined text-sm">download</span>
+<span class="text-xs font-bold syne">EXPORTER</span>
+</button>
+</div>
+<!-- Full Width Table -->
+<div class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-2xl">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container/50 border-b border-white/5">
+<th class="px-6 py-4 text-[10px] font-bold text-outline uppercase tracking-widest syne">Caller</th>
+<th class="px-6 py-4 text-[10px] font-bold text-outline uppercase tracking-widest syne">Phone</th>
+<th class="px-6 py-4 text-[10px] font-bold text-outline uppercase tracking-widest syne">Agent</th>
+<th class="px-6 py-4 text-[10px] font-bold text-outline uppercase tracking-widest syne">Duration</th>
+<th class="px-6 py-4 text-[10px] font-bold text-outline uppercase tracking-widest syne">Status</th>
+<th class="px-6 py-4 text-[10px] font-bold text-outline uppercase tracking-widest syne">Date / Time</th>
+<th class="px-6 py-4 text-[10px] font-bold text-outline uppercase tracking-widest syne text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-white/5">
+<tr class="hover:bg-[#1A1B20] transition-colors group cursor-pointer bg-[#1A1B20]/40">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-[#4F7FFF]/20 flex items-center justify-center text-[#4F7FFF] font-bold text-xs">JD</div>
+<span class="text-sm font-medium text-on-surface">Jean Dupont</span>
+</div>
+</td>
+<td class="px-6 py-5 text-sm text-on-surface-variant">+33 6 12 34 56 78</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-sm">smart_toy</span>
+<span class="text-sm text-on-surface-variant">Léa (Support)</span>
+</div>
+</td>
+<td class="px-6 py-5 text-sm text-on-surface-variant">04:12</td>
+<td class="px-6 py-5">
+<span class="px-2.5 py-1 rounded-full bg-tertiary/10 text-tertiary text-[10px] font-bold uppercase tracking-wider">Completed</span>
+</td>
+<td class="px-6 py-5">
+<div class="text-sm text-on-surface">Aujourd'hui</div>
+<div class="text-[10px] text-outline">14:24</div>
+</td>
+<td class="px-6 py-5 text-right">
+<button class="p-2 rounded-lg hover:bg-surface-container-high text-outline group-hover:text-[#4F7FFF] transition-all">
+<span class="material-symbols-outlined">play_circle</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-[#1A1B20] transition-colors group cursor-pointer">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 font-bold text-xs">SM</div>
+<span class="text-sm font-medium text-on-surface">Sarah Miller</span>
+</div>
+</td>
+<td class="px-6 py-5 text-sm text-on-surface-variant">+33 7 89 01 23 45</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-sm">smart_toy</span>
+<span class="text-sm text-on-surface-variant">Max (Sales)</span>
+</div>
+</td>
+<td class="px-6 py-5 text-sm text-on-surface-variant">01:45</td>
+<td class="px-6 py-5">
+<span class="px-2.5 py-1 rounded-full bg-error/10 text-error text-[10px] font-bold uppercase tracking-wider">Missed</span>
+</td>
+<td class="px-6 py-5">
+<div class="text-sm text-on-surface">Hier</div>
+<div class="text-[10px] text-outline">09:12</div>
+</td>
+<td class="px-6 py-5 text-right">
+<button class="p-2 rounded-lg hover:bg-surface-container-high text-outline group-hover:text-[#4F7FFF] transition-all">
+<span class="material-symbols-outlined">call_missed</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-[#1A1B20] transition-colors group cursor-pointer">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-orange-500/20 flex items-center justify-center text-orange-400 font-bold text-xs">RL</div>
+<span class="text-sm font-medium text-on-surface">Robert Leroy</span>
+</div>
+</td>
+<td class="px-6 py-5 text-sm text-on-surface-variant">+33 1 45 67 89 00</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-sm">smart_toy</span>
+<span class="text-sm text-on-surface-variant">Léa (Support)</span>
+</div>
+</td>
+<td class="px-6 py-5 text-sm text-on-surface-variant">12:30</td>
+<td class="px-6 py-5">
+<span class="px-2.5 py-1 rounded-full bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-wider">Processing</span>
+</td>
+<td class="px-6 py-5">
+<div class="text-sm text-on-surface">22 Oct 2023</div>
+<div class="text-[10px] text-outline">18:05</div>
+</td>
+<td class="px-6 py-5 text-right">
+<button class="p-2 rounded-lg hover:bg-surface-container-high text-outline group-hover:text-[#4F7FFF] transition-all">
+<span class="material-symbols-outlined">analytics</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</main>
+<!-- Right Side Panel (Drawer) -->
+<aside class="w-[400px] h-screen fixed right-0 top-0 bg-surface-container-low border-l border-white/5 flex flex-col z-50">
+<!-- Drawer Header -->
+<div class="p-6 border-b border-white/5">
+<div class="flex items-center justify-between mb-6">
+<span class="text-xs font-bold tracking-[0.2em] text-outline uppercase syne">Conversation Details</span>
+<button class="text-outline hover:text-white transition-colors">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="flex items-center gap-4 mb-2">
+<div class="w-12 h-12 rounded-xl bg-surface-container-highest flex items-center justify-center text-[#4F7FFF]">
+<span class="material-symbols-outlined text-3xl">account_circle</span>
+</div>
+<div>
+<h3 class="text-lg font-bold text-on-surface syne">Jean Dupont</h3>
+<p class="text-sm text-on-surface-variant">+33 6 12 34 56 78</p>
+</div>
+</div>
+<div class="flex gap-2 mt-4">
+<span class="px-2 py-1 bg-tertiary/10 text-tertiary text-[10px] font-bold rounded">SUPPORT</span>
+<span class="px-2 py-1 bg-white/5 text-outline text-[10px] font-bold rounded">SATISFAIT</span>
+</div>
+</div>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-8">
+<!-- Waveform Player -->
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<span class="text-[10px] font-bold text-outline uppercase tracking-wider syne">Recording</span>
+<span class="text-[10px] font-mono text-primary">04:12 / 04:12</span>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-xl">
+<div class="flex items-end gap-[2px] h-12 mb-4">
+<div class="flex-1 bg-primary/20 h-4 rounded-full"></div>
+<div class="flex-1 bg-primary/30 h-6 rounded-full"></div>
+<div class="flex-1 bg-primary h-8 rounded-full"></div>
+<div class="flex-1 bg-primary h-10 rounded-full"></div>
+<div class="flex-1 bg-primary/40 h-6 rounded-full"></div>
+<div class="flex-1 bg-primary h-12 rounded-full"></div>
+<div class="flex-1 bg-primary/30 h-8 rounded-full"></div>
+<div class="flex-1 bg-primary h-6 rounded-full"></div>
+<div class="flex-1 bg-primary h-10 rounded-full"></div>
+<div class="flex-1 bg-primary/20 h-4 rounded-full"></div>
+<div class="flex-1 bg-primary/40 h-8 rounded-full"></div>
+<div class="flex-1 bg-primary/10 h-3 rounded-full"></div>
+<div class="flex-1 bg-primary/30 h-7 rounded-full"></div>
+<div class="flex-1 bg-primary h-11 rounded-full"></div>
+<div class="flex-1 bg-primary/40 h-5 rounded-full"></div>
+</div>
+<div class="flex items-center justify-center gap-6">
+<button class="text-outline hover:text-white"><span class="material-symbols-outlined">replay_10</span></button>
+<button class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+<button class="text-outline hover:text-white"><span class="material-symbols-outlined">forward_10</span></button>
+</div>
+</div>
+</div>
+<!-- Summary -->
+<div class="space-y-3">
+<span class="text-[10px] font-bold text-outline uppercase tracking-wider syne">IA Summary</span>
+<div class="bg-secondary-container/10 p-4 rounded-xl border border-secondary/20 relative overflow-hidden">
+<div class="absolute -right-2 -top-2 opacity-10">
+<span class="material-symbols-outlined text-4xl text-secondary">auto_awesome</span>
+</div>
+<p class="text-xs leading-relaxed text-secondary-fixed-dim">Le client a appelé concernant un retard de livraison sur sa commande #8921. L'agent a confirmé que le colis est en transit et arrivera demain. Le client s'est montré compréhensif.</p>
+</div>
+</div>
+<!-- Transcript -->
+<div class="space-y-4">
+<span class="text-[10px] font-bold text-outline uppercase tracking-wider syne text-on-surface">Transcript</span>
+<div class="space-y-6">
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="text-[10px] font-bold text-primary syne uppercase">Agent Léa</span>
+<span class="text-[9px] text-outline">00:02</span>
+</div>
+<p class="text-xs text-on-surface-variant bg-surface-container-highest p-3 rounded-tr-xl rounded-br-xl rounded-bl-xl">Bonjour Jean, je suis Léa de Vocalia. Comment puis-je vous aider aujourd'hui ?</p>
+</div>
+<div class="space-y-1 flex flex-col items-end">
+<div class="flex items-center gap-2">
+<span class="text-[9px] text-outline">00:15</span>
+<span class="text-[10px] font-bold text-on-surface syne uppercase">Jean Dupont</span>
+</div>
+<p class="text-xs text-on-surface bg-primary/10 p-3 rounded-tl-xl rounded-bl-xl rounded-br-xl max-w-[80%] border border-primary/5">Bonjour, je m'inquiète pour ma commande qui devait arriver hier.</p>
+</div>
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="text-[10px] font-bold text-primary syne uppercase">Agent Léa</span>
+<span class="text-[9px] text-outline">00:24</span>
+</div>
+<p class="text-xs text-on-surface-variant bg-surface-container-highest p-3 rounded-tr-xl rounded-br-xl rounded-bl-xl">Je comprends. Donnez-moi un instant pour vérifier le statut de votre livraison...</p>
+</div>
+</div>
+</div>
+<!-- Metadata Bento -->
+<div class="grid grid-cols-2 gap-3 pb-8">
+<div class="bg-surface-container-highest/40 p-3 rounded-xl border border-white/5">
+<p class="text-[9px] text-outline uppercase mb-1">Latency</p>
+<p class="text-xs font-bold text-tertiary">420ms</p>
+</div>
+<div class="bg-surface-container-highest/40 p-3 rounded-xl border border-white/5">
+<p class="text-[9px] text-outline uppercase mb-1">Provider</p>
+<p class="text-xs font-bold text-on-surface">Twilio Premium</p>
+</div>
+<div class="bg-surface-container-highest/40 p-3 rounded-xl border border-white/5">
+<p class="text-[9px] text-outline uppercase mb-1">Tokens used</p>
+<p class="text-xs font-bold text-on-surface">1,248</p>
+</div>
+<div class="bg-surface-container-highest/40 p-3 rounded-xl border border-white/5">
+<p class="text-[9px] text-outline uppercase mb-1">Cost</p>
+<p class="text-xs font-bold text-on-surface">$0.42</p>
+</div>
+</div>
+</div>
+</aside>
+</body></html>

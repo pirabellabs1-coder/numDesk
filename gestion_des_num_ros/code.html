@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vocalia - Numéros de téléphone</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Syne:wght@400;500;600;700;800&amp;family=Manrope:wght@200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-low": "#1a1b20",
+                    "on-tertiary": "#00382b",
+                    "on-secondary-fixed": "#1c0062",
+                    "on-primary-fixed": "#00174b",
+                    "tertiary-container": "#00a483",
+                    "on-tertiary-fixed": "#002118",
+                    "on-surface": "#e3e2e8",
+                    "secondary": "#cabeff",
+                    "error-container": "#93000a",
+                    "error": "#ffb4ab",
+                    "surface-bright": "#38393e",
+                    "surface": "#121317",
+                    "primary-container": "#618bff",
+                    "on-error-container": "#ffdad6",
+                    "surface-variant": "#343439",
+                    "outline-variant": "#434654",
+                    "on-primary-fixed-variant": "#003ea8",
+                    "on-primary": "#002a78",
+                    "primary-fixed": "#dbe1ff",
+                    "on-surface-variant": "#c3c6d7",
+                    "background": "#121317",
+                    "secondary-fixed": "#e6deff",
+                    "inverse-on-surface": "#2f3035",
+                    "tertiary-fixed": "#55fcd0",
+                    "surface-container": "#1f1f24",
+                    "inverse-surface": "#e3e2e8",
+                    "outline": "#8d90a0",
+                    "on-primary-container": "#00246a",
+                    "surface-container-high": "#292a2e",
+                    "secondary-container": "#481ac7",
+                    "tertiary": "#28dfb5",
+                    "surface-container-lowest": "#0d0e12",
+                    "primary-fixed-dim": "#b4c5ff",
+                    "primary": "#b4c5ff",
+                    "on-tertiary-container": "#003025",
+                    "surface-tint": "#b4c5ff",
+                    "on-background": "#e3e2e8",
+                    "on-tertiary-fixed-variant": "#00513f",
+                    "on-secondary-fixed-variant": "#481ac7",
+                    "surface-dim": "#121317",
+                    "tertiary-fixed-dim": "#28dfb5",
+                    "on-secondary": "#31009a",
+                    "on-secondary-container": "#b9aaff",
+                    "surface-container-highest": "#343439",
+                    "on-error": "#690005",
+                    "secondary-fixed-dim": "#cabeff",
+                    "inverse-primary": "#1554d4"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Syne", "Space Grotesk"],
+                    "body": ["Manrope"],
+                    "label": ["Manrope"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #0A0B0F;
+            color: #e3e2e8;
+            font-family: 'Manrope', sans-serif;
+            background-image: radial-gradient(circle at 50% -20%, #4F7FFF15 0%, transparent 50%);
+        }
+        .syne { font-family: 'Syne', sans-serif; }
+        .glass {
+            background: rgba(41, 42, 46, 0.7);
+            backdrop-filter: blur(12px);
+        }
+        .primary-glow {
+            background: linear-gradient(135deg, #4F7FFF 0%, #7B5CFA 100%);
+            box-shadow: 0 0 20px rgba(79, 127, 255, 0.2);
+        }
+        .primary-glow:hover {
+            box-shadow: 0 0 30px rgba(79, 127, 255, 0.4);
+            filter: saturate(1.2);
+        }
+        .grain-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.02;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0A0B0F; }
+        ::-webkit-scrollbar-thumb { background: #292A2E; border-radius: 10px; }
+    </style>
+</head>
+<body class="flex overflow-hidden">
+<div class="grain-overlay"></div>
+<!-- SideNavBar Shell -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-[#121317] flex flex-col py-8 px-4 font-['Space_Grotesk'] text-sm tracking-tight z-50">
+<div class="mb-10 px-2">
+<h1 class="text-2xl font-bold tracking-tighter text-[#4F7FFF]">Vocalia</h1>
+<p class="text-[10px] uppercase tracking-widest text-on-surface-variant mt-1 opacity-60">Pro Architect</p>
+</div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 text-[#C3C6D7] hover:text-white hover:bg-[#292A2E] transition-colors duration-200 rounded-lg active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined text-lg">dashboard</span>
+<span>Dashboard</span>
+</a>
+<!-- Active Navigation State for Phone Numbers -->
+<a class="flex items-center gap-3 px-4 py-3 text-[#4F7FFF] font-semibold bg-[#1A1B20] rounded-lg active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined text-lg">phone_android</span>
+<span>Phone Numbers</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#C3C6D7] hover:text-white hover:bg-[#292A2E] transition-colors duration-200 rounded-lg active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined text-lg">api</span>
+<span>API Docs</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#C3C6D7] hover:text-white hover:bg-[#292A2E] transition-colors duration-200 rounded-lg active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined text-lg">settings</span>
+<span>Settings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#C3C6D7] hover:text-white hover:bg-[#292A2E] transition-colors duration-200 rounded-lg active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined text-lg">history</span>
+<span>Logs</span>
+</a>
+</nav>
+<div class="mt-auto space-y-4 pt-6 border-t border-outline-variant/10">
+<div class="px-4 py-3 rounded-xl bg-surface-container-low border border-outline-variant/10">
+<p class="text-[10px] text-on-surface-variant uppercase mb-2">Workspace</p>
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-primary-container/20 flex items-center justify-center text-[#4F7FFF] font-bold text-xs">VA</div>
+<div class="overflow-hidden">
+<p class="text-xs font-medium truncate">Aetheris Tech</p>
+<p class="text-[10px] text-[#4F7FFF]">Upgrade Plan</p>
+</div>
+</div>
+</div>
+<div class="space-y-1">
+<a class="flex items-center gap-3 px-4 py-2 text-[#C3C6D7] hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-sm">help</span>
+<span>Help</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-error/80 hover:text-error transition-colors" href="#">
+<span class="material-symbols-outlined text-sm">logout</span>
+<span>Sign Out</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Stage -->
+<main class="flex-1 ml-64 min-h-screen relative">
+<!-- TopAppBar Shell -->
+<header class="fixed top-0 right-0 w-[calc(100%-16rem)] z-40 bg-[#0A0B0F]/70 backdrop-blur-xl flex justify-between items-center px-12 h-20 transition-all">
+<div class="flex items-center gap-8">
+<span class="text-white font-bold text-lg syne tracking-tight">Sonic Architect</span>
+<nav class="hidden md:flex gap-6">
+<a class="font-['Space_Grotesk'] uppercase tracking-widest text-[11px] text-[#C3C6D7] hover:text-white transition-opacity" href="#">Docs</a>
+<a class="font-['Space_Grotesk'] uppercase tracking-widest text-[11px] text-[#C3C6D7] hover:text-white transition-opacity" href="#">Support</a>
+<a class="font-['Space_Grotesk'] uppercase tracking-widest text-[11px] text-[#C3C6D7] hover:text-white transition-opacity" href="#">Changelog</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">search</span>
+<input class="bg-surface-container-lowest text-xs py-2 pl-10 pr-4 rounded-full w-48 border-none focus:ring-1 focus:ring-primary/40 transition-all outline-none" placeholder="Rechercher..." type="text"/>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-white transition-colors">notifications</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant/30">
+<img alt="User" data-alt="close up professional portrait of a modern tech executive with soft studio lighting and dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuApSLoG7zEVxOUiz82H92mmo-SCOW9uhQOigpAEXFZEeZ13qNAV2Qj3EYKNR31-jbmVm9RGBG3qQkAqnzijnueKgsnA85q1drsYtyly_8MvSMRoC5lCfBuUWVyXXiLJuZHNXdZ6oWlr0eXaAapjhwfbgteQVoRfE_eR7WsI7A4J_U_4Akygd6dWo9mnr8Fy9Mt-MUUxk7Tc1lkxOPhHmdgBCAjZHcWuKruYvl-jxHCESZQIBkCuUptk9MFZNN2YceYVuXYqPkRKpFJH"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Content Canvas -->
+<div class="pt-28 px-12 pb-12">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+<div>
+<h2 class="syne text-4xl font-extrabold tracking-tight mb-2">Numéros de téléphone</h2>
+<p class="text-on-surface-variant font-body">Gérez vos points d'entrée vocaux et l'attribution des agents IA.</p>
+</div>
+<button class="primary-glow flex items-center gap-2 px-6 py-3 rounded-lg text-white font-semibold syne transition-all active:scale-95">
+<span class="material-symbols-outlined">add_circle</span>
+                    Acheter un numéro
+                </button>
+</div>
+<!-- Dashboard Stats / Filters Bar -->
+<div class="flex flex-col md:flex-row gap-4 mb-8">
+<div class="flex-1 flex gap-2 overflow-x-auto pb-2">
+<button class="bg-primary-container text-on-primary-container px-4 py-2 rounded-full text-xs font-bold tracking-wide uppercase whitespace-nowrap">Tous (12)</button>
+<button class="bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high px-4 py-2 rounded-full text-xs font-bold tracking-wide uppercase transition-colors whitespace-nowrap">Actifs (10)</button>
+<button class="bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high px-4 py-2 rounded-full text-xs font-bold tracking-wide uppercase transition-colors whitespace-nowrap">Inactifs (2)</button>
+<button class="bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high px-4 py-2 rounded-full text-xs font-bold tracking-wide uppercase transition-colors whitespace-nowrap">Provisioning (0)</button>
+</div>
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-2 bg-surface-container-low px-4 py-2 rounded-lg text-xs border border-outline-variant/5">
+<span class="material-symbols-outlined text-sm text-outline">filter_list</span>
+<span class="text-on-surface-variant">Filtrer par agent</span>
+<span class="material-symbols-outlined text-sm text-outline">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Phone Numbers Table/Grid -->
+<div class="bg-surface-container-lowest rounded-2xl overflow-hidden border border-outline-variant/5 shadow-2xl">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low/50">
+<th class="px-6 py-5 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Numéro</th>
+<th class="px-6 py-5 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Nom / Label</th>
+<th class="px-6 py-5 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Agent assigné</th>
+<th class="px-6 py-5 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Statut</th>
+<th class="px-6 py-5 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Date d'achat</th>
+<th class="px-6 py-5 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/5">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-low/30 transition-colors group">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-5 bg-surface-container-high rounded-sm flex items-center justify-center overflow-hidden">
+<img alt="France" class="w-full h-full object-cover" data-alt="small icon of the french national flag with vibrant blue white and red colors" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRNm-aWAFMX-n0sXlyX4MLgyia8Q6tYLDfVi1BWWgUlQ9bUJaELP-lrftTJEJ98LWSVVbuX1pwsK7IZhOj-jpsJXQtCrSwFkCoEVwtTiF-NH8e2bOrkzWluuJvDtL6mox3RuhHS2fIWUiZ23Q8hGd6bwsSacLjhL4jdbvba3QIoVwm0DF_ZJ9riXx9nuNLnXBTldEyn7hESjGmd7gp6NVhvkd8EaqgKHs5iBjNVtmzJ_xxEbdbT5ekadV9hBgtevlgYkDgNQfPh6Hr"/>
+</div>
+<span class="font-headline font-semibold text-white tracking-tight">+33 1 89 22 45 10</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="text-sm font-medium text-on-surface">Ligne Support FR</span>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-tertiary"></div>
+<span class="text-sm text-on-surface-variant">Agent Sarah (V3)</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-tertiary-container/10 text-tertiary border border-tertiary/20 uppercase tracking-wide">
+                                        Actif
+                                    </span>
+</td>
+<td class="px-6 py-5">
+<span class="text-xs text-outline">12 Oct. 2023</span>
+</td>
+<td class="px-6 py-5 text-right">
+<div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 hover:bg-surface-container-high rounded-lg text-primary transition-colors" title="Configurer">
+<span class="material-symbols-outlined text-lg">settings</span>
+</button>
+<button class="p-2 hover:bg-surface-container-high rounded-lg text-error transition-colors" title="Supprimer">
+<span class="material-symbols-outlined text-lg">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-low/30 transition-colors group">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-5 bg-surface-container-high rounded-sm flex items-center justify-center overflow-hidden">
+<img alt="USA" class="w-full h-full object-cover" data-alt="small icon of the united states national flag with stars and stripes" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAiqF-BOFyvhvV4QB50PUiqgEiU6ANeJHwVcspXBkJYOFBuBbk4HVmsUaz_9N8kd9yIRxBLlAe6haEp5lQbpun6-4YMSq1sWad8s0Z1IEgcD09kjHWuFKFh5Lyun9lG_9Z4h031JuXAXdHNZkcVuUdSgYCQ2s_dMJm08hIuETbqBo-0de9mD54zs3U8AOQRrYSq5_biqiT_y_4rPBzRhwY6__ebBfU2rs43CW-IdCmzHgn0pQGovVNxvP4bsDBHGxd5U4rVYLTYx58l"/>
+</div>
+<span class="font-headline font-semibold text-white tracking-tight">+1 650 443 1192</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="text-sm font-medium text-on-surface">Outbound Sales US</span>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-secondary"></div>
+<span class="text-sm text-on-surface-variant">Agent Miller (Global)</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-tertiary-container/10 text-tertiary border border-tertiary/20 uppercase tracking-wide">
+                                        Actif
+                                    </span>
+</td>
+<td class="px-6 py-5">
+<span class="text-xs text-outline">05 Nov. 2023</span>
+</td>
+<td class="px-6 py-5 text-right">
+<div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 hover:bg-surface-container-high rounded-lg text-primary transition-colors" title="Configurer">
+<span class="material-symbols-outlined text-lg">settings</span>
+</button>
+<button class="p-2 hover:bg-surface-container-high rounded-lg text-error transition-colors" title="Supprimer">
+<span class="material-symbols-outlined text-lg">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-low/30 transition-colors group">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-5 bg-surface-container-high rounded-sm flex items-center justify-center overflow-hidden">
+<img alt="UK" class="w-full h-full object-cover" data-alt="small icon of the united kingdom union jack flag" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGf1HVe6DFLxzQE7MCsa2AS7dshNTv3lSkGkXZ8-pBghZYzF6WiwxbPviraIwIdetAYHH_b8TvdQ6qpqaSXC__SBMyYRkU2zdxvRrAkQzt3spIQ_BijeYqApZZ9tThVLdqwb396XOcoRdzeVHQm_fGdZ9kTq7p7_yv3pfgxv5I0iLsnjA4NRPvJ30S5whZV3qxnJ8hAjFDTW2jM1NvNCHVb1SfhQ8Z5j-VnjAQK3tIkOSiN5oJV2-RcXRA5iqDgEk0mijG5LCP8NOp"/>
+</div>
+<span class="font-headline font-semibold text-white tracking-tight">+44 20 7946 0123</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="text-sm font-medium text-on-surface">London Hub</span>
+</td>
+<td class="px-6 py-5">
+<span class="text-xs italic text-outline">Non assigné</span>
+</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-error-container/10 text-error/80 border border-error/10 uppercase tracking-wide">
+                                        Inactif
+                                    </span>
+</td>
+<td class="px-6 py-5">
+<span class="text-xs text-outline">15 Dec. 2023</span>
+</td>
+<td class="px-6 py-5 text-right">
+<div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 hover:bg-surface-container-high rounded-lg text-primary transition-colors" title="Configurer">
+<span class="material-symbols-outlined text-lg">settings</span>
+</button>
+<button class="p-2 hover:bg-surface-container-high rounded-lg text-error transition-colors" title="Supprimer">
+<span class="material-symbols-outlined text-lg">delete</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination / Footer -->
+<div class="px-6 py-4 bg-surface-container-low/30 border-t border-outline-variant/5 flex items-center justify-between">
+<p class="text-[10px] uppercase tracking-widest text-outline font-bold">Affichage 1-3 sur 12 numéros</p>
+<div class="flex gap-2">
+<button class="p-2 rounded hover:bg-surface-container-high text-outline hover:text-white transition-colors">
+<span class="material-symbols-outlined text-sm">chevron_left</span>
+</button>
+<button class="p-2 rounded bg-primary/10 text-primary border border-primary/20 transition-colors">
+<span class="text-xs font-bold px-1">1</span>
+</button>
+<button class="p-2 rounded hover:bg-surface-container-high text-outline hover:text-white transition-colors">
+<span class="text-xs font-bold px-1">2</span>
+</button>
+<button class="p-2 rounded hover:bg-surface-container-high text-outline hover:text-white transition-colors">
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- AI Insight Card (Asymmetric Bento Element) -->
+<div class="mt-12 grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="lg:col-span-2 glass p-8 rounded-3xl border border-outline-variant/5 relative overflow-hidden group">
+<div class="absolute -right-10 -top-10 w-40 h-40 bg-secondary/10 blur-[80px] rounded-full transition-all group-hover:bg-secondary/20"></div>
+<div class="relative z-10">
+<div class="flex items-center gap-3 mb-6">
+<div class="w-10 h-10 rounded-xl bg-secondary/20 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+<h3 class="syne text-xl font-bold">Optimisation IA</h3>
+</div>
+<p class="text-on-surface-variant max-w-xl mb-6 leading-relaxed">
+                            Votre numéro <span class="text-secondary font-medium">+33 1 89 22 45 10</span> reçoit un volume élevé d'appels entre 14h et 16h. Nous recommandons d'activer l'agent <span class="text-primary font-medium">Backup Sarah</span> pour réduire le temps d'attente.
+                        </p>
+<button class="text-secondary font-bold text-xs uppercase tracking-widest flex items-center gap-2 hover:gap-4 transition-all group/btn">
+                            Appliquer la recommandation
+                            <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+<div class="glass p-8 rounded-3xl border border-outline-variant/5 flex flex-col justify-between">
+<div>
+<p class="text-[10px] uppercase tracking-widest text-outline font-bold mb-1">Utilisation Quota</p>
+<div class="flex items-end gap-2 mb-4">
+<span class="syne text-3xl font-extrabold text-white">12</span>
+<span class="text-on-surface-variant pb-1">/ 25 numéros</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+<div class="w-[48%] h-full primary-glow"></div>
+</div>
+</div>
+<div class="pt-6">
+<p class="text-xs text-on-surface-variant leading-snug">
+                            Vous utilisez 48% de votre capacité actuelle. Augmentez votre plan pour débloquer plus de pays.
+                        </p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- FAB for quick action (as specified in system instructions, hidden on sub-pages but potentially useful here) -->
+<!-- Suppression according to Shell Visibility & Relevance: Navigation priority on main dashboard area -->
+</body></html>

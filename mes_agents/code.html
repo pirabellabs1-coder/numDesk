@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vocalia Agency - Mes Agents</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@300;400;500;600;700;800&amp;family=Syne:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-on-surface": "#2f3035",
+                        "inverse-surface": "#e3e2e8",
+                        "tertiary-fixed-dim": "#28dfb5",
+                        "on-surface": "#e3e2e8",
+                        "on-tertiary-fixed-variant": "#00513f",
+                        "surface-container-lowest": "#0d0e12",
+                        "on-primary": "#002a78",
+                        "surface-container": "#1f1f24",
+                        "on-tertiary": "#00382b",
+                        "surface": "#121317",
+                        "tertiary-fixed": "#55fcd0",
+                        "background": "#121317",
+                        "on-tertiary-container": "#003025",
+                        "tertiary-container": "#00a483",
+                        "surface-bright": "#38393e",
+                        "surface-container-high": "#292a2e",
+                        "primary-fixed-dim": "#b4c5ff",
+                        "secondary-fixed": "#e6deff",
+                        "on-surface-variant": "#c3c6d7",
+                        "surface-tint": "#b4c5ff",
+                        "secondary-fixed-dim": "#cabeff",
+                        "surface-container-highest": "#343439",
+                        "on-secondary-fixed-variant": "#481ac7",
+                        "outline": "#8d90a0",
+                        "error": "#ffb4ab",
+                        "outline-variant": "#434654",
+                        "on-background": "#e3e2e8",
+                        "surface-dim": "#121317",
+                        "on-error": "#690005",
+                        "on-secondary-container": "#b9aaff",
+                        "error-container": "#93000a",
+                        "surface-variant": "#343439",
+                        "on-primary-container": "#00246a",
+                        "on-error-container": "#ffdad6",
+                        "on-primary-fixed": "#00174b",
+                        "on-secondary-fixed": "#1c0062",
+                        "on-tertiary-fixed": "#002118",
+                        "primary": "#4f7fff",
+                        "secondary": "#7b5cfa",
+                        "surface-container-low": "#1a1b20",
+                        "tertiary": "#28dfb5",
+                        "inverse-primary": "#1554d4",
+                        "primary-fixed": "#dbe1ff",
+                        "secondary-container": "#481ac7",
+                        "primary-container": "#618bff",
+                        "on-primary-fixed-variant": "#003ea8",
+                        "on-secondary": "#31009a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Syne", "sans-serif"],
+                        "body": ["Manrope", "sans-serif"],
+                        "label": ["Manrope", "sans-serif"],
+                        "space": ["Space Grotesk", "sans-serif"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #121317;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3C%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.02'/%3E%3C/svg%3E");
+            font-family: 'Manrope', sans-serif;
+            color: #e3e2e8;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(41, 42, 46, 0.7);
+            backdrop-filter: blur(12px);
+        }
+        .primary-gradient {
+            background: linear-gradient(135deg, #4f7fff 0%, #7b5cfa 100%);
+        }
+        .primary-glow:hover {
+            box-shadow: 0 0 20px rgba(79, 127, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="flex min-h-screen">
+<!-- SideNavBar Component -->
+<aside class="w-[240px] h-screen fixed left-0 top-0 bg-[#121317] flex flex-col py-6 px-4 font-['Space_Grotesk'] text-sm tracking-wide z-50">
+<div class="mb-10 px-4">
+<div class="text-2xl font-bold tracking-tighter text-[#4F7FFF] flex items-center gap-2">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">graphic_eq</span>
+<span>Vocalia</span>
+</div>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-widest mt-1 opacity-50">Enterprise Workspace</p>
+</div>
+<nav class="flex-1 space-y-2">
+<a class="text-[#C3C6D7] hover:text-white px-4 py-2 flex items-center gap-3 transition-colors duration-200 hover:bg-[#1A1B20] rounded-lg" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+                Tableau de bord
+            </a>
+<a class="text-[#4F7FFF] font-semibold bg-[#1A1B20] rounded-lg px-4 py-2 flex items-center gap-3" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+                Agents
+            </a>
+<a class="text-[#C3C6D7] hover:text-white px-4 py-2 flex items-center gap-3 transition-colors duration-200 hover:bg-[#1A1B20] rounded-lg" href="#">
+<span class="material-symbols-outlined">forum</span>
+                Conversations
+            </a>
+<a class="text-[#C3C6D7] hover:text-white px-4 py-2 flex items-center gap-3 transition-colors duration-200 hover:bg-[#1A1B20] rounded-lg" href="#">
+<span class="material-symbols-outlined">campaign</span>
+                Campagnes
+            </a>
+<a class="text-[#C3C6D7] hover:text-white px-4 py-2 flex items-center gap-3 transition-colors duration-200 hover:bg-[#1A1B20] rounded-lg" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+                Base de connaissances
+            </a>
+<a class="text-[#C3C6D7] hover:text-white px-4 py-2 flex items-center gap-3 transition-colors duration-200 hover:bg-[#1A1B20] rounded-lg" href="#">
+<span class="material-symbols-outlined">call</span>
+                Numéros
+            </a>
+<div class="pt-6 pb-2 px-4">
+<span class="text-[10px] text-on-surface-variant uppercase tracking-[0.2em] font-bold">Développement</span>
+</div>
+<a class="text-[#C3C6D7] hover:text-white px-4 py-2 flex items-center gap-3 transition-colors duration-200 hover:bg-[#1A1B20] rounded-lg" href="#">
+<span class="material-symbols-outlined">code</span>
+                API &amp; Webhooks
+            </a>
+<a class="text-[#C3C6D7] hover:text-white px-4 py-2 flex items-center gap-3 transition-colors duration-200 hover:bg-[#1A1B20] rounded-lg" href="#">
+<span class="material-symbols-outlined">description</span>
+                Documentation
+            </a>
+</nav>
+<div class="mt-auto pt-6 border-t border-white/5">
+<a class="text-[#C3C6D7] hover:text-white px-4 py-2 flex items-center gap-3 transition-colors duration-200 hover:bg-[#1A1B20] rounded-lg" href="#">
+<span class="material-symbols-outlined">settings</span>
+                Paramètres
+            </a>
+</div>
+</aside>
+<!-- Main Content Stage -->
+<main class="flex-1 ml-[240px]">
+<!-- TopNavBar Component -->
+<header class="h-16 fixed top-0 right-0 left-[240px] z-40 bg-[#121317]/70 backdrop-blur-xl border-b border-white/10 flex justify-between items-center px-8 w-full font-['Space_Grotesk'] text-sm">
+<div class="text-lg font-semibold text-[#C3C6D7]">Vocalia Agency</div>
+<div class="flex items-center gap-6">
+<button class="text-on-surface-variant hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="flex items-center gap-3 pl-6 border-l border-white/10">
+<div class="text-right hidden sm:block">
+<p class="text-xs font-bold text-white">Alexandre R.</p>
+<p class="text-[10px] text-[#4F7FFF]">Admin Premium</p>
+</div>
+<img alt="User Avatar" class="w-9 h-9 rounded-full object-cover border border-primary/20" data-alt="professional portrait of a creative director in a dark studio setting with soft blue rim lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC13CRG3Th_JvkhDuHTitDPOllO8-Su9qP2RneSUMCsnun2dem1mTbDmIVLq_fRkJloUyIc0ztwFX0uDn2WD35y0yV8CIr2QT3A9t-v-4w9IzgyqvNT8hmyp86UC00K_1yROgqFSHCmn1_kTcKUvn8k4Z9JP2H1ewvUNlOxBBLOTIZ6-oYvKeAbQfb1notsQZfwZg98TlvYWgQjuyD8TZ5TkTx8bXl5slmRh3NREamYfEJVaLd-Cm47ecVX2b0wXGeOdYzdWZYMcxKl"/>
+</div>
+</div>
+</header>
+<!-- Main Canvas -->
+<div class="pt-24 px-10 pb-12 max-w-7xl mx-auto">
+<!-- Page Header -->
+<div class="flex justify-between items-end mb-12">
+<div>
+<h1 class="font-headline text-4xl font-bold tracking-tight mb-2">Mes Agents</h1>
+<p class="text-on-surface-variant font-body">Gérez vos voix synthétiques et vos logiques d'intelligence artificielle.</p>
+</div>
+<button class="primary-gradient primary-glow text-white px-6 py-3 rounded-lg font-bold flex items-center gap-2 transition-all active:scale-95 shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined">add</span>
+                    Nouvel agent
+                </button>
+</div>
+<!-- Agents Grid (Bento Style) -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Agent Card 1 -->
+<div class="bg-surface-container-low rounded-xl p-6 transition-all duration-300 hover:translate-y-[-4px] group border border-transparent hover:border-primary/20">
+<div class="flex justify-between items-start mb-6">
+<div class="flex items-center gap-4">
+<div class="relative">
+<img alt="Agent Clara" class="w-14 h-14 rounded-xl object-cover" data-alt="female portrait with futuristic neon aesthetic, violet and blue lighting, high fashion photography style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfdE7-pCKhHywW_7O_a9uLJu2W85p6b63ymTmvhC-vgpvzYThHL56LJyfPO1MemAAvRmuPBynYR2L2zq2vfG0bhbdogeY5Z7TNVB83HDSI1u9CwzeCCiyVU-Ga_YkVZap3lBkfcQH4V_PSnJCIc7-Sy9OK1QC7owsVMPiUVOD08fJdTaOXjqktih-JyR0Scu8NEIDRPm_pba_Q6Wxuy-LEp7MZ3O-J0bbvqVNQcr2EY7GovQndDzCKFG9WovDZbSlqyqZK6iX1JgXH"/>
+<div class="absolute -bottom-1 -right-1 w-4 h-4 bg-tertiary rounded-full border-4 border-surface-container-low"></div>
+</div>
+<div>
+<h3 class="font-headline text-lg font-semibold text-white">Clara</h3>
+<p class="text-xs text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">call</span>
+                                    +33 1 89 22 10 44
+                                </p>
+</div>
+</div>
+<div class="flex flex-col items-end gap-2">
+<span class="bg-primary/10 text-primary text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">ElevenLabs</span>
+<span class="flex items-center gap-1 bg-surface-container-high px-2 py-0.5 rounded text-[10px]">🇫🇷 FR</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-6">
+<div class="bg-surface-container-lowest p-3 rounded-lg">
+<p class="text-[10px] text-on-surface-variant uppercase tracking-widest mb-1">Appels</p>
+<p class="font-headline text-xl font-bold">1,284</p>
+</div>
+<div class="bg-surface-container-lowest p-3 rounded-lg">
+<p class="text-[10px] text-on-surface-variant uppercase tracking-widest mb-1">Durée moy.</p>
+<p class="font-headline text-xl font-bold">4m 12s</p>
+</div>
+</div>
+<div class="flex items-center justify-between pt-4 border-t border-white/5">
+<div class="flex items-center gap-3">
+<button class="w-8 h-8 rounded-lg flex items-center justify-center bg-surface-container-high text-on-surface-variant hover:text-white transition-colors">
+<span class="material-symbols-outlined text-lg">edit</span>
+</button>
+<button class="w-8 h-8 rounded-lg flex items-center justify-center bg-surface-container-high text-on-surface-variant hover:text-white transition-colors">
+<span class="material-symbols-outlined text-lg">content_copy</span>
+</button>
+<button class="w-8 h-8 rounded-lg flex items-center justify-center bg-surface-container-high text-on-surface-variant hover:text-error transition-colors">
+<span class="material-symbols-outlined text-lg">delete</span>
+</button>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-tertiary"></div>
+</label>
+</div>
+</div>
+<!-- Agent Card 2 -->
+<div class="bg-surface-container-low rounded-xl p-6 transition-all duration-300 hover:translate-y-[-4px] group border border-transparent hover:border-primary/20">
+<div class="flex justify-between items-start mb-6">
+<div class="flex items-center gap-4">
+<div class="relative">
+<img alt="Agent Marc" class="w-14 h-14 rounded-xl object-cover" data-alt="male portrait in a professional dark blue environment with subtle cinematic lighting and tech-focused background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-R0Q1z2RGBlmOHP_NFMuSDoIeGecKzZ58XyrCTbZ1EL1L5qEBqssI0oxNBBtOwpsGbvj-qN1awg9SGZyq4jMbLNbQsVcZJpvFogXCQPPV8E2-t4sofkypa9zQqRlfR-lD3lUvYPU9IJGtaChlMlYrOLHhv_0WlVDsEWKxT7ULL6157FfFp4m_b1WjfXaCFkmuD754zkukqWRZ13hpxqjfLWnG79jK_fQezAKsrd8PdCgyf0D8Px4IfK8FjGv4Tl7FAbWW1ia__-px"/>
+<div class="absolute -bottom-1 -right-1 w-4 h-4 bg-tertiary rounded-full border-4 border-surface-container-low"></div>
+</div>
+<div>
+<h3 class="font-headline text-lg font-semibold text-white">Marc</h3>
+<p class="text-xs text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">call</span>
+                                    +33 1 70 45 92 00
+                                </p>
+</div>
+</div>
+<div class="flex flex-col items-end gap-2">
+<span class="bg-secondary/10 text-secondary text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">Play.ht</span>
+<span class="flex items-center gap-1 bg-surface-container-high px-2 py-0.5 rounded text-[10px]">🇫🇷 FR</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-6">
+<div class="bg-surface-container-lowest p-3 rounded-lg">
+<p class="text-[10px] text-on-surface-variant uppercase tracking-widest mb-1">Appels</p>
+<p class="font-headline text-xl font-bold">842</p>
+</div>
+<div class="bg-surface-container-lowest p-3 rounded-lg">
+<p class="text-[10px] text-on-surface-variant uppercase tracking-widest mb-1">Durée moy.</p>
+<p class="font-headline text-xl font-bold">2m 45s</p>
+</div>
+</div>
+<div class="flex items-center justify-between pt-4 border-t border-white/5">
+<div class="flex items-center gap-3">
+<button class="w-8 h-8 rounded-lg flex items-center justify-center bg-surface-container-high text-on-surface-variant hover:text-white transition-colors">
+<span class="material-symbols-outlined text-lg">edit</span>
+</button>
+<button class="w-8 h-8 rounded-lg flex items-center justify-center bg-surface-container-high text-on-surface-variant hover:text-white transition-colors">
+<span class="material-symbols-outlined text-lg">content_copy</span>
+</button>
+<button class="w-8 h-8 rounded-lg flex items-center justify-center bg-surface-container-high text-on-surface-variant hover:text-error transition-colors">
+<span class="material-symbols-outlined text-lg">delete</span>
+</button>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-tertiary"></div>
+</label>
+</div>
+</div>
+<!-- Agent Card 3 (Inactive) -->
+<div class="bg-surface-container-low rounded-xl p-6 transition-all duration-300 hover:translate-y-[-4px] group border border-transparent hover:border-primary/20 opacity-80">
+<div class="flex justify-between items-start mb-6">
+<div class="flex items-center gap-4">
+<div class="relative">
+<img alt="Agent Sofia" class="w-14 h-14 rounded-xl object-cover grayscale" data-alt="female portrait with elegant makeup, soft studio lighting, professional corporate aesthetic in a clean dark environment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuApRMnitGjuFEkEQr_Ni6vmjuxkw2JoaTA49U3k2UXJXCTCAgbJoEhMQ9K7KhPtnA9jjH2708kq2H0GjgtOeepOtmUrnnFq3yRuALDzTgMEUMOsIzgM0DNb7ljpXQelOovnX1k_cStZAAcbeEDC-9JoF0MQgnOPXCvpdvmfgrO5MB5AKQdHfm1bWHO3I7mBoEJGB0rJYY6zSY5ZxNxYekgxL_gE0ya1SGdoyBLjAxcvMoGOKNF8-s62_U9FNaKkahjL8_5kiPtngdKc"/>
+<div class="absolute -bottom-1 -right-1 w-4 h-4 bg-outline-variant rounded-full border-4 border-surface-container-low"></div>
+</div>
+<div>
+<h3 class="font-headline text-lg font-semibold text-white">Sofia</h3>
+<p class="text-xs text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">call</span>
+                                    Non assigné
+                                </p>
+</div>
+</div>
+<div class="flex flex-col items-end gap-2">
+<span class="bg-white/5 text-on-surface-variant text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">OpenAI v2</span>
+<span class="flex items-center gap-1 bg-surface-container-high px-2 py-0.5 rounded text-[10px]">🇪🇸 ES</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-6">
+<div class="bg-surface-container-lowest p-3 rounded-lg">
+<p class="text-[10px] text-on-surface-variant uppercase tracking-widest mb-1">Appels</p>
+<p class="font-headline text-xl font-bold opacity-50">0</p>
+</div>
+<div class="bg-surface-container-lowest p-3 rounded-lg">
+<p class="text-[10px] text-on-surface-variant uppercase tracking-widest mb-1">Durée moy.</p>
+<p class="font-headline text-xl font-bold opacity-50">--</p>
+</div>
+</div>
+<div class="flex items-center justify-between pt-4 border-t border-white/5">
+<div class="flex items-center gap-3">
+<button class="w-8 h-8 rounded-lg flex items-center justify-center bg-surface-container-high text-on-surface-variant hover:text-white transition-colors">
+<span class="material-symbols-outlined text-lg">edit</span>
+</button>
+<button class="w-8 h-8 rounded-lg flex items-center justify-center bg-surface-container-high text-on-surface-variant hover:text-white transition-colors">
+<span class="material-symbols-outlined text-lg">content_copy</span>
+</button>
+<button class="w-8 h-8 rounded-lg flex items-center justify-center bg-surface-container-high text-on-surface-variant hover:text-error transition-colors">
+<span class="material-symbols-outlined text-lg">delete</span>
+</button>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-tertiary"></div>
+</label>
+</div>
+</div>
+<!-- Performance Card (Bento Integration) -->
+<div class="lg:col-span-3 bg-surface-container-low rounded-xl p-8 border border-white/5 flex flex-col md:flex-row items-center gap-10">
+<div class="flex-1 w-full">
+<div class="flex items-center gap-4 mb-6">
+<div class="w-12 h-12 rounded-full primary-gradient flex items-center justify-center">
+<span class="material-symbols-outlined text-white">analytics</span>
+</div>
+<div>
+<h4 class="font-headline text-xl font-bold">Insight Performance</h4>
+<p class="text-on-surface-variant text-sm">L'agent <span class="text-primary font-bold">Clara</span> convertit 24% de plus que la moyenne ce mois-ci.</p>
+</div>
+</div>
+<div class="flex gap-4">
+<button class="bg-surface-container-high hover:bg-surface-container-highest text-white px-5 py-2 rounded-lg text-sm font-semibold transition-colors">Voir le rapport détaillé</button>
+<button class="text-primary px-5 py-2 rounded-lg text-sm font-semibold hover:underline">Optimiser les scripts</button>
+</div>
+</div>
+<div class="w-full md:w-64 h-24 flex items-end justify-between gap-1">
+<!-- Mock Waveform Chart -->
+<div class="w-full h-[40%] bg-primary/20 rounded-t-sm"></div>
+<div class="w-full h-[60%] bg-primary/40 rounded-t-sm"></div>
+<div class="w-full h-[50%] bg-primary/30 rounded-t-sm"></div>
+<div class="w-full h-[85%] bg-primary rounded-t-sm"></div>
+<div class="w-full h-[70%] bg-secondary rounded-t-sm"></div>
+<div class="w-full h-[95%] bg-tertiary rounded-t-sm"></div>
+<div class="w-full h-[65%] bg-primary/60 rounded-t-sm"></div>
+<div class="w-full h-[45%] bg-primary/30 rounded-t-sm"></div>
+<div class="w-full h-[75%] bg-primary rounded-t-sm"></div>
+<div class="w-full h-[40%] bg-primary/20 rounded-t-sm"></div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

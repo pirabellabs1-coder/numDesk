@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vocalia AI - L'Architecture Sonore</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&amp;family=Manrope:wght@400;500;700&amp;family=Space+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-primary-fixed": "#00174b",
+                        "secondary-fixed-dim": "#cabeff",
+                        "surface-variant": "#343439",
+                        "on-tertiary-container": "#003025",
+                        "on-primary-container": "#00246a",
+                        "tertiary-container": "#00a483",
+                        "inverse-on-surface": "#2f3035",
+                        "tertiary-fixed-dim": "#28dfb5",
+                        "tertiary": "#28dfb5",
+                        "on-secondary-fixed-variant": "#481ac7",
+                        "on-secondary-fixed": "#1c0062",
+                        "on-secondary": "#31009a",
+                        "on-background": "#e3e2e8",
+                        "surface-tint": "#b4c5ff",
+                        "surface-container-high": "#292a2e",
+                        "surface-container-highest": "#343439",
+                        "error": "#ffb4ab",
+                        "background": "#121317",
+                        "surface-dim": "#121317",
+                        "surface-container-low": "#1a1b20",
+                        "surface-container": "#1f1f24",
+                        "on-secondary-container": "#b9aaff",
+                        "secondary-container": "#481ac7",
+                        "outline-variant": "#434654",
+                        "on-surface-variant": "#c3c6d7",
+                        "error-container": "#93000a",
+                        "outline": "#8d90a0",
+                        "surface": "#121317",
+                        "on-tertiary": "#00382b",
+                        "surface-bright": "#38393e",
+                        "on-primary": "#002a78",
+                        "on-surface": "#e3e2e8",
+                        "tertiary-fixed": "#55fcd0",
+                        "on-tertiary-fixed-variant": "#00513f",
+                        "inverse-primary": "#1554d4",
+                        "on-tertiary-fixed": "#002118",
+                        "inverse-surface": "#e3e2e8",
+                        "primary-container": "#618bff",
+                        "on-error": "#690005",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-lowest": "#0d0e12",
+                        "primary-fixed": "#dbe1ff",
+                        "secondary": "#cabeff",
+                        "primary": "#b4c5ff",
+                        "secondary-fixed": "#e6deff",
+                        "on-primary-fixed-variant": "#003ea8",
+                        "primary-fixed-dim": "#b4c5ff"
+                    },
+                    fontFamily: {
+                        headline: ["Syne", "sans-serif"],
+                        body: ["Manrope", "sans-serif"],
+                        label: ["Manrope", "sans-serif"],
+                        grotesk: ["Space Grotesk", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #0A0B0F;
+            font-family: 'Manrope', sans-serif;
+            color: #e3e2e8;
+            overflow-x: hidden;
+        }
+        .syne { font-family: 'Syne', sans-serif; }
+        .glass {
+            background: rgba(41, 42, 46, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .grain-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.02;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+        .waveform-bar {
+            width: 4px;
+            border-radius: 99px;
+            background: linear-gradient(180deg, #4F7FFF 0%, #7B5CFA 100%);
+        }
+    </style>
+</head>
+<body class="bg-[#0A0B0F]">
+<div class="grain-overlay"></div>
+<!-- Navigation Bar -->
+<nav class="fixed top-0 w-full z-50 bg-[#0A0B0F]/70 backdrop-blur-xl">
+<div class="flex justify-between items-center px-8 h-20 max-w-7xl mx-auto">
+<div class="text-2xl font-bold tracking-tighter text-[#4F7FFF] font-grotesk">Vocalia</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-[#4F7FFF] border-b-2 border-[#4F7FFF] pb-1 font-grotesk tracking-tight" href="#">Platform</a>
+<a class="text-[#C3C6D7] hover:text-[#4F7FFF] transition-colors duration-300 font-grotesk tracking-tight" href="#">Solutions</a>
+<a class="text-[#C3C6D7] hover:text-[#4F7FFF] transition-colors duration-300 font-grotesk tracking-tight" href="#">Developers</a>
+<a class="text-[#C3C6D7] hover:text-[#4F7FFF] transition-colors duration-300 font-grotesk tracking-tight" href="#">Pricing</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-[#C3C6D7] hover:text-white transition-colors duration-300 font-grotesk text-sm">Log In</button>
+<button class="bg-gradient-to-br from-[#4F7FFF] to-[#618BFF] text-[#00174b] font-bold px-6 py-2.5 rounded-lg active:scale-95 transition-all duration-200 font-grotesk">Launch Console</button>
+</div>
+</div>
+</nav>
+<main class="relative">
+<!-- Hero Section -->
+<section class="min-h-screen flex flex-col items-center justify-center pt-32 pb-20 px-6 relative overflow-hidden">
+<!-- Background Glows -->
+<div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[#4F7FFF]/10 blur-[120px] rounded-full"></div>
+<div class="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-[#7B5CFA]/5 blur-[100px] rounded-full"></div>
+<div class="relative z-10 text-center max-w-5xl mx-auto">
+<span class="inline-block px-4 py-1.5 mb-8 rounded-full border border-outline-variant/20 bg-surface-container-low/50 text-[11px] font-bold uppercase tracking-[0.2em] text-[#4F7FFF]">
+                    The Sonic Architect
+                </span>
+<h1 class="syne text-5xl md:text-7xl font-bold tracking-tight mb-8 leading-[1.1] text-white">
+                    L'Architecture Sonore <br/>
+<span class="text-transparent bg-clip-text bg-gradient-to-r from-[#4F7FFF] via-[#7B5CFA] to-[#00D4AA]">de votre Relation Client</span>
+</h1>
+<p class="text-on-surface-variant text-lg md:text-xl max-w-2xl mx-auto mb-12 font-body">
+                    Transformez chaque interaction téléphonique en une expérience cinématographique. Une latence ultra-faible, une voix indiscernable de l'humain.
+                </p>
+<div class="flex flex-col sm:flex-row items-center justify-center gap-6 mb-20">
+<button class="bg-gradient-to-br from-[#4F7FFF] to-[#7B5CFA] text-white font-bold px-10 py-4 rounded-lg shadow-[0_10px_30px_rgba(79,127,255,0.2)] hover:shadow-[0_10px_40px_rgba(79,127,255,0.4)] transition-all active:scale-95 text-lg font-headline">
+                        Lancer la Console
+                    </button>
+<button class="flex items-center gap-2 text-on-surface hover:text-[#4F7FFF] transition-colors font-bold font-headline">
+<span class="material-symbols-outlined">play_circle</span>
+                        Découvrir la démo
+                    </button>
+</div>
+<!-- Waveform Visualization -->
+<div class="flex items-center justify-center gap-1.5 h-32 mb-10">
+<div class="waveform-bar h-8"></div>
+<div class="waveform-bar h-12"></div>
+<div class="waveform-bar h-24"></div>
+<div class="waveform-bar h-16"></div>
+<div class="waveform-bar h-28"></div>
+<div class="waveform-bar h-32 bg-[#00D4AA]"></div>
+<div class="waveform-bar h-20"></div>
+<div class="waveform-bar h-28"></div>
+<div class="waveform-bar h-12"></div>
+<div class="waveform-bar h-16"></div>
+<div class="waveform-bar h-10"></div>
+</div>
+</div>
+</section>
+<!-- Performance IA Section (Bento Grid) -->
+<section class="py-24 px-6 max-w-7xl mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<div class="md:col-span-8 bg-surface-container-low rounded-2xl p-10 relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-8">
+<span class="material-symbols-outlined text-[#00D4AA] text-4xl" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</div>
+<h3 class="syne text-3xl font-bold mb-4 text-white">Performance IA</h3>
+<p class="text-on-surface-variant max-w-md text-lg mb-8">
+                        Réduction de la latence à moins de 200ms. Vos clients ne sauront jamais qu'ils parlent à une intelligence artificielle.
+                    </p>
+<div class="flex gap-4">
+<div class="bg-surface-container-highest px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest text-[#00D4AA]">Live State</div>
+<div class="bg-surface-container-highest px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest text-[#4F7FFF]">Ultra Low Latency</div>
+</div>
+<div class="mt-12 h-40 w-full rounded-xl overflow-hidden bg-surface-container-lowest border border-white/5 relative">
+<img class="w-full h-full object-cover opacity-50" data-alt="Close-up of a high-tech audio waveform interface with glowing blue and teal peaks on a dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEPPagSb9VwBhBbO9MkJD8n8T1MExvGhE12rPlLckI8AZ_yL6tiH2Z6BhsZYLA6In6MHMCZgjZGkNfEQjvTDnDg1tXFN6chqQF81tblnsMkgIIrwTL4nrfb87UBp34qJLS7Kw6_UnYaTCFGQqeKGHrEOmmUb0HdMTmrqVzlvIV_iql38AjOgAHfcazhk4TMeb5vAkIR8li7yB0jByqRAbm-GpjwwInVObFxtquu-XZNClkRE1htV7R-kTH-rOty6m1hu-gi6mstaHf"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="flex gap-1 items-end h-16">
+<div class="w-1 bg-[#00D4AA] h-4 rounded-full animate-pulse"></div>
+<div class="w-1 bg-[#00D4AA] h-8 rounded-full animate-pulse" style="animation-delay: 0.1s"></div>
+<div class="w-1 bg-[#00D4AA] h-12 rounded-full animate-pulse" style="animation-delay: 0.2s"></div>
+<div class="w-1 bg-[#00D4AA] h-6 rounded-full animate-pulse" style="animation-delay: 0.3s"></div>
+<div class="w-1 bg-[#00D4AA] h-10 rounded-full animate-pulse" style="animation-delay: 0.4s"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="md:col-span-4 bg-[#1A1B20] rounded-2xl p-10 flex flex-col justify-between">
+<div>
+<h3 class="syne text-3xl font-bold mb-4 text-white">Voix Naturelles</h3>
+<p class="text-on-surface-variant text-base">
+                            Plus de 50 modèles de voix premium avec intonations émotionnelles ajustables.
+                        </p>
+</div>
+<div class="space-y-4 mt-8">
+<div class="flex items-center gap-4 bg-surface-container-lowest p-3 rounded-xl border border-white/5">
+<div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#7B5CFA] to-[#4F7FFF] flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-sm">person</span>
+</div>
+<span class="text-sm font-bold tracking-tight">Modèle: Gabriel (FR)</span>
+</div>
+<div class="flex items-center gap-4 bg-surface-container-lowest p-3 rounded-xl border border-white/5 opacity-50">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">person</span>
+</div>
+<span class="text-sm font-bold tracking-tight">Modèle: Sophie (FR)</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Intégrations Section -->
+<section class="py-24 bg-surface-container-lowest/50">
+<div class="max-w-7xl mx-auto px-6">
+<div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+<div class="max-w-xl">
+<h2 class="syne text-4xl md:text-5xl font-bold text-white mb-6">Écosystème Ouvert</h2>
+<p class="text-on-surface-variant text-lg">Intégrez Vocalia dans votre workflow existant en quelques minutes via nos connecteurs natifs.</p>
+</div>
+<button class="border border-[#4F7FFF]/30 text-[#4F7FFF] px-8 py-3 rounded-lg hover:bg-[#4F7FFF]/10 transition-all font-headline">
+                        Documentation API
+                    </button>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="bg-surface p-8 rounded-2xl border border-white/5 flex flex-col items-center justify-center text-center group hover:bg-surface-container-low transition-all">
+<div class="w-12 h-12 mb-4 flex items-center justify-center rounded-lg bg-surface-container-high">
+<span class="material-symbols-outlined text-[#4F7FFF]">settings_ethernet</span>
+</div>
+<h4 class="font-bold text-white mb-1">SIP Trunking</h4>
+<p class="text-xs text-on-surface-variant">Connexion directe PBX</p>
+</div>
+<div class="bg-surface p-8 rounded-2xl border border-white/5 flex flex-col items-center justify-center text-center group hover:bg-surface-container-low transition-all">
+<div class="w-12 h-12 mb-4 flex items-center justify-center rounded-lg bg-surface-container-high">
+<span class="material-symbols-outlined text-[#7B5CFA]">webhook</span>
+</div>
+<h4 class="font-bold text-white mb-1">Webhooks</h4>
+<p class="text-xs text-on-surface-variant">Events temps-réel</p>
+</div>
+<div class="bg-surface p-8 rounded-2xl border border-white/5 flex flex-col items-center justify-center text-center group hover:bg-surface-container-low transition-all">
+<div class="w-12 h-12 mb-4 flex items-center justify-center rounded-lg bg-surface-container-high">
+<span class="material-symbols-outlined text-[#00D4AA]">call</span>
+</div>
+<h4 class="font-bold text-white mb-1">Twilio</h4>
+<p class="text-xs text-on-surface-variant">Intégration certifiée</p>
+</div>
+<div class="bg-surface p-8 rounded-2xl border border-white/5 flex flex-col items-center justify-center text-center group hover:bg-surface-container-low transition-all">
+<div class="w-12 h-12 mb-4 flex items-center justify-center rounded-lg bg-surface-container-high">
+<span class="material-symbols-outlined text-white">code</span>
+</div>
+<h4 class="font-bold text-white mb-1">SDK Node/Python</h4>
+<p class="text-xs text-on-surface-variant">Déploiement rapide</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Pricing Section -->
+<section class="py-24 px-6 max-w-7xl mx-auto">
+<div class="text-center mb-16">
+<h2 class="syne text-4xl md:text-5xl font-bold text-white mb-6">Investissez dans l'Excellence</h2>
+<p class="text-on-surface-variant max-w-2xl mx-auto">Des tarifs transparents conçus pour la mise à l'échelle, de la startup à l'entreprise globale.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Starter -->
+<div class="bg-surface-container-low rounded-2xl p-8 border border-white/5 flex flex-col">
+<h3 class="syne text-2xl font-bold text-white mb-2">Starter</h3>
+<div class="text-4xl font-bold text-white mb-6">0.05€<span class="text-base font-normal text-on-surface-variant">/min</span></div>
+<ul class="space-y-4 mb-10 flex-grow">
+<li class="flex items-center gap-3 text-on-surface-variant text-sm">
+<span class="material-symbols-outlined text-[#00D4AA] text-lg">check_circle</span>
+                            2 Voix Standards
+                        </li>
+<li class="flex items-center gap-3 text-on-surface-variant text-sm">
+<span class="material-symbols-outlined text-[#00D4AA] text-lg">check_circle</span>
+                            Accès API REST
+                        </li>
+<li class="flex items-center gap-3 text-on-surface-variant text-sm">
+<span class="material-symbols-outlined text-[#00D4AA] text-lg">check_circle</span>
+                            Support Communauté
+                        </li>
+</ul>
+<button class="w-full py-3 rounded-lg border border-outline-variant hover:border-[#4F7FFF] transition-all font-bold">Démarrer gratuitement</button>
+</div>
+<!-- Pro -->
+<div class="bg-surface-container-high rounded-2xl p-8 border-2 border-[#4F7FFF] flex flex-col relative scale-105 shadow-[0_20px_50px_rgba(79,127,255,0.1)]">
+<div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#4F7FFF] text-[#00174b] px-4 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest">Plus Populaire</div>
+<h3 class="syne text-2xl font-bold text-white mb-2">Pro</h3>
+<div class="text-4xl font-bold text-white mb-6">0.12€<span class="text-base font-normal text-on-surface-variant">/min</span></div>
+<ul class="space-y-4 mb-10 flex-grow">
+<li class="flex items-center gap-3 text-white text-sm">
+<span class="material-symbols-outlined text-[#00D4AA] text-lg" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                            Toutes les Voix Premium
+                        </li>
+<li class="flex items-center gap-3 text-white text-sm">
+<span class="material-symbols-outlined text-[#00D4AA] text-lg" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                            Analyse de Sentiment Live
+                        </li>
+<li class="flex items-center gap-3 text-white text-sm">
+<span class="material-symbols-outlined text-[#00D4AA] text-lg" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                            Connecteur Twilio/SIP
+                        </li>
+<li class="flex items-center gap-3 text-white text-sm">
+<span class="material-symbols-outlined text-[#00D4AA] text-lg" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                            Support Prioritaire 24/7
+                        </li>
+</ul>
+<button class="w-full py-4 rounded-lg bg-gradient-to-br from-[#4F7FFF] to-[#7B5CFA] text-white font-bold shadow-lg shadow-[#4F7FFF]/20">Choisir Pro</button>
+</div>
+<!-- Enterprise -->
+<div class="bg-surface-container-low rounded-2xl p-8 border border-white/5 flex flex-col">
+<h3 class="syne text-2xl font-bold text-white mb-2">Enterprise</h3>
+<div class="text-4xl font-bold text-white mb-6">Sur mesure</div>
+<ul class="space-y-4 mb-10 flex-grow">
+<li class="flex items-center gap-3 text-on-surface-variant text-sm">
+<span class="material-symbols-outlined text-[#00D4AA] text-lg">check_circle</span>
+                            Modèles de voix personnalisés
+                        </li>
+<li class="flex items-center gap-3 text-on-surface-variant text-sm">
+<span class="material-symbols-outlined text-[#00D4AA] text-lg">check_circle</span>
+                            Déploiement On-Premise
+                        </li>
+<li class="flex items-center gap-3 text-on-surface-variant text-sm">
+<span class="material-symbols-outlined text-[#00D4AA] text-lg">check_circle</span>
+                            SLA de 99.99%
+                        </li>
+<li class="flex items-center gap-3 text-on-surface-variant text-sm">
+<span class="material-symbols-outlined text-[#00D4AA] text-lg">check_circle</span>
+                            Key Account Manager
+                        </li>
+</ul>
+<button class="w-full py-3 rounded-lg border border-outline-variant hover:border-[#7B5CFA] transition-all font-bold">Contacter Ventes</button>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="py-24 px-6">
+<div class="max-w-5xl mx-auto glass rounded-3xl p-16 text-center relative overflow-hidden border border-white/5">
+<div class="absolute inset-0 bg-gradient-to-br from-[#4F7FFF]/10 to-transparent pointer-events-none"></div>
+<h2 class="syne text-4xl md:text-5xl font-bold text-white mb-8 relative z-10">Prêt à réinventer votre voix ?</h2>
+<p class="text-on-surface-variant text-lg mb-12 max-w-xl mx-auto relative z-10">Rejoignez les leaders du marché qui utilisent déjà Vocalia pour orchestrer leur relation client.</p>
+<div class="flex flex-col sm:flex-row gap-6 justify-center relative z-10">
+<button class="bg-white text-[#0A0B0F] px-10 py-4 rounded-lg font-bold font-headline hover:bg-[#4F7FFF] hover:text-white transition-all">Lancer la Console</button>
+<button class="border border-white/20 text-white px-10 py-4 rounded-lg font-bold font-headline hover:bg-white/10 transition-all">Parler à un expert</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-[#0A0B0F] w-full border-t border-[#1A1B20]">
+<div class="flex flex-col md:flex-row justify-between items-center px-12 py-12 w-full max-w-7xl mx-auto">
+<div class="mb-8 md:mb-0">
+<div class="text-lg font-bold text-[#4F7FFF] font-grotesk mb-2">Vocalia</div>
+<p class="font-grotesk text-[11px] uppercase tracking-widest text-[#C3C6D7]">© 2024 Vocalia AI. Built for the Sonic Architect.</p>
+</div>
+<div class="flex gap-8">
+<a class="font-grotesk text-[11px] uppercase tracking-widest text-[#C3C6D7] hover:text-white transition-colors" href="#">Privacy Policy</a>
+<a class="font-grotesk text-[11px] uppercase tracking-widest text-[#C3C6D7] hover:text-white transition-colors" href="#">Terms of Service</a>
+<a class="font-grotesk text-[11px] uppercase tracking-widest text-[#C3C6D7] hover:text-white transition-colors" href="#">Security</a>
+<a class="font-grotesk text-[11px] uppercase tracking-widest text-[#C3C6D7] hover:text-white transition-colors" href="#">Status</a>
+</div>
+</div>
+</footer>
+</body></html>

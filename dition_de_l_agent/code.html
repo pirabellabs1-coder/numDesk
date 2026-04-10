@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&amp;family=Space+Grotesk:wght@400;500;600;700&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-on-surface": "#2f3035",
+                        "inverse-surface": "#e3e2e8",
+                        "tertiary-fixed-dim": "#28dfb5",
+                        "on-surface": "#e3e2e8",
+                        "on-tertiary-fixed-variant": "#00513f",
+                        "surface-container-lowest": "#0d0e12",
+                        "on-primary": "#002a78",
+                        "surface-container": "#1f1f24",
+                        "on-tertiary": "#00382b",
+                        "surface": "#121317",
+                        "tertiary-fixed": "#55fcd0",
+                        "background": "#121317",
+                        "on-tertiary-container": "#003025",
+                        "tertiary-container": "#00a483",
+                        "surface-bright": "#38393e",
+                        "surface-container-high": "#292a2e",
+                        "primary-fixed-dim": "#b4c5ff",
+                        "secondary-fixed": "#e6deff",
+                        "on-surface-variant": "#c3c6d7",
+                        "surface-tint": "#b4c5ff",
+                        "secondary-fixed-dim": "#cabeff",
+                        "surface-container-highest": "#343439",
+                        "on-secondary-fixed-variant": "#481ac7",
+                        "outline": "#8d90a0",
+                        "error": "#ffb4ab",
+                        "outline-variant": "#434654",
+                        "on-background": "#e3e2e8",
+                        "surface-dim": "#121317",
+                        "on-error": "#690005",
+                        "on-secondary-container": "#b9aaff",
+                        "error-container": "#93000a",
+                        "surface-variant": "#343439",
+                        "on-primary-container": "#00246a",
+                        "on-error-container": "#ffdad6",
+                        "on-primary-fixed": "#00174b",
+                        "on-secondary-fixed": "#1c0062",
+                        "on-tertiary-fixed": "#002118",
+                        "primary": "#b4c5ff",
+                        "secondary": "#cabeff",
+                        "surface-container-low": "#1a1b20",
+                        "tertiary": "#28dfb5",
+                        "inverse-primary": "#1554d4",
+                        "primary-fixed": "#dbe1ff",
+                        "secondary-container": "#481ac7",
+                        "primary-container": "#618bff",
+                        "on-primary-fixed-variant": "#003ea8",
+                        "on-secondary": "#31009a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Syne", "sans-serif"],
+                        "body": ["Manrope", "sans-serif"],
+                        "label": ["Manrope", "sans-serif"],
+                        "mono": ["Space Grotesk", "monospace"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .premium-gradient {
+            background: linear-gradient(135deg, #4F7FFF 0%, #7B5CFA 100%);
+        }
+        .glass-panel {
+            background: rgba(41, 42, 46, 0.7);
+            backdrop-filter: blur(12px);
+        }
+        .grain-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 99;
+            opacity: 0.02;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container">
+<div class="grain-overlay"></div>
+<!-- SideNavBar -->
+<aside class="w-[240px] h-screen fixed left-0 top-0 bg-[#121317] flex flex-col py-6 px-4 z-50">
+<div class="mb-10 px-4">
+<div class="text-2xl font-bold tracking-tighter text-[#4F7FFF] flex items-center gap-2 font-headline">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">waves</span>
+<span>Vocalia</span>
+</div>
+<p class="text-[10px] uppercase tracking-[0.2em] text-outline mt-1 font-bold">Enterprise Workspace</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 text-[#C3C6D7] hover:text-white px-4 py-2 hover:bg-[#1A1B20] transition-colors duration-200 rounded-lg group font-mono text-sm tracking-wide" href="#">
+<span class="material-symbols-outlined text-xl">dashboard</span>
+<span>Tableau de bord</span>
+</a>
+<a class="flex items-center gap-3 text-[#4F7FFF] font-semibold bg-[#1A1B20] rounded-lg px-4 py-2 group font-mono text-sm tracking-wide" href="#">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+<span>Agents</span>
+</a>
+<a class="flex items-center gap-3 text-[#C3C6D7] hover:text-white px-4 py-2 hover:bg-[#1A1B20] transition-colors duration-200 rounded-lg group font-mono text-sm tracking-wide" href="#">
+<span class="material-symbols-outlined text-xl">forum</span>
+<span>Conversations</span>
+</a>
+<a class="flex items-center gap-3 text-[#C3C6D7] hover:text-white px-4 py-2 hover:bg-[#1A1B20] transition-colors duration-200 rounded-lg group font-mono text-sm tracking-wide" href="#">
+<span class="material-symbols-outlined text-xl">campaign</span>
+<span>Campagnes</span>
+</a>
+<a class="flex items-center gap-3 text-[#C3C6D7] hover:text-white px-4 py-2 hover:bg-[#1A1B20] transition-colors duration-200 rounded-lg group font-mono text-sm tracking-wide" href="#">
+<span class="material-symbols-outlined text-xl">menu_book</span>
+<span>Base de connaissances</span>
+</a>
+<a class="flex items-center gap-3 text-[#C3C6D7] hover:text-white px-4 py-2 hover:bg-[#1A1B20] transition-colors duration-200 rounded-lg group font-mono text-sm tracking-wide" href="#">
+<span class="material-symbols-outlined text-xl">call</span>
+<span>Numéros</span>
+</a>
+<div class="pt-6 pb-2 px-4">
+<p class="text-[10px] uppercase tracking-[0.2em] text-outline font-bold">Système</p>
+</div>
+<a class="flex items-center gap-3 text-[#C3C6D7] hover:text-white px-4 py-2 hover:bg-[#1A1B20] transition-colors duration-200 rounded-lg group font-mono text-sm tracking-wide" href="#">
+<span class="material-symbols-outlined text-xl">code</span>
+<span>API &amp; Webhooks</span>
+</a>
+<a class="flex items-center gap-3 text-[#C3C6D7] hover:text-white px-4 py-2 hover:bg-[#1A1B20] transition-colors duration-200 rounded-lg group font-mono text-sm tracking-wide" href="#">
+<span class="material-symbols-outlined text-xl">description</span>
+<span>Documentation</span>
+</a>
+<a class="flex items-center gap-3 text-[#C3C6D7] hover:text-white px-4 py-2 hover:bg-[#1A1B20] transition-colors duration-200 rounded-lg group font-mono text-sm tracking-wide" href="#">
+<span class="material-symbols-outlined text-xl">settings</span>
+<span>Paramètres</span>
+</a>
+</nav>
+<div class="mt-auto px-4 py-4 bg-surface-container-low rounded-xl flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold text-xs">JD</div>
+<div class="flex-1 min-w-0">
+<p class="text-xs font-bold truncate text-on-surface">Jean Dupont</p>
+<p class="text-[10px] text-outline truncate">Admin</p>
+</div>
+<button class="text-outline hover:text-white transition-colors">
+<span class="material-symbols-outlined text-lg">logout</span>
+</button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-[240px] min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="h-16 fixed top-0 right-0 left-[240px] z-40 bg-[#121317]/70 backdrop-blur-xl border-b border-white/10 flex justify-between items-center px-8">
+<div class="flex items-center gap-4">
+<a class="text-outline hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">arrow_back</span>
+</a>
+<div class="flex items-center gap-2">
+<span class="text-lg font-semibold text-[#C3C6D7] font-mono">Agent :</span>
+<span class="text-lg font-bold text-white font-headline tracking-tight">Support Client AI v2</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 px-3 py-1 bg-tertiary/10 border border-tertiary/20 rounded-full">
+<span class="w-2 h-2 bg-tertiary rounded-full animate-pulse"></span>
+<span class="text-[10px] font-bold text-tertiary uppercase tracking-wider">Statut: Actif</span>
+</div>
+<button class="flex items-center gap-2 premium-gradient text-white px-5 py-2 rounded-lg font-bold text-xs uppercase tracking-widest hover:scale-[1.02] active:scale-95 transition-all shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-sm">save</span>
+                    Enregistrer
+                </button>
+</div>
+</header>
+<!-- Content Canvas -->
+<div class="mt-16 p-8 flex gap-8 flex-1 bg-surface-dim">
+<!-- Left Side: Editor Form -->
+<div class="flex-1 max-w-4xl space-y-8">
+<!-- Tabs -->
+<div class="flex gap-2 p-1 bg-surface-container-low rounded-xl w-fit">
+<button class="px-6 py-2 bg-surface-container-high text-primary rounded-lg font-bold text-sm transition-all">Général</button>
+<button class="px-6 py-2 text-outline hover:text-on-surface rounded-lg font-bold text-sm transition-all">Voix</button>
+<button class="px-6 py-2 text-outline hover:text-on-surface rounded-lg font-bold text-sm transition-all">Instructions</button>
+<button class="px-6 py-2 text-outline hover:text-on-surface rounded-lg font-bold text-sm transition-all">Outils</button>
+<button class="px-6 py-2 text-outline hover:text-on-surface rounded-lg font-bold text-sm transition-all">Réglages</button>
+</div>
+<!-- Form Sections -->
+<div class="space-y-12">
+<!-- Identification -->
+<section class="grid grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="text-[10px] font-bold uppercase tracking-[0.2em] text-outline ml-1">Nom de l'Agent</label>
+<input class="w-full bg-surface-container-lowest border-0 focus:ring-0 focus:border-b-2 focus:border-primary border-b border-outline-variant transition-all py-3 px-4 rounded-t-lg text-on-surface font-medium" type="text" value="Support Client AI v2"/>
+</div>
+<div class="space-y-2">
+<label class="text-[10px] font-bold uppercase tracking-[0.2em] text-outline ml-1">Numéro Assigné</label>
+<div class="relative group">
+<select class="w-full bg-surface-container-lowest border-0 border-b border-outline-variant focus:ring-0 focus:border-primary py-3 px-4 rounded-t-lg text-on-surface appearance-none font-medium">
+<option>+33 1 89 22 45 67 (Principal)</option>
+<option>+33 7 55 12 34 89 (Support Express)</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-outline pointer-events-none">expand_more</span>
+</div>
+</div>
+</section>
+<!-- Core Logic -->
+<section class="space-y-6">
+<div class="space-y-2">
+<label class="text-[10px] font-bold uppercase tracking-[0.2em] text-outline ml-1">System Prompt (Comportement de l'IA)</label>
+<textarea class="w-full h-80 bg-surface-container-lowest border-0 border-b border-outline-variant focus:ring-0 focus:border-primary py-4 px-5 rounded-t-xl text-on-surface font-mono text-sm leading-relaxed resize-none" placeholder="Définissez les règles de cet agent...">Tu es un assistant virtuel spécialisé dans le support client pour Vocalia. 
+Ton ton est professionnel, empathique et concis.
+Tes objectifs :
+1. Identifier le client par son nom et numéro de commande.
+2. Analyser le problème technique ou la demande d'information.
+3. Proposer une solution immédiate ou escalader vers un agent humain si nécessaire.
+
+Contraintes : 
+- Ne jamais mentionner que tu es une IA sauf si on te le demande explicitement.
+- Toujours valider la compréhension avant de donner une réponse technique.
+- Si le client s'énerve, reste calme et propose une redirection immédiate.</textarea>
+</div>
+<div class="space-y-2">
+<label class="text-[10px] font-bold uppercase tracking-[0.2em] text-outline ml-1">Premier Message (Salutation)</label>
+<input class="w-full bg-surface-container-lowest border-0 border-b border-outline-variant focus:ring-0 focus:border-primary py-3 px-4 rounded-t-lg text-on-surface font-medium" type="text" value="Bonjour, ici Alex du support Vocalia. En quoi puis-je vous aider aujourd'hui ?"/>
+</div>
+</section>
+<!-- Advanced Parameters -->
+<section class="grid grid-cols-2 gap-8">
+<div class="p-6 rounded-2xl bg-surface-container-low space-y-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-tertiary">replay</span>
+<h3 class="font-bold text-sm uppercase tracking-wider">Retry Settings</h3>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<span class="text-sm text-outline">Tentatives max en cas d'erreur</span>
+<input class="w-16 bg-surface-container-lowest border-0 border-b border-outline-variant text-center py-1" type="number" value="3"/>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-sm text-outline">Délai avant timeout (ms)</span>
+<input class="w-20 bg-surface-container-lowest border-0 border-b border-outline-variant text-center py-1" type="number" value="5000"/>
+</div>
+</div>
+</div>
+<div class="p-6 rounded-2xl bg-surface-container-low space-y-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-error">call_end</span>
+<h3 class="font-bold text-sm uppercase tracking-wider">Fin de l'appel</h3>
+</div>
+<div class="space-y-3">
+<label class="flex items-center gap-3 cursor-pointer group">
+<input checked="" class="w-5 h-5 rounded border-outline-variant bg-surface-container-lowest text-primary focus:ring-0" type="checkbox"/>
+<span class="text-sm text-outline group-hover:text-on-surface transition-colors">Terminer après "Au revoir"</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-5 h-5 rounded border-outline-variant bg-surface-container-lowest text-primary focus:ring-0" type="checkbox"/>
+<span class="text-sm text-outline group-hover:text-on-surface transition-colors">Silence prolongé (10s)</span>
+</label>
+</div>
+</div>
+</section>
+</div>
+</div>
+<!-- Right Side: Preview Panel -->
+<div class="w-[400px] sticky top-24 h-[calc(100vh-120px)] flex flex-col">
+<div class="glass-panel rounded-3xl overflow-hidden flex flex-col h-full border border-white/5">
+<div class="p-6 bg-white/5 border-b border-white/5 flex justify-between items-center">
+<div>
+<h2 class="font-headline font-bold text-lg tracking-tight">Simulateur</h2>
+<p class="text-[10px] text-outline uppercase font-bold tracking-widest">Aperçu en temps réel</p>
+</div>
+<button class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-all">
+<span class="material-symbols-outlined">play_arrow</span>
+</button>
+</div>
+<!-- Transcript area -->
+<div class="flex-1 p-6 space-y-6 overflow-y-auto font-mono text-xs">
+<div class="space-y-2">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-primary/20 text-primary font-bold text-[9px] uppercase">Agent</span>
+<span class="text-[10px] text-outline">10:42:01</span>
+</div>
+<div class="bg-surface-container-high p-4 rounded-2xl rounded-tl-none border-l-2 border-primary">
+                                Bonjour, ici Alex du support Vocalia. En quoi puis-je vous aider aujourd'hui ?
+                            </div>
+</div>
+<div class="space-y-2 flex flex-col items-end">
+<div class="flex items-center gap-2 justify-end">
+<span class="text-[10px] text-outline">10:42:05</span>
+<span class="px-2 py-0.5 rounded bg-outline-variant/30 text-on-surface-variant font-bold text-[9px] uppercase">Client</span>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-2xl rounded-tr-none border-r-2 border-outline-variant max-w-[90%]">
+                                Bonjour, ma commande n°4589 est bloquée depuis hier.
+                            </div>
+</div>
+<div class="space-y-2">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-secondary/20 text-secondary font-bold text-[9px] uppercase">AI Reasoning</span>
+</div>
+<div class="bg-secondary/5 p-3 rounded-xl italic text-on-surface-variant/70 border border-secondary/10">
+                                Intent: Order Inquiry. Action: Lookup Order ID 4589. Result: Pending Warehouse.
+                            </div>
+</div>
+<div class="space-y-2">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-primary/20 text-primary font-bold text-[9px] uppercase">Agent</span>
+<span class="text-[10px] text-outline">10:42:08</span>
+</div>
+<div class="bg-surface-container-high p-4 rounded-2xl rounded-tl-none border-l-2 border-primary">
+                                Je vois bien votre commande n°4589. Elle est actuellement en préparation dans notre entrepôt de Lyon. L'expédition est prévue d'ici ce soir. Souhaitez-vous recevoir le lien de suivi par SMS ?
+                            </div>
+</div>
+</div>
+<!-- Voice Waveform Visualizer Footer -->
+<div class="p-6 bg-surface-container-lowest">
+<div class="flex items-center justify-center gap-1 h-8">
+<div class="w-1 h-4 bg-primary rounded-full animate-pulse"></div>
+<div class="w-1 h-6 bg-primary/80 rounded-full"></div>
+<div class="w-1 h-3 bg-secondary rounded-full"></div>
+<div class="w-1 h-8 bg-primary rounded-full animate-pulse" style="animation-delay: 0.1s"></div>
+<div class="w-1 h-5 bg-primary/60 rounded-full"></div>
+<div class="w-1 h-7 bg-secondary/80 rounded-full animate-pulse" style="animation-delay: 0.2s"></div>
+<div class="w-1 h-4 bg-primary rounded-full"></div>
+<div class="w-1 h-2 bg-outline-variant rounded-full"></div>
+<div class="w-1 h-5 bg-primary rounded-full animate-pulse"></div>
+<div class="w-1 h-8 bg-secondary rounded-full"></div>
+<div class="w-1 h-6 bg-primary/80 rounded-full"></div>
+<div class="w-1 h-3 bg-primary rounded-full"></div>
+</div>
+<p class="text-center text-[10px] uppercase font-bold tracking-[0.3em] text-outline mt-3">Monitoring Vocal Actif</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating Tooltip / Help -->
+<div class="fixed bottom-8 right-8 group">
+<button class="w-14 h-14 rounded-full bg-surface-container-high flex items-center justify-center shadow-2xl border border-white/5 hover:border-primary/50 transition-all">
+<span class="material-symbols-outlined text-primary">help</span>
+</button>
+<div class="absolute bottom-full right-0 mb-4 w-64 glass-panel p-4 rounded-2xl border border-white/10 opacity-0 group-hover:opacity-100 transition-all pointer-events-none translate-y-2 group-hover:translate-y-0">
+<p class="text-xs text-on-surface-variant leading-relaxed">
+<span class="text-primary font-bold">Astuce :</span> Utilisez les variables <span class="font-mono text-secondary">{{client_name}}</span> dans vos prompts pour une personnalisation dynamique.
+            </p>
+</div>
+</div>
+</body></html>

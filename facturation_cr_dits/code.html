@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vocalia Billing - Gestion des Crédits</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&amp;family=Manrope:wght@400;500;600;700&amp;family=Space+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-primary-fixed": "#00174b",
+            "secondary-fixed-dim": "#cabeff",
+            "surface-variant": "#343439",
+            "on-tertiary-container": "#003025",
+            "on-primary-container": "#00246a",
+            "tertiary-container": "#00a483",
+            "inverse-on-surface": "#2f3035",
+            "tertiary-fixed-dim": "#28dfb5",
+            "tertiary": "#28dfb5",
+            "on-secondary-fixed-variant": "#481ac7",
+            "on-secondary-fixed": "#1c0062",
+            "on-secondary": "#31009a",
+            "on-background": "#e3e2e8",
+            "surface-tint": "#b4c5ff",
+            "surface-container-high": "#292a2e",
+            "surface-container-highest": "#343439",
+            "error": "#ffb4ab",
+            "background": "#121317",
+            "surface-dim": "#121317",
+            "surface-container-low": "#1a1b20",
+            "surface-container": "#1f1f24",
+            "on-secondary-container": "#b9aaff",
+            "secondary-container": "#481ac7",
+            "outline-variant": "#434654",
+            "on-surface-variant": "#c3c6d7",
+            "error-container": "#93000a",
+            "outline": "#8d90a0",
+            "surface": "#121317",
+            "on-tertiary": "#00382b",
+            "surface-bright": "#38393e",
+            "on-primary": "#002a78",
+            "on-surface": "#e3e2e8",
+            "tertiary-fixed": "#55fcd0",
+            "on-tertiary-fixed-variant": "#00513f",
+            "inverse-primary": "#1554d4",
+            "on-tertiary-fixed": "#002118",
+            "inverse-surface": "#e3e2e8",
+            "primary-container": "#618bff",
+            "on-error": "#690005",
+            "on-error-container": "#ffdad6",
+            "surface-container-lowest": "#0d0e12",
+            "primary-fixed": "#dbe1ff",
+            "secondary": "#cabeff",
+            "primary": "#b4c5ff",
+            "secondary-fixed": "#e6deff",
+            "on-primary-fixed-variant": "#003ea8",
+            "primary-fixed-dim": "#b4c5ff"
+          },
+          "fontFamily": {
+            "headline": ["Syne", "sans-serif"],
+            "body": ["Manrope", "sans-serif"],
+            "label": ["Manrope", "sans-serif"],
+            "grotesk": ["Space Grotesk", "sans-serif"]
+          }
+        },
+      },
+    }
+  </script>
+<style>body {
+    background-color: #0A0B0F;
+    background-image: radial-gradient(circle at 50% -20%, #1a1b20 0%, #0A0B0F 100%);
+    font-family: "Manrope", sans-serif
+    }
+.material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24
+    }
+.glass-panel {
+    background: rgba(41, 42, 46, 0.7);
+    backdrop-filter: blur(12px)
+    }
+.premium-glow {
+    box-shadow: 0 0 20px rgba(79, 127, 255, 0.15)
+    }
+.noise-overlay {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    opacity: 0.02;
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuC3Or-U5xyRM3wiZ9IDox0TbQqjaRlP8LjrXHkBmmCPS0RRMGnmRunVwsLArBZJEsRI860GUQdrshUul2xazGVpfryHtwDlcsRKXlHsROMdV8IVwbcoWnDTmGL0TnwWLO96_CC2v83jPtr9ZVQXZhzhE74TVhCKbArA8c8WdL2qohVu-1MvI10tqJgIYRECcu0FXlUcCz6aggfBxIIPbXxwlvtbgH_TkskV8V81rjlefxbFNybNwfyOYD4mMqktcpPzwH6bgFC6s74S);
+    z-index: 9999
+    }</style>
+</head>
+<body class="text-on-surface antialiased overflow-x-hidden">
+<div class="noise-overlay"></div>
+<!-- SideNavBar Anchor -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-[#121317] flex flex-col py-6 font-grotesk text-sm border-r border-[#1A1B20] z-40">
+<div class="px-6 mb-10">
+<div class="text-xl font-bold text-[#4F7FFF] tracking-tighter">Vocalia AI</div>
+<div class="text-[10px] uppercase tracking-[0.2em] text-[#C3C6D7] mt-1 opacity-60">Enterprise Plan</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="text-[#C3C6D7] py-3 px-6 flex items-center gap-3 hover:bg-[#1A1B20] hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+        Dashboard
+      </a>
+<a class="text-[#C3C6D7] py-3 px-6 flex items-center gap-3 hover:bg-[#1A1B20] hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="phone_in_talk">phone_in_talk</span>
+        Call Logs
+      </a>
+<a class="text-[#C3C6D7] py-3 px-6 flex items-center gap-3 hover:bg-[#1A1B20] hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="dialpad">dialpad</span>
+        Phone Numbers
+      </a>
+<a class="bg-[#4F7FFF]/10 text-[#4F7FFF] border-r-4 border-[#4F7FFF] py-3 px-6 flex items-center gap-3 font-bold" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+        Billing
+      </a>
+<a class="text-[#C3C6D7] py-3 px-6 flex items-center gap-3 hover:bg-[#1A1B20] hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="code">code</span>
+        API Keys
+      </a>
+</nav>
+<div class="px-6 mb-8">
+<button class="w-full bg-[#4F7FFF] text-white py-3 rounded-lg font-bold text-xs uppercase tracking-widest hover:brightness-110 transition-all active:scale-95">
+        Add Credits
+      </button>
+</div>
+<div class="mt-auto space-y-1">
+<a class="text-[#C3C6D7] py-3 px-6 flex items-center gap-3 hover:bg-[#1A1B20] hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+        Settings
+      </a>
+<a class="text-[#C3C6D7] py-3 px-6 flex items-center gap-3 hover:bg-[#1A1B20] hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+        Support
+      </a>
+</div>
+</aside>
+<!-- Main Content Stage -->
+<main class="ml-64 min-h-screen p-8 lg:p-12">
+<!-- Header Section -->
+<header class="mb-12 flex justify-between items-end">
+<div>
+<h1 class="font-headline text-4xl lg:text-5xl font-bold tracking-tight text-white mb-2">Gestion des Crédits</h1>
+<p class="text-on-surface-variant font-body">Manage your consumption metrics, recharge your balance, and track invoices.</p>
+</div>
+<div class="flex items-center gap-4">
+<div class="text-right">
+<p class="text-[10px] uppercase tracking-widest text-[#C3C6D7] opacity-50 mb-1">Current Session</p>
+<div class="flex items-center gap-2 text-[#00D4AA]">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00D4AA] opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-[#00D4AA]"></span>
+</span>
+<span class="text-sm font-bold font-grotesk tracking-tight">LIVE MONITORING</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Top Grid: Balance & Quick Recharge -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+<!-- Balance Card -->
+<div class="lg:col-span-1 bg-[#0F1117] rounded-2xl p-8 flex flex-col justify-between border border-[#1A1B20] hover:border-[#4F7FFF]/30 transition-colors">
+<div>
+<span class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#C3C6D7] opacity-50 block mb-6">Available Balance</span>
+<div class="space-y-4">
+<div class="flex items-baseline gap-3">
+<span class="font-headline text-5xl font-bold text-white tracking-tighter">1,240</span>
+<span class="text-[#4F7FFF] font-grotesk font-medium">MINUTES</span>
+</div>
+<div class="w-full h-1 bg-[#1A1B20] rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-[#4F7FFF] to-[#7B5CFA] w-[65%]"></div>
+</div>
+<div class="flex justify-between text-xs font-medium text-[#C3C6D7]">
+<span>€452.80 Remaining</span>
+<span class="text-white">65% of monthly avg</span>
+</div>
+</div>
+</div>
+<div class="mt-8 pt-8 border-t border-[#1A1B20]">
+<div class="flex items-center gap-3 text-sm text-[#C3C6D7]">
+<span class="material-symbols-outlined text-[#00D4AA]" data-icon="auto_renew">autorenew</span>
+            Auto-recharge active at <span class="text-white font-bold">€50</span>
+</div>
+</div>
+</div>
+<!-- Quick Recharge Section -->
+<div class="lg:col-span-2 glass-panel rounded-2xl p-8 border border-[#1A1B20] premium-glow">
+<div class="flex justify-between items-center mb-8">
+<h2 class="font-headline text-xl font-bold text-white tracking-tight">Recharge Instantanée</h2>
+<span class="text-xs text-[#C3C6D7] flex items-center gap-1"><span class="material-symbols-outlined text-[14px]" data-icon="security">security</span> SSL Encrypted</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+<button class="group p-6 rounded-xl bg-surface-container-low border border-transparent hover:border-[#4F7FFF] hover:bg-[#4F7FFF]/5 transition-all text-center">
+<p class="text-[10px] uppercase font-bold text-[#C3C6D7] group-hover:text-[#4F7FFF] mb-2">Standard</p>
+<p class="text-2xl font-bold text-white group-hover:scale-110 transition-transform">+100€</p>
+</button>
+<button class="group p-6 rounded-xl bg-[#4F7FFF]/10 border border-[#4F7FFF] hover:bg-[#4F7FFF]/20 transition-all text-center relative overflow-hidden">
+<div class="absolute top-0 right-0 bg-[#4F7FFF] text-white text-[8px] px-2 py-0.5 font-bold uppercase tracking-widest">Popular</div>
+<p class="text-[10px] uppercase font-bold text-[#4F7FFF] mb-2">Professional</p>
+<p class="text-2xl font-bold text-white group-hover:scale-110 transition-transform">+500€</p>
+</button>
+<button class="group p-6 rounded-xl bg-surface-container-low border border-transparent hover:border-[#4F7FFF] hover:bg-[#4F7FFF]/5 transition-all text-center">
+<p class="text-[10px] uppercase font-bold text-[#C3C6D7] group-hover:text-[#4F7FFF] mb-2">Enterprise</p>
+<p class="text-2xl font-bold text-white group-hover:scale-110 transition-transform">+1000€</p>
+</button>
+</div>
+<div class="flex flex-col md:flex-row gap-4 items-center">
+<div class="flex-1 w-full relative">
+<input class="w-full bg-surface-container-lowest border-none focus:ring-0 focus:border-b focus:border-[#4F7FFF] rounded-lg p-4 text-white placeholder-[#434654] font-grotesk text-lg" placeholder="Montant personnalisé (€)" type="number"/>
+</div>
+<button class="w-full md:w-auto px-10 py-4 bg-gradient-to-r from-[#4F7FFF] to-[#7B5CFA] text-white rounded-lg font-bold hover:brightness-125 transition-all active:scale-95 shadow-lg shadow-[#4F7FFF]/20">
+            Confirmer l'achat
+          </button>
+</div>
+</div>
+</div>
+<!-- Bottom Section: Payments & History -->
+<div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+<!-- Payment Methods -->
+<div class="lg:col-span-1 space-y-6">
+<div class="bg-surface-container-lowest rounded-2xl p-6 border border-[#1A1B20]">
+<div class="flex justify-between items-center mb-6">
+<h3 class="text-sm font-bold text-white uppercase tracking-wider font-grotesk">Modes de paiement</h3>
+<button class="text-[#4F7FFF] text-xs font-bold hover:underline">Edit</button>
+</div>
+<div class="space-y-4">
+<div class="flex items-center gap-4 p-4 rounded-xl bg-[#1A1B20] border border-transparent hover:border-[#4F7FFF]/30 cursor-pointer transition-all">
+<div class="w-10 h-6 bg-[#0A0B0F] rounded flex items-center justify-center">
+<span class="text-[10px] font-bold text-white italic">VISA</span>
+</div>
+<div class="flex-1">
+<p class="text-xs font-bold text-white">•••• 4242</p>
+<p class="text-[10px] text-[#C3C6D7]">Expires 12/26</p>
+</div>
+<span class="material-symbols-outlined text-[#00D4AA] text-sm" data-icon="check_circle">check_circle</span>
+</div>
+<div class="flex items-center gap-4 p-4 rounded-xl bg-[#1A1B20] border border-transparent hover:border-[#4F7FFF]/30 cursor-pointer transition-all">
+<div class="w-10 h-6 bg-[#0A0B0F] rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-xs text-[#C3C6D7]" data-icon="account_balance">account_balance</span>
+</div>
+<div class="flex-1">
+<p class="text-xs font-bold text-white">SEPA Direct</p>
+<p class="text-[10px] text-[#C3C6D7]">FR76 •••• 123</p>
+</div>
+</div>
+</div>
+<button class="w-full mt-6 py-3 rounded-lg border border-dashed border-[#434654] text-[#C3C6D7] text-xs font-bold hover:bg-white/5 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="add_circle">add_circle</span>
+            Nouveau mode
+          </button>
+</div>
+</div>
+<!-- Invoice History Table -->
+<div class="lg:col-span-3">
+<div class="bg-[#0F1117] rounded-2xl border border-[#1A1B20] overflow-hidden">
+<div class="px-8 py-6 flex justify-between items-center border-b border-[#1A1B20]">
+<h3 class="text-sm font-bold text-white uppercase tracking-wider font-grotesk">Historique des factures</h3>
+<button class="p-2 rounded-lg hover:bg-white/5 text-[#C3C6D7]">
+<span class="material-symbols-outlined" data-icon="filter_list">filter_list</span>
+</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left font-body">
+<thead>
+<tr class="text-[10px] uppercase tracking-widest text-[#C3C6D7] opacity-50">
+<th class="px-8 py-5 font-bold">Détails</th>
+<th class="px-8 py-5 font-bold">Montant</th>
+<th class="px-8 py-5 font-bold">Statut</th>
+<th class="px-8 py-5 font-bold text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#1A1B20]">
+<!-- Row 1 -->
+<tr class="group hover:bg-[#1A1B20]/40 transition-colors">
+<td class="px-8 py-5">
+<div>
+<p class="text-sm font-bold text-white">Recharge #VCA-9821</p>
+<p class="text-xs text-[#C3C6D7]">Oct 12, 2024 • 14:30</p>
+</div>
+</td>
+<td class="px-8 py-5">
+<p class="text-sm font-grotesk font-bold text-white">500.00 €</p>
+</td>
+<td class="px-8 py-5">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#00D4AA]/10 text-[#00D4AA] text-[10px] font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-[#00D4AA]"></span>
+                      PAID
+                    </div>
+</td>
+<td class="px-8 py-5 text-right">
+<button class="p-2 text-[#C3C6D7] hover:text-[#4F7FFF] transition-colors">
+<span class="material-symbols-outlined" data-icon="download">download</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="group hover:bg-[#1A1B20]/40 transition-colors">
+<td class="px-8 py-5">
+<div>
+<p class="text-sm font-bold text-white">Recharge #VCA-9755</p>
+<p class="text-xs text-[#C3C6D7]">Sep 28, 2024 • 09:12</p>
+</div>
+</td>
+<td class="px-8 py-5">
+<p class="text-sm font-grotesk font-bold text-white">100.00 €</p>
+</td>
+<td class="px-8 py-5">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#00D4AA]/10 text-[#00D4AA] text-[10px] font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-[#00D4AA]"></span>
+                      PAID
+                    </div>
+</td>
+<td class="px-8 py-5 text-right">
+<button class="p-2 text-[#C3C6D7] hover:text-[#4F7FFF] transition-colors">
+<span class="material-symbols-outlined" data-icon="download">download</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="group hover:bg-[#1A1B20]/40 transition-colors">
+<td class="px-8 py-5">
+<div>
+<p class="text-sm font-bold text-white">Recharge #VCA-9410</p>
+<p class="text-xs text-[#C3C6D7]">Sep 15, 2024 • 18:45</p>
+</div>
+</td>
+<td class="px-8 py-5">
+<p class="text-sm font-grotesk font-bold text-white">1,000.00 €</p>
+</td>
+<td class="px-8 py-5">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#7B5CFA]/10 text-[#7B5CFA] text-[10px] font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-[#7B5CFA] animate-pulse"></span>
+                      PROCESSING
+                    </div>
+</td>
+<td class="px-8 py-5 text-right">
+<button class="p-2 text-[#C3C6D7] opacity-30 cursor-not-allowed">
+<span class="material-symbols-outlined" data-icon="hourglass_empty">hourglass_empty</span>
+</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="group hover:bg-[#1A1B20]/40 transition-colors">
+<td class="px-8 py-5">
+<div>
+<p class="text-sm font-bold text-white">Recharge #VCA-9022</p>
+<p class="text-xs text-[#C3C6D7]">Aug 30, 2024 • 11:20</p>
+</div>
+</td>
+<td class="px-8 py-5">
+<p class="text-sm font-grotesk font-bold text-white">500.00 €</p>
+</td>
+<td class="px-8 py-5">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#00D4AA]/10 text-[#00D4AA] text-[10px] font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-[#00D4AA]"></span>
+                      PAID
+                    </div>
+</td>
+<td class="px-8 py-5 text-right">
+<button class="p-2 text-[#C3C6D7] hover:text-[#4F7FFF] transition-colors">
+<span class="material-symbols-outlined" data-icon="download">download</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-8 py-4 bg-[#1A1B20]/20 flex justify-center">
+<button class="text-xs font-bold text-[#C3C6D7] hover:text-white transition-colors">Charger plus de factures</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer Anchor -->
+<footer class="ml-64 w-full md:w-[calc(100%-16rem)] border-t border-[#1A1B20] bg-[#0A0B0F] flex flex-col md:flex-row justify-between items-center px-12 py-12 font-grotesk text-[11px] uppercase tracking-widest">
+<div class="text-[#C3C6D7] mb-6 md:mb-0">
+      © 2024 Vocalia AI. Built for the Sonic Architect.
+    </div>
+<div class="flex gap-8">
+<a class="text-[#C3C6D7] hover:text-white transition-colors" href="#">Privacy Policy</a>
+<a class="text-[#C3C6D7] hover:text-white transition-colors" href="#">Terms of Service</a>
+<a class="text-[#C3C6D7] hover:text-white transition-colors" href="#">Security</a>
+<a class="text-[#C3C6D7] hover:text-white transition-colors flex items-center gap-1" href="#">
+<span class="w-1.5 h-1.5 rounded-full bg-[#00D4AA]"></span>
+        Status
+      </a>
+</div>
+</footer>
+</body></html>
