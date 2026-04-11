@@ -1,0 +1,26 @@
+schema: spec-driven
+
+context: |
+  Vocalia — Plateforme SaaS B2B d'appels IA pour le marché français.
+  Stack: Next.js 15 (App Router) + TypeScript + Tailwind CSS + shadcn/ui
+  Design system: "The Sonic Architect" — dark premium, Organic Brutalism
+  Polices: Syne (titres) + Manrope (body) + Space Grotesk (nav/code)
+  Palette: fond #0A0B0F, surface #121317, primary #4F7FFF, secondary #7B5CFA, tertiary #00D4AA
+  Règle No-Line: séparation par fond, pas de bordures 1px solid
+  Glassmorphism sur éléments flottants, grain texture 2% sur fond global
+  UI entièrement en français. Composants shadcn/ui prioritaires.
+  Maquettes de référence dans les dossiers à la racine du projet (screen.png).
+  Voir CLAUDE.md, PRD.md et ARCHITECTURE.md pour les specs complètes.
+
+rules:
+  proposal:
+    - Rédiger en français (titres Requirements en anglais avec SHALL/MUST)
+    - Référencer la maquette existante (screen.png) comme source de vérité visuelle
+  design:
+    - Suivre le design system "The Sonic Architect" défini dans ARCHITECTURE.md
+    - Préciser les tokens de couleur, typographie et spacing exacts
+    - Inclure la structure des composants React/Next.js
+  tasks:
+    - Chaque tâche doit être implémentable en 1-2h maximum
+    - Inclure les fichiers à créer/modifier
+    - Tester chaque page avec playwright-skill après implémentation
