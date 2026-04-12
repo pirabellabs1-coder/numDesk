@@ -50,7 +50,7 @@ function getTranscriberLanguage(lang?: string): string {
   };
   if (map[lang]) return map[lang];
   // If already a valid short code (fr, en, de...), use it directly
-  if (lang.length <= 5) return lang.split("-")[0];
+  if (lang.length <= 5) return lang.split("-")[0] ?? "fr";
   return "fr";
 }
 
