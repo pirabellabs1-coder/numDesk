@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSidebar } from "./sidebar-context";
 import { useWorkspace } from "@/providers/workspace-provider";
+import { useAuth } from "@/providers/auth-provider";
 import { PLANS, type PlanSlug } from "@vocalia/shared";
 
 // "pro" = requires Pro plan, "starter" = requires at least Starter
@@ -42,8 +43,15 @@ export function Sidebar() {
   const pathname = usePathname();
   const { isOpen, toggle } = useSidebar();
   const { workspace } = useWorkspace();
+  const { user } = useAuth();
 
   const planSlug = ((workspace as any)?.planSlug as PlanSlug) || "trial";
+
+  const meta = user?.user_metadata || {};
+  const firstName = meta.first_name || meta.full_name?.split(" ")[0] || "";
+  const lastName = meta.last_name || meta.full_name?.split(" ").slice(1).join(" ") || "";
+  const displayName = `${firstName} ${lastName}`.trim() || user?.email?.split("@")[0] || "Utilisateur";
+  const userEmail = user?.email || "";
 
   const isActive = (href: string) =>
     pathname === href || pathname.startsWith(href + "/");
@@ -171,8 +179,8 @@ export function Sidebar() {
               <span className="material-symbols-outlined text-xs">person</span>
             </div>
             <div className="min-w-0">
-              <p className="truncate text-[11px] font-bold text-on-surface">Alex Rivera</p>
-              <p className="truncate text-[9px] text-on-surface-variant">alex@callpme.com</p>
+              <p className="truncate text-[11px] font-bold text-on-surface">{displayName}</p>
+              <p className="truncate text-[9px] text-on-surface-variant">{userEmail}</p>
             </div>
           </div>
         </div>

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSidebar } from "../dashboard/sidebar-context";
+import { useAuth } from "@/providers/auth-provider";
 
 const navItems = [
   { label: "Vue d'ensemble", icon: "dashboard", href: "/admin/overview" },
@@ -31,6 +32,12 @@ const navItems = [
 export function AdminSidebar() {
   const pathname = usePathname();
   const { isOpen, toggle } = useSidebar();
+  const { user } = useAuth();
+
+  const meta = user?.user_metadata || {};
+  const firstName = meta.first_name || meta.full_name?.split(" ")[0] || "";
+  const lastName = meta.last_name || meta.full_name?.split(" ").slice(1).join(" ") || "";
+  const displayName = `${firstName} ${lastName}`.trim() || user?.email?.split("@")[0] || "Admin";
 
   const isActive = (href: string) =>
     pathname === href || pathname.startsWith(href + "/");
@@ -119,7 +126,7 @@ export function AdminSidebar() {
               <span className="material-symbols-outlined text-xs">shield_person</span>
             </div>
             <div className="min-w-0">
-              <p className="truncate text-[11px] font-bold text-on-surface">Alex Rivera</p>
+              <p className="truncate text-[11px] font-bold text-on-surface">{displayName}</p>
               <p className="truncate text-[9px] text-error/80">Administrateur</p>
             </div>
           </div>

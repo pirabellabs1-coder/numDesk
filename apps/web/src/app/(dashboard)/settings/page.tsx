@@ -11,6 +11,14 @@ export default function SettingsPage() {
   const [tab, setTab] = useState("profile");
   const [saving, setSaving] = useState(false);
 
+  // Extract user data from auth
+  const meta = user?.user_metadata || {};
+  const firstName = meta.first_name || meta.full_name?.split(" ")[0] || "";
+  const lastName = meta.last_name || meta.full_name?.split(" ").slice(1).join(" ") || "";
+  const agencyName = meta.agency_name || "";
+  const email = user?.email || "";
+  const initials = `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase() || "U";
+
   const handleSave = async () => {
     setSaving(true);
     try {
@@ -70,16 +78,20 @@ export default function SettingsPage() {
           {/* Avatar */}
           <div className="flex items-center gap-6">
             <div className="relative">
-              <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-secondary text-2xl font-bold text-white">
-                MA
-              </div>
+              {meta.avatar_url ? (
+                <img src={meta.avatar_url} alt="" className="h-20 w-20 rounded-2xl object-cover" />
+              ) : (
+                <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-secondary text-2xl font-bold text-white">
+                  {initials}
+                </div>
+              )}
               <button className="absolute -bottom-1 -right-1 flex h-7 w-7 items-center justify-center rounded-full bg-surface-container-high border border-white/10">
                 <span className="material-symbols-outlined text-xs text-on-surface-variant">edit</span>
               </button>
             </div>
             <div>
-              <p className="font-bold text-on-surface">Mon Agence</p>
-              <p className="text-xs text-on-surface-variant">admin@monagence.fr</p>
+              <p className="font-bold text-on-surface">{agencyName || `${firstName} ${lastName}`.trim() || "Mon compte"}</p>
+              <p className="text-xs text-on-surface-variant">{email}</p>
             </div>
           </div>
 
@@ -87,24 +99,25 @@ export default function SettingsPage() {
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5">
                 <label className="text-xs font-semibold text-on-surface-variant">Prénom</label>
-                <input className="input-field" defaultValue="Marc" />
+                <input id="settings-firstname" className="input-field" defaultValue={firstName} />
               </div>
               <div className="space-y-1.5">
                 <label className="text-xs font-semibold text-on-surface-variant">Nom</label>
-                <input className="input-field" defaultValue="Andrieu" />
+                <input id="settings-lastname" className="input-field" defaultValue={lastName} />
               </div>
             </div>
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold text-on-surface-variant">Nom de l'agence</label>
-              <input className="input-field" defaultValue="Mon Agence IA" />
+              <label className="text-xs font-semibold text-on-surface-variant">Nom de l&apos;agence</label>
+              <input id="settings-agency" className="input-field" defaultValue={agencyName} />
             </div>
             <div className="space-y-1.5">
               <label className="text-xs font-semibold text-on-surface-variant">Email</label>
-              <input type="email" className="input-field" defaultValue="admin@monagence.fr" />
+              <input type="email" className="input-field opacity-60" defaultValue={email} disabled />
+              <p className="text-[10px] text-on-surface-variant">L&apos;email ne peut pas être modifié depuis cette page.</p>
             </div>
             <div className="space-y-1.5">
               <label className="text-xs font-semibold text-on-surface-variant">Nouveau mot de passe</label>
-              <input type="password" className="input-field" placeholder="Laisser vide pour ne pas changer" />
+              <input id="settings-password" type="password" className="input-field" placeholder="Laisser vide pour ne pas changer" />
             </div>
           </div>
 
@@ -156,11 +169,11 @@ export default function SettingsPage() {
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
                       <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-secondary text-xs font-bold text-white">
-                        MA
+                        {initials}
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-on-surface">Marc Andrieu</p>
-                        <p className="text-xs text-on-surface-variant">admin@monagence.fr</p>
+                        <p className="text-sm font-medium text-on-surface">{`${firstName} ${lastName}`.trim() || "Utilisateur"}</p>
+                        <p className="text-xs text-on-surface-variant">{email}</p>
                       </div>
                     </div>
                   </td>
@@ -169,7 +182,7 @@ export default function SettingsPage() {
                       Admin
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-xs text-on-surface-variant">Aujourd'hui</td>
+                  <td className="px-6 py-4 text-xs text-on-surface-variant">Aujourd&apos;hui</td>
                   <td className="px-6 py-4 text-xs text-on-surface-variant">Vous</td>
                 </tr>
               </tbody>
