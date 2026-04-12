@@ -55,14 +55,18 @@ function getTranscriberLanguage(lang?: string): string {
 }
 
 function getVoiceConfig(voiceProvider?: string, voiceId?: string) {
-  // If voiceId is a display label like "Cartesia — Fabien", use default
+  // If voiceId is a display label like "Cartesia — Fabien" (legacy data), strip to default
   const isDisplayLabel = voiceId && voiceId.includes(" — ");
+  const cleanVoiceId = isDisplayLabel ? undefined : voiceId;
 
-  if (voiceProvider === "elevenlabs" && voiceId && !isDisplayLabel) {
-    return { provider: "11labs" as const, voiceId };
+  if (voiceProvider === "elevenlabs" && cleanVoiceId) {
+    return { provider: "11labs" as const, voiceId: cleanVoiceId };
   }
-  if (voiceProvider === "cartesia" && voiceId && !isDisplayLabel) {
-    return { provider: "cartesia" as const, voiceId };
+  if (voiceProvider === "google" && cleanVoiceId) {
+    return { provider: "google" as const, voiceId: cleanVoiceId };
+  }
+  if ((voiceProvider === "cartesia" || !voiceProvider) && cleanVoiceId) {
+    return { provider: "cartesia" as const, voiceId: cleanVoiceId };
   }
   // Default: Cartesia French voice
   return {

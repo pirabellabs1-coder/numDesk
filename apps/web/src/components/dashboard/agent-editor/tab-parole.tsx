@@ -38,9 +38,9 @@ export function TabParole({ agent, onChange }: { agent?: any; onChange?: (field:
   const voiceList = voicesData ?? [];
 
   const handleSelectVoice = (voice: any) => {
-    const voiceLabel = `${providerLabel[voice.provider] || "Custom"} — ${voice.name}`;
-    setSelectedVoiceId(voice.voiceId || voice.id);
-    onChange?.("voiceId", voiceLabel);
+    const actualVoiceId = voice.voiceId || voice.id;
+    setSelectedVoiceId(actualVoiceId);
+    onChange?.("voiceId", actualVoiceId);
     onChange?.("voiceProvider", voice.provider);
   };
 
@@ -128,7 +128,7 @@ export function TabParole({ agent, onChange }: { agent?: any; onChange?: (field:
           <div className="space-y-2">
             {voiceList.map((v: any) => {
               const vid = v.voiceId || v.id;
-              const isSelected = selectedVoiceId === vid || agent?.voiceId?.includes(v.name);
+              const isSelected = selectedVoiceId === vid || agent?.voiceId === vid;
               const quality = qualityBadge[v.quality as string] ?? qualityBadge["standard"]!;
               const isPlaying = playingVoiceId === vid;
               const isLoading = loadingVoiceId === vid;
