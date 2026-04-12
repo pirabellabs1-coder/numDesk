@@ -29,7 +29,10 @@ export function useUpdateAgent() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: ({ id, ...input }: any) => apiFetch<any>(`/agents/${id}`, { method: "PATCH", body: JSON.stringify(input) }),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["agents"] }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["agents"] });
+      qc.invalidateQueries({ queryKey: ["agent"] });
+    },
   });
 }
 

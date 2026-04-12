@@ -79,11 +79,15 @@ export default function AgentEditorPage({
     try {
       // Save agent first
       await updateAgent.mutateAsync({ id, ...edits });
-      // Sync with Vapi
+      // Sync with Vapi — pass voice data directly to avoid stale DB reads
       const res = await fetch("/api/vapi/sync-agent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ agentId: id }),
+        body: JSON.stringify({
+          agentId: id,
+          voiceProvider: edits.voiceProvider,
+          voiceId: edits.voiceId,
+        }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error?.message || "Erreur synchronisation Vapi");

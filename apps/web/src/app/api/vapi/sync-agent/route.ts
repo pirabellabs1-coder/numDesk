@@ -8,12 +8,17 @@ import { createVapiAssistant, updateVapiAssistant } from "@/lib/vapi";
 export async function POST(req: NextRequest) {
   try {
     await withAuth();
-    const { agentId } = await req.json();
+    const body = await req.json();
+    const { agentId } = body;
     if (!agentId) return apiError("VALIDATION_ERROR", "agentId requis", 422);
 
     const db = getDb();
     const [agent] = await db.select().from(agents).where(eq(agents.id, agentId));
     if (!agent) return apiError("NOT_FOUND", "Agent introuvable", 404);
+
+    // Use override values from request body if provided (fresher than DB for just-saved data)
+    const voiceProvider = body.voiceProvider || agent.voiceProvider || undefined;
+    const voiceId = body.voiceId || agent.voiceId || undefined;
 
     let vapiAssistant;
 
@@ -23,8 +28,8 @@ export async function POST(req: NextRequest) {
         name: agent.name,
         prompt: agent.prompt || undefined,
         firstMessage: agent.firstMessage || undefined,
-        voiceProvider: agent.voiceProvider || undefined,
-        voiceId: agent.voiceId || undefined,
+        voiceProvider,
+        voiceId,
         llmModel: agent.llmModel || "gemini-2.5-flash",
         language: agent.language || undefined,
         temperature: Number(agent.temperature) || 0.4,
@@ -41,8 +46,8 @@ export async function POST(req: NextRequest) {
         name: agent.name,
         prompt: agent.prompt || "Tu es un assistant téléphonique professionnel.",
         firstMessage: agent.firstMessage || undefined,
-        voiceProvider: agent.voiceProvider || undefined,
-        voiceId: agent.voiceId || undefined,
+        voiceProvider,
+        voiceId,
         llmModel: agent.llmModel || "gemini-2.5-flash",
         language: agent.language || "fr-FR",
         temperature: Number(agent.temperature) || 0.4,
