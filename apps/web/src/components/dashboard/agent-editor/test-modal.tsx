@@ -131,7 +131,22 @@ function VocalMode({ agent }: { agent: TestModalProps["agent"] }) {
         vapiRef.current = null;
       });
 
-      await vapi.start(agent.vapiAgentId);
+      // Build voice override from current selection so the test always reflects what's in the editor
+      const voiceProvider = agent.voiceProvider || "cartesia";
+      const voiceId = agent.voiceId || "a8a1eb38-5f15-4c1d-8722-7ac0f329727d";
+      const voiceOverride: Record<string, unknown> = {
+        voiceId,
+        provider: voiceProvider === "elevenlabs" ? "11labs" : voiceProvider,
+      };
+
+      // Determine transcriber language from agent language
+      const lang = agent.language || "fr-FR";
+      const transcriberLang = lang.startsWith("fr") ? "fr" : lang.split("-")[0] || "fr";
+
+      await vapi.start(agent.vapiAgentId, {
+        voice: voiceOverride,
+        transcriber: { provider: "deepgram", language: transcriberLang },
+      } as any);
     } catch (e: any) {
       toast(e.message || "Impossible de démarrer l'appel vocal", "error");
       setStatus("idle");
