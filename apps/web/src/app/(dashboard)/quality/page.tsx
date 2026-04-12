@@ -12,6 +12,53 @@ const getScoreColor = (score: number) => {
   return { text: "text-error", bg: "bg-error", ring: "ring-error" };
 };
 
+function getRecommendations(agent: any): Array<{ icon: string; text: string; priority: "high" | "medium" | "low" }> {
+  const recs: Array<{ icon: string; text: string; priority: "high" | "medium" | "low" }> = [];
+
+  if (agent.completionRate < 80) {
+    recs.push({ icon: "call_end", text: "Trop d'appels interrompus — vérifiez que le prompt gère bien les objections et les silences", priority: "high" });
+  }
+  if (agent.sentimentPositive < 65) {
+    recs.push({ icon: "sentiment_dissatisfied", text: "Sentiment négatif fréquent — reformulez le ton du prompt pour être plus empathique et rassurant", priority: "high" });
+  }
+  if (agent.responseTime > 2.0) {
+    recs.push({ icon: "speed", text: "Temps de réponse élevé — envisagez un modèle LLM plus rapide (Gemini Flash) ou réduisez la longueur du prompt", priority: "high" });
+  }
+  if (agent.avgDuration < 30) {
+    recs.push({ icon: "timer", text: "Appels très courts — l'agent raccroche peut-être trop vite. Augmentez le timeout de silence et ajoutez des relances", priority: "medium" });
+  }
+  if (agent.avgDuration > 300) {
+    recs.push({ icon: "hourglass_top", text: "Appels trop longs — ajoutez des instructions de synthèse pour que l'agent conclue plus rapidement", priority: "medium" });
+  }
+  if (agent.completionRate >= 80 && agent.completionRate < 90) {
+    recs.push({ icon: "trending_up", text: "Bon taux de complétion — pour atteindre 90%+, ajoutez des phrases de relance après silence", priority: "low" });
+  }
+  if (agent.sentimentPositive >= 65 && agent.sentimentPositive < 80) {
+    recs.push({ icon: "mood", text: "Sentiment correct — activez les hésitations naturelles (euh, alors...) pour un ton plus humain", priority: "low" });
+  }
+  if (agent.responseTime >= 1.5 && agent.responseTime <= 2.0) {
+    recs.push({ icon: "bolt", text: "Temps de réponse acceptable — réduisez la température du LLM pour des réponses plus directes", priority: "low" });
+  }
+
+  if (recs.length === 0) {
+    recs.push({ icon: "verified", text: "Excellent ! Cet agent performe très bien. Continuez à monitorer les métriques.", priority: "low" });
+  }
+
+  return recs;
+}
+
+const priorityColors = {
+  high: "border-error/20 bg-error/5",
+  medium: "border-orange-400/20 bg-orange-400/5",
+  low: "border-white/5 bg-white/[0.02]",
+};
+
+const priorityIconColors = {
+  high: "text-error",
+  medium: "text-orange-400",
+  low: "text-on-surface-variant",
+};
+
 export default function QualityPage() {
   const { workspaceId } = useWorkspace();
   const { data: scores, isLoading } = useQuality(workspaceId);
@@ -28,7 +75,7 @@ export default function QualityPage() {
         <h1 className="text-4xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
           Score de qualité
         </h1>
-        <p className="mt-2 text-on-surface-variant">Évaluation automatique de la performance de chaque agent</p>
+        <p className="mt-2 text-on-surface-variant">Évaluation automatique et recommandations d&apos;amélioration</p>
       </div>
 
       {/* Global score */}
@@ -50,14 +97,15 @@ export default function QualityPage() {
           <p className="mt-1 text-2xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
             {avgScore >= 85 ? "Excellent" : avgScore >= 75 ? "Bon" : "À améliorer"}
           </p>
-          <p className="mt-1 text-xs text-on-surface-variant">Basé sur {agentScores.length} agents actifs</p>
+          <p className="mt-1 text-xs text-on-surface-variant">Basé sur {agentScores.length} agent(s) actif(s)</p>
         </div>
       </div>
 
-      {/* Agent scores */}
-      <div className="grid grid-cols-2 gap-5">
-        {agentScores.map((agent) => {
+      {/* Agent scores + recommendations */}
+      <div className="space-y-6">
+        {agentScores.map((agent: any) => {
           const sc = getScoreColor(agent.score);
+          const recs = getRecommendations(agent);
           return (
             <div key={agent.agentId} className="rounded-2xl border border-white/5 bg-card p-6">
               <div className="mb-4 flex items-start justify-between">
@@ -75,17 +123,17 @@ export default function QualityPage() {
 
               {/* Mini sparkline */}
               <div className="mb-4 flex h-10 items-end gap-1">
-                {agent.history.map((v: number, i: number) => (
+                {(agent.history || []).map((v: number, i: number) => (
                   <div
                     key={i}
-                    className={`flex-1 rounded-t-sm ${sc.bg} transition-all ${i === agent.history.length - 1 ? "opacity-100" : "opacity-30"}`}
-                    style={{ height: `${((v - 60) / 40) * 100}%` }}
+                    className={`flex-1 rounded-t-sm ${sc.bg} transition-all ${i === (agent.history || []).length - 1 ? "opacity-100" : "opacity-30"}`}
+                    style={{ height: `${Math.max(5, ((v - 60) / 40) * 100)}%` }}
                   />
                 ))}
               </div>
 
               {/* Metrics */}
-              <div className="grid grid-cols-2 gap-3">
+              <div className="mb-5 grid grid-cols-2 gap-3 lg:grid-cols-4">
                 {[
                   { label: "Complétion", value: `${agent.completionRate}%` },
                   { label: "Sentiment +", value: `${agent.sentimentPositive}%` },
@@ -95,6 +143,20 @@ export default function QualityPage() {
                   <div key={m.label} className="rounded-lg bg-surface-container-lowest px-3 py-2">
                     <p className="text-[9px] font-bold uppercase tracking-widest text-on-surface-variant">{m.label}</p>
                     <p className="text-sm font-bold text-on-surface">{m.value}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Recommendations */}
+              <div className="space-y-2">
+                <p className="mb-2 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
+                  <span className="material-symbols-outlined mr-1 align-middle text-xs">lightbulb</span>
+                  Recommandations
+                </p>
+                {recs.map((rec, i) => (
+                  <div key={i} className={`flex items-start gap-3 rounded-lg border px-4 py-3 ${priorityColors[rec.priority]}`}>
+                    <span className={`material-symbols-outlined mt-0.5 text-base ${priorityIconColors[rec.priority]}`}>{rec.icon}</span>
+                    <p className="text-sm text-on-surface">{rec.text}</p>
                   </div>
                 ))}
               </div>

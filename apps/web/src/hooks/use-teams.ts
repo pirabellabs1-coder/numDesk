@@ -17,6 +17,24 @@ export function useCreateTeam() {
   });
 }
 
+export function useAddTeamMember() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ teamId, userId, role }: { teamId: string; userId: string; role?: string }) =>
+      apiFetch<any>(`/teams/${teamId}/members`, { method: "POST", body: JSON.stringify({ userId, role }) }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["teams"] }),
+  });
+}
+
+export function useRemoveTeamMember() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ teamId, memberId }: { teamId: string; memberId: string }) =>
+      apiFetch<any>(`/teams/${teamId}/members?member_id=${memberId}`, { method: "DELETE" }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["teams"] }),
+  });
+}
+
 export function useDeleteTeam() {
   const qc = useQueryClient();
   return useMutation({
