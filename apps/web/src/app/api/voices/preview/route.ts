@@ -60,9 +60,10 @@ export async function POST(req: NextRequest) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model_id: "sonic-french",
+          model_id: "sonic-2",
           transcript: previewText,
           voice: { mode: "id", id: voiceId },
+          language: "fr",
           output_format: { container: "mp3", encoding: "mp3", sample_rate: 24000 },
         }),
       });

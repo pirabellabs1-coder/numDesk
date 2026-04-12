@@ -19,16 +19,26 @@ export default function PhoneNumbersPage() {
 
   const [showAdd, setShowAdd] = useState(false);
   const [showDelete, setShowDelete] = useState<string | null>(null);
-  const [newNumber, setNewNumber] = useState({ number: "", friendlyName: "", agentId: "" });
+  const [newProvider, setNewProvider] = useState<"sip_trunk" | "twilio">("sip_trunk");
+  const [newNumber, setNewNumber] = useState({ number: "", friendlyName: "", agentId: "", twilioSid: "" });
 
   const handleCreate = async () => {
     if (!newNumber.number.trim() || !workspaceId) return;
-    const fullNumber = newNumber.number.startsWith("+") ? newNumber.number : newNumber.number;
+    let fullNumber = newNumber.number.trim().replace(/\s+/g, "");
+    if (!fullNumber.startsWith("+")) fullNumber = "+" + fullNumber;
     try {
-      await createNumber.mutateAsync({ workspaceId, number: fullNumber, friendlyName: newNumber.friendlyName, provider: "sip_trunk" });
+      await createNumber.mutateAsync({
+        workspaceId,
+        number: fullNumber,
+        friendlyName: newNumber.friendlyName,
+        provider: newProvider,
+        ...(newProvider === "twilio" && newNumber.twilioSid ? { twilioSid: newNumber.twilioSid } : {}),
+        ...(newNumber.agentId ? { assignedAgentId: newNumber.agentId } : {}),
+      });
       toast("Numéro ajouté avec succès");
       setShowAdd(false);
-      setNewNumber({ number: "", friendlyName: "", agentId: "" });
+      setNewNumber({ number: "", friendlyName: "", agentId: "", twilioSid: "" });
+      setNewProvider("sip_trunk");
     } catch (e: any) { toast(e.message || "Erreur", "error"); }
   };
 
@@ -69,8 +79,11 @@ export default function PhoneNumbersPage() {
         </div>
         <div className="rounded-2xl border border-white/5 bg-card p-5">
           <div className="mb-2 text-secondary"><span className="material-symbols-outlined">router</span></div>
-          <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Provider</p>
-          <p className="text-xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>SIP Trunk</p>
+          <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Providers</p>
+          <div className="mt-1 flex items-center gap-2">
+            <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold text-primary">{numList.filter((n: any) => n.provider === "sip_trunk").length} SIP</span>
+            <span className="rounded-full bg-secondary/10 px-2 py-0.5 text-[10px] font-bold text-secondary">{numList.filter((n: any) => n.provider === "twilio").length} Twilio</span>
+          </div>
         </div>
       </div>
 
@@ -97,7 +110,7 @@ export default function PhoneNumbersPage() {
                   </div>
                   <div className="mt-1 flex items-center gap-4 text-xs text-on-surface-variant">
                     {num.friendlyName && <span className="flex items-center gap-1"><span className="material-symbols-outlined text-xs">badge</span>{num.friendlyName}</span>}
-                    <span className="flex items-center gap-1"><span className="material-symbols-outlined text-xs">router</span>{num.provider || "SIP Trunk"}</span>
+                    <span className={`flex items-center gap-1 ${num.provider === "twilio" ? "text-secondary" : ""}`}><span className="material-symbols-outlined text-xs">router</span>{num.provider === "twilio" ? "Twilio" : "SIP Trunk"}</span>
                     <span className="flex items-center gap-1"><span className="material-symbols-outlined text-xs">schedule</span>{new Date(num.createdAt).toLocaleDateString("fr-FR")}</span>
                   </div>
                 </div>
@@ -133,14 +146,34 @@ export default function PhoneNumbersPage() {
       {showAdd && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
           <div className="w-full max-w-lg rounded-2xl border border-white/10 bg-surface p-8">
-            <h2 className="mb-6 text-xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Ajouter un numéro SIP</h2>
+            <h2 className="mb-6 text-xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Ajouter un numéro</h2>
             <div className="space-y-4">
+              {/* Provider selector */}
               <div>
-                <label className="mb-1 block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">SIP Trunk</label>
-                <select className="w-full rounded-lg bg-surface-container-lowest px-4 py-2.5 text-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary">
-                  <option value="">SIP trunk de la company</option>
-                </select>
+                <label className="mb-1 block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Type de provider</label>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => setNewProvider("sip_trunk")}
+                    className={`flex flex-1 items-center justify-center gap-2 rounded-lg border py-2.5 text-sm font-bold transition-all ${newProvider === "sip_trunk" ? "border-primary bg-primary/10 text-primary" : "border-white/10 text-on-surface-variant hover:border-white/20"}`}
+                  >
+                    <span className="material-symbols-outlined text-sm">router</span>
+                    SIP Trunk
+                  </button>
+                  <button
+                    onClick={() => setNewProvider("twilio")}
+                    className={`flex flex-1 items-center justify-center gap-2 rounded-lg border py-2.5 text-sm font-bold transition-all ${newProvider === "twilio" ? "border-secondary bg-secondary/10 text-secondary" : "border-white/10 text-on-surface-variant hover:border-white/20"}`}
+                  >
+                    <span className="material-symbols-outlined text-sm">cloud</span>
+                    Twilio
+                  </button>
+                </div>
               </div>
+              {newProvider === "twilio" && (
+                <div>
+                  <label className="mb-1 block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Twilio SID</label>
+                  <input value={newNumber.twilioSid} onChange={(e) => setNewNumber({ ...newNumber, twilioSid: e.target.value })} placeholder="ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" className="w-full rounded-lg bg-surface-container-lowest px-4 py-2.5 font-mono text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-1 focus:ring-primary" />
+                </div>
+              )}
               <div>
                 <label className="mb-1 block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Nom du numéro</label>
                 <input value={newNumber.friendlyName} onChange={(e) => setNewNumber({ ...newNumber, friendlyName: e.target.value })} placeholder="Ex: Ligne Support, Accueil, Commercial..." className="w-full rounded-lg bg-surface-container-lowest px-4 py-2.5 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-1 focus:ring-primary" />
