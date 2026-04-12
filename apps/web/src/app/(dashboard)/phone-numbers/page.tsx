@@ -19,16 +19,16 @@ export default function PhoneNumbersPage() {
 
   const [showAdd, setShowAdd] = useState(false);
   const [showDelete, setShowDelete] = useState<string | null>(null);
-  const [newNumber, setNewNumber] = useState({ number: "", friendlyName: "", countryCode: "+33", provider: "sip_trunk" as string });
+  const [newNumber, setNewNumber] = useState({ number: "", friendlyName: "", agentId: "" });
 
   const handleCreate = async () => {
     if (!newNumber.number.trim() || !workspaceId) return;
-    const fullNumber = newNumber.number.startsWith("+") ? newNumber.number : `${newNumber.countryCode}${newNumber.number}`;
+    const fullNumber = newNumber.number.startsWith("+") ? newNumber.number : newNumber.number;
     try {
-      await createNumber.mutateAsync({ workspaceId, number: fullNumber, friendlyName: newNumber.friendlyName, provider: newNumber.provider });
+      await createNumber.mutateAsync({ workspaceId, number: fullNumber, friendlyName: newNumber.friendlyName, provider: "sip_trunk" });
       toast("Numéro ajouté avec succès");
       setShowAdd(false);
-      setNewNumber({ number: "", friendlyName: "", countryCode: "+33", provider: "sip_trunk" });
+      setNewNumber({ number: "", friendlyName: "", agentId: "" });
     } catch (e: any) { toast(e.message || "Erreur", "error"); }
   };
 
@@ -132,61 +132,40 @@ export default function PhoneNumbersPage() {
       {/* Add Modal */}
       {showAdd && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="w-full max-w-md rounded-2xl border border-white/10 bg-surface p-8">
-            <h2 className="mb-6 text-xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Ajouter un numéro</h2>
+          <div className="w-full max-w-lg rounded-2xl border border-white/10 bg-surface p-8">
+            <h2 className="mb-6 text-xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Ajouter un numéro SIP</h2>
             <div className="space-y-4">
               <div>
-                <label className="mb-2 block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Provider</label>
-                <div className="grid grid-cols-3 gap-2">
-                  {[
-                    { id: "sip_trunk", label: "SIP Trunk", icon: "router", desc: "Votre trunk SIP" },
-                    { id: "twilio", label: "Twilio", icon: "cloud", desc: "Numéro Twilio" },
-                    { id: "telnyx", label: "Telnyx", icon: "cell_tower", desc: "Numéro Telnyx" },
-                  ].map((p) => (
-                    <button key={p.id} onClick={() => setNewNumber({ ...newNumber, provider: p.id })} className={`flex flex-col items-center gap-2 rounded-xl border p-4 transition-all ${newNumber.provider === p.id ? "border-primary bg-primary/5" : "border-white/5 hover:border-white/10"}`}>
-                      <span className={`material-symbols-outlined text-xl ${newNumber.provider === p.id ? "text-primary" : "text-on-surface-variant"}`}>{p.icon}</span>
-                      <span className={`text-xs font-bold ${newNumber.provider === p.id ? "text-primary" : "text-on-surface"}`}>{p.label}</span>
-                      <span className="text-[9px] text-on-surface-variant">{p.desc}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <label className="mb-1 block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Indicatif pays</label>
-                <select value={newNumber.countryCode} onChange={(e) => setNewNumber({ ...newNumber, countryCode: e.target.value })} className="w-full rounded-lg bg-surface-container-lowest px-4 py-2.5 text-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary">
-                  <option value="+33">🇫🇷 France (+33)</option>
-                  <option value="+32">🇧🇪 Belgique (+32)</option>
-                  <option value="+41">🇨🇭 Suisse (+41)</option>
-                  <option value="+352">🇱🇺 Luxembourg (+352)</option>
-                  <option value="+1">🇺🇸 USA/Canada (+1)</option>
-                  <option value="+44">🇬🇧 Royaume-Uni (+44)</option>
+                <label className="mb-1 block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">SIP Trunk</label>
+                <select className="w-full rounded-lg bg-surface-container-lowest px-4 py-2.5 text-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary">
+                  <option value="">SIP trunk de la company</option>
                 </select>
               </div>
               <div>
-                <label className="mb-1 block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Numéro de téléphone</label>
-                <div className="flex gap-2">
-                  <span className="flex items-center rounded-lg bg-surface-container-lowest px-3 text-sm text-on-surface-variant">{newNumber.countryCode}</span>
-                  <input value={newNumber.number} onChange={(e) => setNewNumber({ ...newNumber, number: e.target.value.replace(/[^0-9]/g, "") })} placeholder="187000000" className="flex-1 rounded-lg bg-surface-container-lowest px-4 py-2.5 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-1 focus:ring-primary font-mono" />
-                </div>
+                <label className="mb-1 block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Nom du numéro</label>
+                <input value={newNumber.friendlyName} onChange={(e) => setNewNumber({ ...newNumber, friendlyName: e.target.value })} placeholder="Ex: Ligne Support, Accueil, Commercial..." className="w-full rounded-lg bg-surface-container-lowest px-4 py-2.5 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-1 focus:ring-primary" />
               </div>
               <div>
-                <label className="mb-1 block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Nom (optionnel)</label>
-                <input value={newNumber.friendlyName} onChange={(e) => setNewNumber({ ...newNumber, friendlyName: e.target.value })} placeholder="Ex: Numéro Support, Ligne commerciale..." className="w-full rounded-lg bg-surface-container-lowest px-4 py-2.5 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-1 focus:ring-primary" />
+                <label className="mb-1 block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Agent inbound (optionnel)</label>
+                <select value={newNumber.agentId} onChange={(e) => setNewNumber({ ...newNumber, agentId: e.target.value })} className="w-full rounded-lg bg-surface-container-lowest px-4 py-2.5 text-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary">
+                  <option value="">Aucun agent assigné</option>
+                  {(agents ?? []).map((agent: any) => (
+                    <option key={agent.id} value={agent.id}>{agent.name}</option>
+                  ))}
+                </select>
+                <p className="mt-1 text-[10px] text-on-surface-variant">L&apos;agent qui répondra automatiquement aux appels entrants sur ce numéro.</p>
               </div>
-            </div>
-
-            <div className="mt-4 rounded-lg border border-primary/10 bg-primary/[0.03] p-3">
-              <p className="text-xs text-on-surface-variant">
-                <strong className="text-on-surface">Aperçu :</strong> {newNumber.number ? `${newNumber.countryCode}${newNumber.number}` : "—"}
-                {newNumber.friendlyName && ` (${newNumber.friendlyName})`}
-              </p>
+              <div>
+                <label className="mb-1 block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Numéro de téléphone ou extension</label>
+                <input value={newNumber.number} onChange={(e) => setNewNumber({ ...newNumber, number: e.target.value })} placeholder="+33187000000" className="w-full rounded-lg bg-surface-container-lowest px-4 py-2.5 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-1 focus:ring-primary font-mono" />
+                <p className="mt-1 text-[10px] text-on-surface-variant">Format E.164 recommandé (ex: +33187000000) ou extension SIP.</p>
+              </div>
             </div>
 
             <div className="mt-6 flex justify-end gap-3">
-              <button onClick={() => setShowAdd(false)} className="rounded-lg px-5 py-2.5 text-sm text-on-surface-variant hover:text-on-surface">Annuler</button>
-              <button onClick={handleCreate} disabled={createNumber.isPending || !newNumber.number.trim()} className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-primary to-secondary px-5 py-2.5 text-sm font-bold text-white disabled:opacity-50">
-                <span className="material-symbols-outlined text-sm">add_call</span>
-                {createNumber.isPending ? "Ajout..." : "Ajouter le numéro"}
+              <button onClick={() => setShowAdd(false)} className="rounded-lg px-5 py-2.5 text-sm font-bold uppercase tracking-wider text-on-surface-variant hover:text-on-surface">Annuler</button>
+              <button onClick={handleCreate} disabled={createNumber.isPending || !newNumber.number.trim()} className="rounded-lg bg-gradient-to-r from-primary to-secondary px-5 py-2.5 text-sm font-bold uppercase tracking-wider text-white disabled:opacity-50">
+                {createNumber.isPending ? "Enregistrement..." : "Enregistrer"}
               </button>
             </div>
           </div>
