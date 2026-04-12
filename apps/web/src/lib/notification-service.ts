@@ -87,7 +87,7 @@ async function sendEmailNotification(params: CreateNotificationParams) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: "Callpme <notifications@callpme.ai>",
+        from: "Callpme <notifications@callpme.com>",
         to: user.email,
         subject,
         html,
@@ -102,7 +102,7 @@ async function sendEmailNotification(params: CreateNotificationParams) {
  * Fallback simple email for notifications without custom templates
  */
 function buildFallbackEmail(params: CreateNotificationParams) {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://callpme.vercel.app";
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://callpme.com";
   return `
     <div style="font-family:'Inter',sans-serif;max-width:580px;margin:0 auto;padding:40px 20px;background:#0A0B0F;">
       <div style="background:#121317;border-radius:16px;border:1px solid rgba(255,255,255,0.05);padding:40px 36px;">
@@ -133,7 +133,7 @@ export async function sendDirectEmail(to: string, subject: string, html: string)
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: "Callpme <notifications@callpme.ai>",
+        from: "Callpme <notifications@callpme.com>",
         to,
         subject,
         html,

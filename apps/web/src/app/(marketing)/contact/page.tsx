@@ -23,7 +23,7 @@ export default function ContactPage() {
           <h2 className="font-display text-lg font-semibold text-on-surface">
             Envoyez-nous un message
           </h2>
-          <form className="mt-6 space-y-4" action={`mailto:contact@callpme.ai`} method="POST" encType="text/plain">
+          <form className="mt-6 space-y-4" action={`mailto:contact@callpme.com`} method="POST" encType="text/plain">
             <div>
               <label className="mb-1.5 block text-xs font-bold text-on-surface-variant uppercase tracking-wider">
                 Nom complet
@@ -66,8 +66,8 @@ export default function ContactPage() {
               </div>
               <div>
                 <h3 className="font-display text-sm font-semibold text-on-surface">Email</h3>
-                <a href="mailto:contact@callpme.ai" className="font-body text-sm text-primary hover:underline">
-                  contact@callpme.ai
+                <a href="mailto:contact@callpme.com" className="font-body text-sm text-primary hover:underline">
+                  contact@callpme.com
                 </a>
               </div>
             </div>
@@ -80,8 +80,8 @@ export default function ContactPage() {
               </div>
               <div>
                 <h3 className="font-display text-sm font-semibold text-on-surface">Commercial</h3>
-                <a href="mailto:sales@callpme.ai" className="font-body text-sm text-secondary hover:underline">
-                  sales@callpme.ai
+                <a href="mailto:sales@callpme.com" className="font-body text-sm text-secondary hover:underline">
+                  sales@callpme.com
                 </a>
               </div>
             </div>
@@ -106,10 +106,10 @@ export default function ContactPage() {
               ou intégrations personnalisées, contactez directement notre équipe commerciale.
             </p>
             <a
-              href="mailto:enterprise@callpme.ai"
+              href="mailto:enterprise@callpme.com"
               className="mt-3 inline-block font-nav text-sm font-medium text-primary hover:underline"
             >
-              enterprise@callpme.ai
+              enterprise@callpme.com
             </a>
           </div>
         </div>

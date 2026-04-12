@@ -46,7 +46,7 @@ export function UpgradePlanModal({ workspaceId, currentPlan, onClose, onSuccess 
 
   const handleUpgrade = async () => {
     if (selectedPlan === "enterprise") {
-      window.location.href = "mailto:enterprise@callpme.ai";
+      window.location.href = "mailto:enterprise@callpme.com";
       return;
     }
 

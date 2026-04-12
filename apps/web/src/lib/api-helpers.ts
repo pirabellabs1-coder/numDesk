@@ -66,6 +66,7 @@ export function handleApiError(error: unknown) {
   if (error instanceof ValidationError) {
     return apiError("VALIDATION_ERROR", error.message, 422);
   }
-  console.error("API Error:", error);
-  return apiError("INTERNAL_ERROR", "Erreur interne du serveur", 500);
+  const message = error instanceof Error ? error.message : "Erreur interne du serveur";
+  console.error("API Error:", message, error);
+  return apiError("INTERNAL_ERROR", message, 500);
 }

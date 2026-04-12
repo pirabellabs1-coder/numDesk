@@ -172,7 +172,7 @@ export function Sidebar() {
             </div>
             <div className="min-w-0">
               <p className="truncate text-[11px] font-bold text-on-surface">Alex Rivera</p>
-              <p className="truncate text-[9px] text-on-surface-variant">alex@callpme.ai</p>
+              <p className="truncate text-[9px] text-on-surface-variant">alex@callpme.com</p>
             </div>
           </div>
         </div>

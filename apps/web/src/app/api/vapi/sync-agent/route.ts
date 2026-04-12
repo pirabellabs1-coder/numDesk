@@ -23,14 +23,23 @@ export async function POST(req: NextRequest) {
         name: agent.name,
         prompt: agent.prompt || undefined,
         firstMessage: agent.firstMessage || undefined,
+        voiceProvider: agent.voiceProvider || undefined,
+        voiceId: agent.voiceId || undefined,
         temperature: Number(agent.temperature) || 0.4,
       });
+
+      // Update published status in DB
+      await db.update(agents).set({
+        isPublished: true,
+        publishedAt: new Date(),
+      }).where(eq(agents.id, agentId));
     } else {
       // Create new Vapi assistant
       vapiAssistant = await createVapiAssistant({
         name: agent.name,
         prompt: agent.prompt || "Tu es un assistant téléphonique professionnel.",
         firstMessage: agent.firstMessage || undefined,
+        voiceProvider: agent.voiceProvider || undefined,
         voiceId: agent.voiceId || undefined,
         llmModel: agent.llmModel || "gemini-2.5-flash",
         language: agent.language || "fr-FR",

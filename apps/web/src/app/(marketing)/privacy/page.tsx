@@ -17,7 +17,7 @@ export default function PrivacyPage() {
         <Section title="1. Responsable du traitement">
           La plateforme Callpme est éditée par <strong>Pirabel Labs</strong>, agence
           spécialisée en développement web, marketing digital et automatisation, basée à
-          Paris, France. Contact : <a href="mailto:privacy@callpme.ai" className="text-primary hover:underline">privacy@callpme.ai</a>
+          Paris, France. Contact : <a href="mailto:privacy@callpme.com" className="text-primary hover:underline">privacy@callpme.com</a>
         </Section>
 
         <Section title="2. Données collectées">
@@ -72,7 +72,7 @@ export default function PrivacyPage() {
         <Section title="8. Vos droits">
           Conformément au RGPD, vous disposez des droits d&apos;accès, de rectification,
           d&apos;effacement, de portabilité, de limitation et d&apos;opposition.
-          Contactez <a href="mailto:privacy@callpme.ai" className="text-primary hover:underline">privacy@callpme.ai</a>.
+          Contactez <a href="mailto:privacy@callpme.com" className="text-primary hover:underline">privacy@callpme.com</a>.
         </Section>
       </div>
     </div>

@@ -83,7 +83,7 @@ export default function TermsPage() {
 
         <Section title="11. Contact">
           Pour toute question relative aux CGU :{" "}
-          <a href="mailto:legal@callpme.ai" className="text-primary hover:underline">legal@callpme.ai</a>
+          <a href="mailto:legal@callpme.com" className="text-primary hover:underline">legal@callpme.com</a>
         </Section>
       </div>
     </div>

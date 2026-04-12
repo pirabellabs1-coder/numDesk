@@ -93,7 +93,7 @@ export default function RGPDPage() {
         {[
           { label: "Hébergement", value: "EU (Frankfurt)", color: "primary" },
           { label: "Chiffrement", value: "AES-256 + TLS 1.3", color: "secondary" },
-          { label: "DPO", value: "privacy@callpme.ai", color: "tertiary" },
+          { label: "DPO", value: "privacy@callpme.com", color: "tertiary" },
         ].map((item) => (
           <div key={item.label} className="rounded-xl border border-white/5 bg-card p-4 text-center">
             <p className={`font-display text-lg font-bold text-${item.color}`}>{item.value}</p>
@@ -160,10 +160,10 @@ export default function RGPDPage() {
           protection de vos données, contactez notre DPO :
         </p>
         <a
-          href="mailto:privacy@callpme.ai"
+          href="mailto:privacy@callpme.com"
           className="mt-4 inline-block rounded-xl bg-gradient-to-r from-primary to-secondary px-8 py-3 font-nav text-sm font-bold text-white hover:brightness-110"
         >
-          privacy@callpme.ai
+          privacy@callpme.com
         </a>
         <p className="mt-3 font-body text-xs text-on-surface-variant/50">
           Délai de réponse : 30 jours maximum conformément au RGPD

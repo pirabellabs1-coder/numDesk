@@ -87,8 +87,9 @@ export default function AgentEditorPage({
         body: JSON.stringify({ agentId: id }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error?.message || "Erreur Vapi");
+      if (!res.ok) throw new Error(data.error?.message || "Erreur synchronisation Vapi");
       toast("Agent publié et synchronisé avec Vapi");
+      refetch(); // Refresh agent data to show updated publish status
     } catch (e: any) {
       toast(e.message || "Erreur lors de la publication", "error");
     }

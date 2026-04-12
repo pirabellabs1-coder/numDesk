@@ -3,7 +3,7 @@
  * All templates follow the Callpme brand: dark theme, gradient accents, professional
  */
 
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://callpme.vercel.app";
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://callpme.com";
 
 // ── Shared layout ──
 

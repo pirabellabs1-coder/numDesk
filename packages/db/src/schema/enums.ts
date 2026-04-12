@@ -2,7 +2,7 @@ import { pgEnum } from "drizzle-orm/pg-core";
 
 export const userRoleEnum = pgEnum("user_role", ["admin", "member"]);
 export const offerTypeEnum = pgEnum("offer_type", ["minutes", "calls"]);
-export const voiceProviderEnum = pgEnum("voice_provider", ["cartesia", "elevenlabs", "deepgram"]);
+export const voiceProviderEnum = pgEnum("voice_provider", ["cartesia", "elevenlabs", "deepgram", "google", "custom"]);
 export const callDirectionEnum = pgEnum("call_direction", ["inbound", "outbound"]);
 export const callTypeEnum = pgEnum("call_type", ["phone", "web"]);
 export const callStatusEnum = pgEnum("call_status", ["success", "missed", "interrupted", "voicemail", "no_answer", "in_progress", "ringing", "ended"]);

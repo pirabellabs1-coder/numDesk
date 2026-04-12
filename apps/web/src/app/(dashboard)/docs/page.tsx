@@ -240,11 +240,11 @@ export default function DocsPage() {
 
   // ── Exemples de code ──
   const examples = {
-    curlList: `curl -X GET "https://app.callpme.ai/api/agents?workspace_id=YOUR_WORKSPACE_ID" \\
+    curlList: `curl -X GET "https://app.callpme.com/api/agents?workspace_id=YOUR_WORKSPACE_ID" \\
   -H "Authorization: Bearer voc_xxxxxxxxxxxx" \\
   -H "Content-Type: application/json"`,
 
-    curlCreate: `curl -X POST "https://app.callpme.ai/api/agents" \\
+    curlCreate: `curl -X POST "https://app.callpme.com/api/agents" \\
   -H "Authorization: Bearer voc_xxxxxxxxxxxx" \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -256,7 +256,7 @@ export default function DocsPage() {
   }'`,
 
     jsList: `const response = await fetch(
-  "https://app.callpme.ai/api/agents?workspace_id=YOUR_WORKSPACE_ID",
+  "https://app.callpme.com/api/agents?workspace_id=YOUR_WORKSPACE_ID",
   {
     headers: {
       "Authorization": "Bearer voc_xxxxxxxxxxxx",
@@ -266,7 +266,7 @@ export default function DocsPage() {
 );
 const { data: agents } = await response.json();`,
 
-    jsContact: `await fetch("https://app.callpme.ai/api/contacts", {
+    jsContact: `await fetch("https://app.callpme.com/api/contacts", {
   method: "POST",
   headers: {
     "Authorization": "Bearer voc_xxxxxxxxxxxx",
@@ -339,7 +339,7 @@ const isValid = verifySignature(
 );`,
 
     vapiSync: `// Publier un agent sur Vapi
-await fetch("https://app.callpme.ai/api/vapi/sync-agent", {
+await fetch("https://app.callpme.com/api/vapi/sync-agent", {
   method: "POST",
   headers: {
     "Authorization": "Bearer voc_xxxxxxxxxxxx",
@@ -349,7 +349,7 @@ await fetch("https://app.callpme.ai/api/vapi/sync-agent", {
 });`,
 
     vapiCall: `// Lancer un appel test
-await fetch("https://app.callpme.ai/api/vapi/call-test", {
+await fetch("https://app.callpme.com/api/vapi/call-test", {
   method: "POST",
   headers: {
     "Authorization": "Bearer voc_xxxxxxxxxxxx",
@@ -396,8 +396,8 @@ await fetch("https://app.callpme.ai/api/vapi/call-test", {
               <div className="rounded-2xl border border-white/5 bg-card p-6">
                 <h3 className="mb-3 text-sm font-bold text-on-surface">Base URL</h3>
                 <div className="flex items-center gap-3 rounded-lg bg-surface-container-lowest px-4 py-3">
-                  <code className="flex-1 text-sm text-primary">https://app.callpme.ai/api</code>
-                  <CopyBtn code="https://app.callpme.ai/api" id="base" />
+                  <code className="flex-1 text-sm text-primary">https://app.callpme.com/api</code>
+                  <CopyBtn code="https://app.callpme.com/api" id="base" />
                 </div>
               </div>
 

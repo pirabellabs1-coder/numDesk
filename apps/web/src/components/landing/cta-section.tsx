@@ -38,7 +38,7 @@ export function CtaSection() {
                 <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
               </Link>
               <Link
-                href="mailto:contact@callpme.ai"
+                href="mailto:contact@callpme.com"
                 className="rounded-xl border border-white/10 px-8 py-3.5 font-nav text-sm text-on-surface-variant transition-colors hover:border-white/20 hover:text-on-surface"
               >
                 Parler &agrave; un expert

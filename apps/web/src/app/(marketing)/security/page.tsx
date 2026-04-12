@@ -117,8 +117,8 @@ export default function SecurityPage() {
       <div className="mt-16 text-center">
         <p className="font-body text-sm text-on-surface-variant">
           Vous avez découvert une vulnérabilité ? Contactez-nous :{" "}
-          <a href="mailto:security@callpme.ai" className="text-primary hover:underline">
-            security@callpme.ai
+          <a href="mailto:security@callpme.com" className="text-primary hover:underline">
+            security@callpme.com
           </a>
         </p>
       </div>

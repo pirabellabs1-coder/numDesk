@@ -6,7 +6,7 @@ import { useState } from "react";
 
 const codeExample = `// Lancer un appel sortant avec Callpme
 const response = await fetch(
-  "https://api.callpme.ai/v1/calls",
+  "https://api.callpme.com/v1/calls",
   {
     method: "POST",
     headers: {

@@ -67,7 +67,7 @@ const tiers = [
       { text: "Accès API illimité", included: true },
     ],
     cta: "Contacter les ventes",
-    ctaHref: "mailto:contact@callpme.ai",
+    ctaHref: "mailto:contact@callpme.com",
     highlighted: false,
   },
 ];

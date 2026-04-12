@@ -6,7 +6,7 @@ export const createAgentSchema = z.object({
   prompt: z.string().optional(),
   firstMessage: z.string().optional(),
   language: z.string().default("fr-FR"),
-  voiceProvider: z.enum(["cartesia", "elevenlabs", "deepgram"]).default("cartesia"),
+  voiceProvider: z.enum(["cartesia", "elevenlabs", "deepgram", "google", "custom"]).default("cartesia"),
   voiceId: z.string().optional(),
   llmModel: z.string().default("gemini-2.5-flash"),
   temperature: z.number().min(0).max(2).default(0.4),

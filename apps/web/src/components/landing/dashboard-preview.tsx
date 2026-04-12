@@ -48,7 +48,7 @@ export function DashboardPreview() {
             </div>
             <div className="ml-4 flex-1 rounded-md bg-surface-container-lowest px-3 py-1">
               <span className="font-nav text-[10px] text-on-surface-variant/50">
-                app.callpme.ai/dashboard
+                app.callpme.com/dashboard
               </span>
             </div>
           </div>
