@@ -1,105 +1,100 @@
 "use client";
 
 import { useState } from "react";
-import { mockKnowledgeBases } from "@/lib/mock-data";
+import { useKnowledgeBases, useCreateKnowledgeBase, useDeleteKnowledgeBase } from "@/hooks/use-knowledge-bases";
+import { useWorkspace } from "@/providers/workspace-provider";
+import { useToast } from "@/providers/toast-provider";
+import { PageSkeleton } from "@/components/ui/page-skeleton";
+import { ErrorState } from "@/components/ui/error-state";
+import { EmptyState } from "@/components/ui/empty-state";
 
 export default function KnowledgePage() {
+  const { workspaceId } = useWorkspace();
+  const { data: kbs, isLoading, error, refetch } = useKnowledgeBases(workspaceId);
+  const createKB = useCreateKnowledgeBase();
+  const deleteKB = useDeleteKnowledgeBase();
+  const { toast } = useToast();
+
   const [showModal, setShowModal] = useState(false);
+  const [newKB, setNewKB] = useState({ name: "", mode: "full_context" as string });
+
+  const handleCreate = async () => {
+    if (!newKB.name.trim() || !workspaceId) return;
+    try {
+      await createKB.mutateAsync({ workspaceId, name: newKB.name, mode: newKB.mode });
+      toast("Base de connaissances créée");
+      setShowModal(false);
+      setNewKB({ name: "", mode: "full_context" });
+    } catch (e: any) { toast(e.message || "Erreur", "error"); }
+  };
+
+  const handleDelete = async (id: string) => {
+    try { await deleteKB.mutateAsync(id); toast("Base supprimée"); }
+    catch (e: any) { toast(e.message || "Erreur", "error"); }
+  };
+
+  if (isLoading) return <PageSkeleton />;
+  if (error) return <ErrorState message="Impossible de charger les bases" onRetry={() => refetch()} />;
+  const kbList = kbs ?? [];
 
   return (
-    <section className="mx-auto max-w-7xl space-y-8">
+    <section className="mx-auto max-w-5xl space-y-8">
       <div className="flex items-end justify-between">
         <div>
-          <h1 className="text-4xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Syne, sans-serif" }}>
-            Base de Connaissances
-          </h1>
-          <p className="mt-2 text-on-surface-variant">
-            {mockKnowledgeBases.length} bases configurées
-          </p>
+          <h1 className="text-4xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Base de connaissances</h1>
+          <p className="mt-2 text-on-surface-variant">{kbList.length} base(s) configurée(s)</p>
         </div>
-        <button
-          onClick={() => setShowModal(true)}
-          className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-primary to-secondary px-5 py-2.5 text-sm font-bold text-white"
-        >
-          <span className="material-symbols-outlined text-sm">add</span>
-          Nouvelle Base
+        <button onClick={() => setShowModal(true)} className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-primary to-secondary px-5 py-2.5 text-sm font-bold text-white">
+          <span className="material-symbols-outlined text-sm">add</span>Nouvelle base
         </button>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {mockKnowledgeBases.map((kb) => (
-          <div key={kb.id} className="rounded-2xl border border-white/5 bg-card p-6">
-            <div className="mb-4 flex items-start justify-between">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                <span className="material-symbols-outlined">menu_book</span>
-              </div>
-              <span className={`rounded-md px-2 py-1 text-[10px] font-bold uppercase tracking-wider ${
-                kb.mode === "rag" ? "bg-secondary/10 text-secondary" : "bg-primary/10 text-primary"
-              }`}>
-                {kb.modeLabel}
-              </span>
-            </div>
-            <h3 className="mb-1 font-bold text-on-surface" style={{ fontFamily: "Syne, sans-serif" }}>
-              {kb.name}
-            </h3>
-            <p className="mb-4 text-xs text-on-surface-variant">
-              {kb.fileCount} fichier(s) · Créée le {kb.createdAt}
-            </p>
-            <div className="mb-4 space-y-1">
-              {kb.files.map((f) => (
-                <div key={f} className="flex items-center gap-2 rounded-lg bg-surface-container-low px-3 py-2">
-                  <span className="material-symbols-outlined text-sm text-on-surface-variant">description</span>
-                  <span className="truncate text-xs text-on-surface">{f}</span>
+      {kbList.length === 0 ? (
+        <EmptyState icon="menu_book" title="Aucune base de connaissances" description="Créez une base pour enrichir vos agents." actionLabel="Nouvelle base" onAction={() => setShowModal(true)} />
+      ) : (
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+          {kbList.map((kb: any) => (
+            <div key={kb.id} className="rounded-2xl border border-white/5 bg-card p-6">
+              <div className="mb-4 flex items-start justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
+                    <span className="material-symbols-outlined text-primary">menu_book</span>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-on-surface">{kb.name}</h3>
+                    <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${kb.mode === "full_context" ? "bg-primary/10 text-primary" : "bg-secondary/10 text-secondary"}`}>
+                      {kb.mode === "full_context" ? "Full Context" : "RAG"}
+                    </span>
+                  </div>
                 </div>
-              ))}
+                <button onClick={() => handleDelete(kb.id)} className="text-on-surface-variant hover:text-error">
+                  <span className="material-symbols-outlined text-sm">delete</span>
+                </button>
+              </div>
+              <p className="text-xs text-on-surface-variant">{(kb.files || []).length} fichier(s)</p>
             </div>
-            <div className="flex gap-2">
-              <button className="flex-1 rounded-lg bg-surface-container-low py-2 text-xs font-bold text-on-surface hover:bg-surface-container">
-                Modifier
-              </button>
-              <button className="rounded-lg bg-surface-container-low px-3 py-2 text-on-surface-variant hover:text-error">
-                <span className="material-symbols-outlined text-sm">delete</span>
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
 
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-          <div className="w-full max-w-md rounded-2xl border border-white/10 bg-surface p-6">
-            <div className="mb-5 flex items-center justify-between">
-              <h2 className="text-lg font-bold text-on-surface" style={{ fontFamily: "Syne, sans-serif" }}>
-                Nouvelle Base de Connaissances
-              </h2>
-              <button onClick={() => setShowModal(false)} className="text-on-surface-variant">
-                <span className="material-symbols-outlined">close</span>
-              </button>
-            </div>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+          <div className="w-full max-w-md rounded-2xl border border-white/10 bg-surface p-8">
+            <h2 className="mb-6 text-xl font-bold text-on-surface">Nouvelle base</h2>
             <div className="space-y-4">
-              <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-on-surface-variant">Nom</label>
-                <input className="input-field" placeholder="Documentation produit" />
-              </div>
-              <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-on-surface-variant">Mode</label>
-                <select className="input-field">
-                  <option>Full Context — Tout le contenu dans le prompt</option>
-                  <option>RAG — Recherche vectorielle intelligente</option>
-                </select>
-              </div>
-              <div className="rounded-xl border-2 border-dashed border-white/10 p-8 text-center">
-                <span className="material-symbols-outlined mb-2 text-4xl text-on-surface-variant/20">cloud_upload</span>
-                <p className="text-sm font-medium text-on-surface">Déposez vos fichiers ici</p>
-                <p className="text-xs text-on-surface-variant">PDF, DOCX, TXT, CSV acceptés</p>
+              <input value={newKB.name} onChange={(e) => setNewKB({ ...newKB, name: e.target.value })} placeholder="Nom de la base" className="w-full rounded-lg bg-surface-container-lowest px-4 py-2.5 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-1 focus:ring-primary" />
+              <div className="flex gap-3">
+                {[{ id: "full_context", label: "Full Context" }, { id: "rag", label: "RAG" }].map((m) => (
+                  <button key={m.id} onClick={() => setNewKB({ ...newKB, mode: m.id })} className={`flex-1 rounded-lg border p-3 text-center text-sm font-bold transition-all ${newKB.mode === m.id ? "border-primary bg-primary/5 text-primary" : "border-white/5 text-on-surface-variant"}`}>
+                    {m.label}
+                  </button>
+                ))}
               </div>
             </div>
-            <div className="mt-6 flex gap-3">
-              <button onClick={() => setShowModal(false)} className="flex-1 rounded-lg border border-white/10 py-2.5 text-sm font-bold text-on-surface-variant">
-                Annuler
-              </button>
-              <button onClick={() => setShowModal(false)} className="flex-1 rounded-lg bg-gradient-to-r from-primary to-secondary py-2.5 text-sm font-bold text-white">
-                Créer
+            <div className="mt-6 flex justify-end gap-3">
+              <button onClick={() => setShowModal(false)} className="rounded-lg px-5 py-2.5 text-sm text-on-surface-variant">Annuler</button>
+              <button onClick={handleCreate} disabled={createKB.isPending || !newKB.name.trim()} className="rounded-lg bg-gradient-to-r from-primary to-secondary px-5 py-2.5 text-sm font-bold text-white disabled:opacity-50">
+                {createKB.isPending ? "..." : "Créer"}
               </button>
             </div>
           </div>

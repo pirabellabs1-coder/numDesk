@@ -1,14 +1,36 @@
 "use client";
 
 import { useState } from "react";
+import { useAuth } from "@/providers/auth-provider";
+import { useToast } from "@/providers/toast-provider";
+import { createClient } from "@/lib/supabase/client";
 
 export default function SettingsPage() {
+  const { user } = useAuth();
+  const { toast } = useToast();
   const [tab, setTab] = useState("profile");
-  const [saved, setSaved] = useState(false);
+  const [saving, setSaving] = useState(false);
 
-  const handleSave = () => {
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
+  const handleSave = async () => {
+    setSaving(true);
+    try {
+      const supabase = createClient();
+      await supabase.auth.updateUser({
+        data: {
+          first_name: (document.getElementById("settings-firstname") as HTMLInputElement)?.value,
+          last_name: (document.getElementById("settings-lastname") as HTMLInputElement)?.value,
+          agency_name: (document.getElementById("settings-agency") as HTMLInputElement)?.value,
+        },
+      });
+      const newPassword = (document.getElementById("settings-password") as HTMLInputElement)?.value;
+      if (newPassword && newPassword.length >= 6) {
+        await supabase.auth.updateUser({ password: newPassword });
+      }
+      toast("Paramètres sauvegardés");
+    } catch (e: any) {
+      toast(e.message || "Erreur lors de la sauvegarde", "error");
+    }
+    setSaving(false);
   };
 
   const tabs = [
@@ -21,7 +43,7 @@ export default function SettingsPage() {
   return (
     <section className="mx-auto max-w-3xl space-y-8">
       <div>
-        <h1 className="text-4xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Syne, sans-serif" }}>
+        <h1 className="text-4xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
           Paramètres
         </h1>
         <p className="mt-2 text-on-surface-variant">Gérez votre profil et vos préférences</p>
@@ -90,12 +112,12 @@ export default function SettingsPage() {
             <button
               onClick={handleSave}
               className={`flex items-center gap-2 rounded-lg px-6 py-2.5 text-sm font-bold transition-all ${
-                saved
+                saving
                   ? "bg-tertiary/10 text-tertiary"
                   : "bg-gradient-to-r from-primary to-secondary text-white"
               }`}
             >
-              {saved ? (
+              {saving ? (
                 <>
                   <span className="material-symbols-outlined text-sm">check</span>
                   Sauvegardé !
@@ -213,7 +235,7 @@ function Toggle({ defaultOn }: { defaultOn: boolean }) {
 
 function ProviderKeyField({ label, placeholder, hint }: { label: string; placeholder: string; hint: string }) {
   const [visible, setVisible] = useState(false);
-  const [saved, setSaved] = useState(false);
+  const [providerSaved, setProviderSaved] = useState(false);
 
   return (
     <div className="rounded-2xl border border-white/5 bg-card p-5">
@@ -239,14 +261,14 @@ function ProviderKeyField({ label, placeholder, hint }: { label: string; placeho
         </div>
         <button
           onClick={() => {
-            setSaved(true);
-            setTimeout(() => setSaved(false), 2000);
+            setProviderSaved(true);
+            setTimeout(() => setProviderSaved(false), 2000);
           }}
           className={`rounded-lg px-4 text-sm font-bold transition-all ${
-            saved ? "bg-tertiary/10 text-tertiary" : "bg-surface-container-low text-on-surface-variant hover:text-on-surface"
+            providerSaved ? "bg-tertiary/10 text-tertiary" : "bg-surface-container-low text-on-surface-variant hover:text-on-surface"
           }`}
         >
-          {saved ? "Sauvegardé" : "Sauvegarder"}
+          {providerSaved ? "Sauvegardé" : "Sauvegarder"}
         </button>
       </div>
     </div>

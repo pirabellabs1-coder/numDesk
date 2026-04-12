@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&family=Manrope:wght@400;500;600&family=Space+Grotesk:wght@400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@400;500;600&family=Space+Grotesk:wght@400;500;600&display=swap");
 @import "tailwindcss";
 
 @theme {
@@ -29,9 +29,9 @@
   --color-card: #0F1117;
 
   /* Font families */
-  --font-display: "Syne", sans-serif;
+  --font-display: "Inter", sans-serif;
   --font-body: "Manrope", sans-serif;
-  --font-nav: "Space Grotesk", monospace;
+  --font-nav: "Inter", sans-serif;
 
   /* Animations */
   --animate-waveform-1: waveform-1 1.2s ease-in-out infinite;
@@ -40,6 +40,68 @@
   --animate-waveform-4: waveform-4 1.8s ease-in-out infinite;
   --animate-waveform-5: waveform-5 1.3s ease-in-out infinite;
   --animate-pulse-ring: pulse-ring 2s ease-out infinite;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-float-slow: float-slow 8s ease-in-out infinite;
+  --animate-float-reverse: float-reverse 7s ease-in-out infinite;
+  --animate-fade-in-up: fade-in-up 0.6s ease-out forwards;
+  --animate-fade-in-left: fade-in-left 0.6s ease-out forwards;
+  --animate-fade-in-right: fade-in-right 0.6s ease-out forwards;
+  --animate-scale-in: scale-in 0.5s ease-out forwards;
+  --animate-counter: counter 2s ease-out forwards;
+  --animate-shimmer: shimmer 2s linear infinite;
+  --animate-glow-pulse: glow-pulse 3s ease-in-out infinite;
+  --animate-typing: typing 3s steps(40) infinite;
+  --animate-slide-up: slide-up 0.8s ease-out forwards;
+  --animate-orbit: orbit 20s linear infinite;
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+  }
+  @keyframes float-slow {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-15px) rotate(3deg); }
+  }
+  @keyframes float-reverse {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(15px); }
+  }
+  @keyframes fade-in-up {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fade-in-left {
+    from { opacity: 0; transform: translateX(-30px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes fade-in-right {
+    from { opacity: 0; transform: translateX(30px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes scale-in {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  @keyframes glow-pulse {
+    0%, 100% { box-shadow: 0 0 20px rgba(79, 127, 255, 0.1); }
+    50% { box-shadow: 0 0 40px rgba(79, 127, 255, 0.3); }
+  }
+  @keyframes typing {
+    0%, 100% { width: 0; }
+    30%, 70% { width: 100%; }
+  }
+  @keyframes slide-up {
+    from { opacity: 0; transform: translateY(60px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes orbit {
+    from { transform: rotate(0deg) translateX(120px) rotate(0deg); }
+    to { transform: rotate(360deg) translateX(120px) rotate(-360deg); }
+  }
 
   @keyframes waveform-1 {
     0%, 100% { height: 12px; }
@@ -88,9 +150,91 @@
   background-clip: text;
 }
 
+.text-gradient-secondary {
+  background: linear-gradient(135deg, var(--color-secondary), var(--color-tertiary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 /* Glow effect for buttons */
 .glow-primary:hover {
   box-shadow: 0 0 20px rgba(79, 127, 255, 0.2);
+}
+
+/* Gradient borders */
+.border-gradient {
+  position: relative;
+  border: 1px solid transparent;
+  background-clip: padding-box;
+}
+.border-gradient::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary), var(--color-tertiary));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+/* Shimmer text effect */
+.shimmer-text {
+  background: linear-gradient(90deg, var(--color-on-surface) 0%, var(--color-primary) 50%, var(--color-on-surface) 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s linear infinite;
+}
+
+/* Code block styling for landing */
+.code-block {
+  background: linear-gradient(135deg, rgba(15, 17, 23, 0.9), rgba(26, 27, 32, 0.9));
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  font-family: "Space Grotesk", monospace;
+}
+
+/* Scroll reveal base (hidden by default, shown via JS) */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.reveal-left.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+.reveal-right {
+  opacity: 0;
+  transform: translateX(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.reveal-right.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+.reveal-scale.visible {
+  opacity: 1;
+  transform: scale(1);
 }
 
 /* Glassmorphism */
@@ -154,4 +298,13 @@ body {
 .input-field option {
   background: var(--color-surface-container);
   color: var(--color-on-surface);
+}
+
+/* Hide scrollbar */
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
 }

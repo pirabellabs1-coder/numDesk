@@ -9,7 +9,7 @@ const llmModels = [
   "GPT-4o-mini",
 ];
 
-export function TabReglages() {
+export function TabReglages({ agent, onChange }: { agent?: any; onChange?: (field: string, value: any) => void }) {
   const [recordSession, setRecordSession] = useState(true);
   const [recordAudio, setRecordAudio] = useState(true);
   const [temperature, setTemperature] = useState(0.4);

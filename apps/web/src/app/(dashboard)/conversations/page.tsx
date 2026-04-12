@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { mockConversations } from "@/lib/mock-data";
+import { useConversations } from "@/hooks/use-conversations";
+import { useWorkspace } from "@/providers/workspace-provider";
+import { PageSkeleton } from "@/components/ui/page-skeleton";
 
 const statusStyles: Record<string, string> = {
   success: "bg-tertiary/10 text-tertiary",
@@ -17,24 +19,28 @@ const sentimentIcons: Record<string, { icon: string; color: string }> = {
 };
 
 export default function ConversationsPage() {
-  const [selected, setSelected] = useState(mockConversations[0]);
+  const { workspaceId } = useWorkspace();
   const [filter, setFilter] = useState("all");
+  const { data: convData } = useConversations(workspaceId, filter !== "all" ? { status: filter } : undefined);
+
+  const conversations = convData ?? [];
+  const [selected, setSelected] = useState<any>(conversations[0]);
 
   const filtered = filter === "all"
-    ? mockConversations
-    : mockConversations.filter((c) => c.status === filter);
+    ? conversations
+    : conversations.filter((c: any) => c.status === filter);
 
   return (
     <section className="mx-auto max-w-7xl">
       <div className="mb-6">
         <h1
           className="text-4xl font-bold tracking-tight text-on-surface"
-          style={{ fontFamily: "Syne, sans-serif" }}
+          style={{ fontFamily: "Inter, sans-serif" }}
         >
           Conversations
         </h1>
         <p className="mt-2 text-on-surface-variant">
-          {mockConversations.length} conversations · {mockConversations.filter((c) => c.isBilled).length} facturées
+          {conversations.length} conversation(s)
         </p>
       </div>
 
@@ -161,7 +167,7 @@ export default function ConversationsPage() {
                   <p className="text-xs text-on-surface-variant/50">Aucun transcript disponible.</p>
                 ) : (
                   <div className="space-y-3">
-                    {selected.transcript.map((msg, i) => (
+                    {selected.transcript.map((msg: any, i: number) => (
                       <div
                         key={i}
                         className={`flex gap-2 ${msg.role === "user" ? "flex-row-reverse" : ""}`}

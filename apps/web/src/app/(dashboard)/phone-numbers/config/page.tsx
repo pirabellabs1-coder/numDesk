@@ -31,7 +31,7 @@ export default function SipConfigPage() {
               Retour aux numéros
             </Link>
           </div>
-          <h1 className="text-4xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Syne, sans-serif" }}>
+          <h1 className="text-4xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
             Configuration SIP
           </h1>
           <p className="mt-2 text-on-surface-variant">Gérez vos SIP trunks pour les appels entrants et sortants</p>
@@ -61,7 +61,7 @@ export default function SipConfigPage() {
 
       {/* Trunks list */}
       <div className="space-y-4">
-        <h2 className="text-lg font-bold text-on-surface" style={{ fontFamily: "Syne, sans-serif" }}>
+        <h2 className="text-lg font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
           Trunks configurés ({mockTrunks.length})
         </h2>
         {mockTrunks.map((trunk) => (
@@ -69,7 +69,7 @@ export default function SipConfigPage() {
             <div className="flex items-start justify-between">
               <div>
                 <div className="flex items-center gap-2">
-                  <h3 className="font-bold text-on-surface" style={{ fontFamily: "Syne, sans-serif" }}>
+                  <h3 className="font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
                     {trunk.name}
                   </h3>
                   {trunk.isGlobal && (
@@ -111,7 +111,7 @@ export default function SipConfigPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
           <div className="w-full max-w-md rounded-2xl border border-white/10 bg-surface p-6">
             <div className="mb-5 flex items-center justify-between">
-              <h2 className="text-lg font-bold text-on-surface" style={{ fontFamily: "Syne, sans-serif" }}>
+              <h2 className="text-lg font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
                 Ajouter un SIP Trunk
               </h2>
               <button onClick={() => setShowForm(false)} className="text-on-surface-variant hover:text-on-surface">

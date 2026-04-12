@@ -3,10 +3,11 @@
 import { useState } from "react";
 
 interface TabAgentProps {
-  agent: { name: string; voiceId: string };
+  agent: any;
+  onChange?: (field: string, value: any) => void;
 }
 
-export function TabAgent({ agent }: TabAgentProps) {
+export function TabAgent({ agent, onChange }: TabAgentProps) {
   const [prompt, setPrompt] = useState(
     "Tu es un agent de support pour Callpme. Tu réponds aux questions des clients en français avec un ton professionnel et bienveillant."
   );

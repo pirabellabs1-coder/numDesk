@@ -1,0 +1,28 @@
+import { pgEnum } from "drizzle-orm/pg-core";
+
+export const userRoleEnum = pgEnum("user_role", ["admin", "member"]);
+export const offerTypeEnum = pgEnum("offer_type", ["minutes", "calls"]);
+export const voiceProviderEnum = pgEnum("voice_provider", ["cartesia", "elevenlabs", "deepgram"]);
+export const callDirectionEnum = pgEnum("call_direction", ["inbound", "outbound"]);
+export const callTypeEnum = pgEnum("call_type", ["phone", "web"]);
+export const callStatusEnum = pgEnum("call_status", ["success", "missed", "interrupted", "voicemail", "no_answer", "in_progress", "ringing", "ended"]);
+export const sentimentEnum = pgEnum("sentiment", ["positive", "neutral", "negative"]);
+export const campaignStatusEnum = pgEnum("campaign_status", ["draft", "active", "paused", "completed", "failed"]);
+export const billingStatusEnum = pgEnum("billing_status", ["open", "finalized", "paid", "void"]);
+export const kbModeEnum = pgEnum("kb_mode", ["full_context", "rag"]);
+export const leadStageEnum = pgEnum("lead_stage", ["new", "contacted", "qualified", "converted", "lost"]);
+export const activityTypeEnum = pgEnum("activity_type", ["call", "creation", "modification", "deletion", "campaign"]);
+export const anomalyTypeEnum = pgEnum("anomaly_type", ["spike", "drop", "latency"]);
+export const anomalySeverityEnum = pgEnum("anomaly_severity", ["high", "medium", "low"]);
+export const suggestionTypeEnum = pgEnum("suggestion_type", ["prompt", "voice", "tool"]);
+export const suggestionImpactEnum = pgEnum("suggestion_impact", ["high", "medium", "low"]);
+export const versionStatusEnum = pgEnum("version_status", ["live", "archived"]);
+export const favoriteTypeEnum = pgEnum("favorite_type", ["agent", "contact", "campaign", "conversation"]);
+export const httpMethodEnum = pgEnum("http_method", ["GET", "POST", "PUT", "PATCH", "DELETE"]);
+export const noteActionEnum = pgEnum("note_action", ["rappel", "email", "transfert", "none"]);
+export const calendarEventTypeEnum = pgEnum("calendar_event_type", ["campaign", "scheduled", "test"]);
+export const calendarEventStatusEnum = pgEnum("calendar_event_status", ["active", "pending", "completed"]);
+export const integrationStatusEnum = pgEnum("integration_status", ["connected", "available", "soon"]);
+export const integrationCategoryEnum = pgEnum("integration_category", ["CRM", "Productivité", "Communication"]);
+export const planSlugEnum = pgEnum("plan_slug", ["trial", "starter", "pro", "enterprise"]);
+export const subscriptionStatusEnum = pgEnum("subscription_status", ["trialing", "active", "past_due", "canceled"]);

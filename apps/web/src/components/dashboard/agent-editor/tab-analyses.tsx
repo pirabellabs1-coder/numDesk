@@ -1,9 +1,9 @@
 export function TabAnalyses() {
   const metrics = [
-    { label: "Total Appels", value: "1 284", icon: "call", color: "text-primary" },
-    { label: "Durée Moyenne", value: "3:42", icon: "timer", color: "text-secondary" },
-    { label: "Taux de complétion", value: "87.4%", icon: "check_circle", color: "text-tertiary" },
-    { label: "Taux de décroché", value: "92.4%", icon: "percent", color: "text-orange-400" },
+    { label: "Total Appels", value: "0", icon: "call", color: "text-primary" },
+    { label: "Durée Moyenne", value: "0:00", icon: "timer", color: "text-secondary" },
+    { label: "Taux de complétion", value: "0%", icon: "check_circle", color: "text-tertiary" },
+    { label: "Taux de décroché", value: "0%", icon: "percent", color: "text-orange-400" },
   ];
 
   return (
@@ -17,7 +17,7 @@ export function TabAnalyses() {
                 {m.label}
               </span>
             </div>
-            <p className="text-3xl font-bold text-on-surface" style={{ fontFamily: "Syne, sans-serif" }}>
+            <p className="text-3xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
               {m.value}
             </p>
           </div>
@@ -27,7 +27,7 @@ export function TabAnalyses() {
       {/* Activity chart mock */}
       <div className="rounded-2xl border border-white/5 bg-card p-6">
         <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-sm font-bold text-on-surface" style={{ fontFamily: "Syne, sans-serif" }}>
+          <h3 className="text-sm font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
             Appels par jour
           </h3>
           <div className="flex gap-2">

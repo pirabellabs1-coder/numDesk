@@ -61,7 +61,7 @@ export function AgentCard({
       <Link href={`/agents/${id}`}>
         <h3
           className="mb-1 text-base font-bold text-on-surface group-hover:text-primary transition-colors"
-          style={{ fontFamily: "Syne, sans-serif" }}
+          style={{ fontFamily: "Inter, sans-serif" }}
         >
           {name}
         </h3>
@@ -76,7 +76,7 @@ export function AgentCard({
           </p>
           <p
             className="text-lg font-bold text-on-surface"
-            style={{ fontFamily: "Syne, sans-serif" }}
+            style={{ fontFamily: "Inter, sans-serif" }}
           >
             {totalCalls.toLocaleString("fr-FR")}
           </p>
@@ -87,7 +87,7 @@ export function AgentCard({
           </p>
           <p
             className="text-lg font-bold text-on-surface"
-            style={{ fontFamily: "Syne, sans-serif" }}
+            style={{ fontFamily: "Inter, sans-serif" }}
           >
             {avgDuration}
           </p>
