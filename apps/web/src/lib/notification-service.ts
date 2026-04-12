@@ -54,11 +54,11 @@ export async function createNotification(params: CreateNotificationParams) {
 }
 
 /**
- * Send email notification via Resend with beautiful templates
+ * Send email notification via Brevo SMTP API
  */
 async function sendEmailNotification(params: CreateNotificationParams) {
-  const resendKey = process.env.RESEND_API_KEY;
-  if (!resendKey) return;
+  const brevoKey = process.env.BREVO_SMTP_KEY;
+  if (!brevoKey) return;
 
   // Get user email from DB
   const db = getDb();
@@ -79,23 +79,7 @@ async function sendEmailNotification(params: CreateNotificationParams) {
   const subject = params.emailSubject || `${typeEmoji[params.type] || ""} ${params.title}`;
   const html = params.emailHtml || buildFallbackEmail(params);
 
-  try {
-    await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${resendKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        from: "Callpme <notifications@callpme.com>",
-        to: user.email,
-        subject,
-        html,
-      }),
-    });
-  } catch {
-    // Silently fail — email is best-effort
-  }
+  await sendBrevoEmail(user.email, subject, html);
 }
 
 /**
@@ -119,29 +103,36 @@ function buildFallbackEmail(params: CreateNotificationParams) {
 }
 
 /**
- * Send email directly (without DB notification) — for admin alerts, transactional emails
+ * Send email via Brevo SMTP API
  */
-export async function sendDirectEmail(to: string, subject: string, html: string) {
-  const resendKey = process.env.RESEND_API_KEY;
-  if (!resendKey) return;
+async function sendBrevoEmail(to: string, subject: string, html: string) {
+  const brevoKey = process.env.BREVO_SMTP_KEY;
+  if (!brevoKey) return;
 
   try {
-    await fetch("https://api.resend.com/emails", {
+    await fetch("https://api.brevo.com/v3/smtp/email", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${resendKey}`,
+        "api-key": brevoKey,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: "Callpme <notifications@callpme.com>",
-        to,
+        sender: { name: "Callpme", email: "noreply@callpme.com" },
+        to: [{ email: to }],
         subject,
-        html,
+        htmlContent: html,
       }),
     });
   } catch {
-    // Silently fail
+    // Silently fail — email is best-effort
   }
+}
+
+/**
+ * Send email directly (without DB notification) — for admin alerts, transactional emails
+ */
+export async function sendDirectEmail(to: string, subject: string, html: string) {
+  await sendBrevoEmail(to, subject, html);
 }
 
 // ── Pre-built notification templates with beautiful emails ──
