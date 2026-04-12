@@ -16,6 +16,44 @@ function getModelProvider(llmModel: string): string {
   return "openai"; // fallback
 }
 
+/**
+ * Map app language codes to Vapi/Deepgram transcriber codes.
+ * Vapi nova-2 expects: fr, en, de, es, pt, it, nl, etc. (no region suffix like fr-FR)
+ */
+function getTranscriberLanguage(lang?: string): string {
+  if (!lang) return "fr";
+  // Map common codes: fr-FR -> fr, en-US -> en, de-DE -> de, etc.
+  const map: Record<string, string> = {
+    "fr-FR": "fr",
+    "fr-CA": "fr-CA",
+    "en-US": "en-US",
+    "en-GB": "en-GB",
+    "en-AU": "en-AU",
+    "en-NZ": "en-NZ",
+    "en-IN": "en-IN",
+    "de-DE": "de",
+    "de-CH": "de-CH",
+    "es-ES": "es",
+    "es-419": "es-419",
+    "pt-BR": "pt-BR",
+    "pt-PT": "pt",
+    "it-IT": "it",
+    "nl-NL": "nl",
+    "nl-BE": "nl-BE",
+    "ja-JP": "ja",
+    "ko-KR": "ko-KR",
+    "zh-CN": "zh-CN",
+    "zh-TW": "zh-TW",
+    "sv-SE": "sv-SE",
+    "da-DK": "da-DK",
+    "th-TH": "th-TH",
+  };
+  if (map[lang]) return map[lang];
+  // If already a valid short code (fr, en, de...), use it directly
+  if (lang.length <= 5) return lang.split("-")[0];
+  return "fr";
+}
+
 function getVoiceConfig(voiceProvider?: string, voiceId?: string) {
   // If voiceId is a display label like "Cartesia — Fabien", use default
   const isDisplayLabel = voiceId && voiceId.includes(" — ");
@@ -57,7 +95,7 @@ export async function createVapiAssistant(agent: {
     firstMessage: agent.firstMessage || "Bonjour, comment puis-je vous aider ?",
     transcriber: {
       provider: "deepgram",
-      language: agent.language || "fr",
+      language: getTranscriberLanguage(agent.language),
     },
   };
 
@@ -83,6 +121,7 @@ export async function updateVapiAssistant(assistantId: string, updates: {
   firstMessage?: string;
   voiceProvider?: string;
   voiceId?: string;
+  language?: string;
   temperature?: number;
 }) {
   const body: Record<string, unknown> = {};
@@ -96,6 +135,9 @@ export async function updateVapiAssistant(assistantId: string, updates: {
   }
   if (updates.voiceProvider || updates.voiceId) {
     body.voice = getVoiceConfig(updates.voiceProvider, updates.voiceId);
+  }
+  if (updates.language) {
+    body.transcriber = { provider: "deepgram", language: getTranscriberLanguage(updates.language) };
   }
 
   const res = await fetch(`${VAPI_API_URL}/assistant/${assistantId}`, {

@@ -25,6 +25,7 @@ export async function POST(req: NextRequest) {
         firstMessage: agent.firstMessage || undefined,
         voiceProvider: agent.voiceProvider || undefined,
         voiceId: agent.voiceId || undefined,
+        language: agent.language || undefined,
         temperature: Number(agent.temperature) || 0.4,
       });
 
