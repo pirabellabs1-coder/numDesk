@@ -87,10 +87,6 @@ function VocalMode({ agent }: { agent: TestModalProps["agent"] }) {
   const { toast } = useToast();
 
   const startCall = useCallback(async () => {
-    if (!agent.vapiAgentId) {
-      toast("Publiez d'abord l'agent pour le tester en vocal", "error");
-      return;
-    }
     setStatus("connecting");
     setTranscript([]);
 
@@ -131,21 +127,33 @@ function VocalMode({ agent }: { agent: TestModalProps["agent"] }) {
         vapiRef.current = null;
       });
 
-      // Build voice override from current selection so the test always reflects what's in the editor
+      // Build voice from current editor selection
       const voiceProvider = agent.voiceProvider || "cartesia";
       const voiceId = agent.voiceId || "a8a1eb38-5f15-4c1d-8722-7ac0f329727d";
-      const voiceOverride: Record<string, unknown> = {
-        voiceId,
-        provider: voiceProvider === "elevenlabs" ? "11labs" : voiceProvider,
-      };
+      const vapiVoiceProvider = voiceProvider === "elevenlabs" ? "11labs" : voiceProvider;
 
       // Determine transcriber language from agent language
       const lang = agent.language || "fr-FR";
       const transcriberLang = lang.startsWith("fr") ? "fr" : lang.split("-")[0] || "fr";
 
-      await vapi.start(agent.vapiAgentId, {
-        voice: voiceOverride,
-        transcriber: { provider: "deepgram", language: transcriberLang },
+      // Use inline assistant config so the test ALWAYS matches the editor selection
+      // This avoids relying on the stored Vapi assistant config which may be stale
+      await vapi.start({
+        model: {
+          provider: "google",
+          model: "gemini-2.5-flash",
+          messages: [{ role: "system", content: agent.prompt || "Tu es un assistant téléphonique professionnel." }],
+          temperature: 0.4,
+        },
+        voice: {
+          provider: vapiVoiceProvider,
+          voiceId: voiceId,
+        },
+        transcriber: {
+          provider: "deepgram",
+          language: transcriberLang,
+        },
+        firstMessage: agent.firstMessage || "Bonjour, comment puis-je vous aider ?",
       } as any);
     } catch (e: any) {
       toast(e.message || "Impossible de démarrer l'appel vocal", "error");
@@ -212,7 +220,6 @@ function VocalMode({ agent }: { agent: TestModalProps["agent"] }) {
         {(status === "idle" || status === "ended") && (
           <button
             onClick={startCall}
-            disabled={!agent.vapiAgentId}
             className="flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-primary to-secondary py-3 text-sm font-bold text-white transition-all hover:brightness-110 disabled:opacity-50"
           >
             <span className="material-symbols-outlined text-sm">mic</span>
@@ -234,11 +241,9 @@ function VocalMode({ agent }: { agent: TestModalProps["agent"] }) {
             Connexion...
           </div>
         )}
-        {!agent.vapiAgentId && (
-          <p className="text-center text-xs text-on-surface-variant">
-            Vous devez d&apos;abord <strong className="text-primary">publier</strong> l&apos;agent pour le tester en vocal.
-          </p>
-        )}
+        <p className="text-center text-xs text-on-surface-variant">
+          Le test vocal utilise la voix et le prompt actuels de l&apos;éditeur.
+        </p>
       </div>
     </div>
   );
