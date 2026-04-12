@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { usePhoneNumbers } from "@/hooks/use-phone-numbers";
+import { useWorkspace } from "@/providers/workspace-provider";
 
 interface TabAgentProps {
   agent: any;
@@ -8,15 +10,16 @@ interface TabAgentProps {
 }
 
 export function TabAgent({ agent, onChange }: TabAgentProps) {
-  const [prompt, setPrompt] = useState(
-    "Tu es un agent de support pour Callpme. Tu réponds aux questions des clients en français avec un ton professionnel et bienveillant."
-  );
-  const [firstMessage, setFirstMessage] = useState(
-    "Bonjour ! Vous êtes bien chez {{agency_name}}, comment puis-je vous aider aujourd'hui ?"
-  );
-  const [voicemailEnabled, setVoicemailEnabled] = useState(false);
-  const [firstMsgEnabled, setFirstMsgEnabled] = useState(true);
-  const [silenceEnabled, setSilenceEnabled] = useState(true);
+  const { workspaceId } = useWorkspace();
+  const { data: phoneNumbers } = usePhoneNumbers(workspaceId);
+
+  const [prompt, setPrompt] = useState(agent.prompt || "");
+  const [firstMessage, setFirstMessage] = useState(agent.firstMessage || "");
+  const [voicemailEnabled, setVoicemailEnabled] = useState(agent.voicemailEnabled || false);
+  const [firstMsgEnabled, setFirstMsgEnabled] = useState(!!agent.firstMessage);
+  const [silenceEnabled, setSilenceEnabled] = useState((agent.silenceTimeoutSec ?? 7) > 0);
+
+  const numList = phoneNumbers ?? [];
 
   return (
     <div className="space-y-8">
@@ -25,21 +28,36 @@ export function TabAgent({ agent, onChange }: TabAgentProps) {
         <Field label="Nom de l'agent">
           <input
             defaultValue={agent.name}
+            onChange={(e) => onChange?.("name", e.target.value)}
             className="input-field"
           />
         </Field>
         <Field label="Numéro de téléphone entrant">
-          <select className="input-field">
-            <option>+33 1 87 XX XX XX — Numéro Support</option>
-            <option>+33 7 56 XX XX XX — Numéro Sales</option>
+          <select
+            className="input-field"
+            defaultValue={agent.phoneNumberId || ""}
+            onChange={(e) => onChange?.("phoneNumberId", e.target.value)}
+          >
+            <option value="">Aucun numéro assigné</option>
+            {numList.map((num: any) => (
+              <option key={num.id} value={num.id}>
+                {num.number}{num.friendlyName ? ` — ${num.friendlyName}` : ""}
+              </option>
+            ))}
           </select>
+          {numList.length === 0 && (
+            <p className="mt-1 text-[10px] text-on-surface-variant">
+              Aucun numéro configuré. Ajoutez-en dans <strong className="text-on-surface">Numéros de téléphone</strong>.
+            </p>
+          )}
         </Field>
         <Field label="Prompt principal">
           <textarea
             value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
+            onChange={(e) => { setPrompt(e.target.value); onChange?.("prompt", e.target.value); }}
             rows={6}
             className="input-field resize-none font-mono text-xs"
+            placeholder="Tu es un agent de support professionnel..."
           />
           <p className="mt-1.5 text-right text-[10px] text-on-surface-variant/50">
             {prompt.length} / 8000 tokens
@@ -58,12 +76,14 @@ export function TabAgent({ agent, onChange }: TabAgentProps) {
               Si l&apos;appelant ne décroche pas
             </p>
           </div>
-          <Toggle value={voicemailEnabled} onChange={setVoicemailEnabled} />
+          <Toggle value={voicemailEnabled} onChange={(v) => { setVoicemailEnabled(v); onChange?.("voicemailEnabled", v); }} />
         </div>
         {voicemailEnabled && (
           <Field label="Message vocal">
             <textarea
               rows={3}
+              defaultValue={agent.voicemailMessage || ""}
+              onChange={(e) => onChange?.("voicemailMessage", e.target.value)}
               placeholder="Bonjour, je vous contactais de la part de..."
               className="input-field resize-none"
             />
@@ -89,7 +109,7 @@ export function TabAgent({ agent, onChange }: TabAgentProps) {
             <Field label="Phrase d'accueil">
               <input
                 value={firstMessage}
-                onChange={(e) => setFirstMessage(e.target.value)}
+                onChange={(e) => { setFirstMessage(e.target.value); onChange?.("firstMessage", e.target.value); }}
                 className="input-field"
               />
             </Field>
@@ -116,10 +136,22 @@ export function TabAgent({ agent, onChange }: TabAgentProps) {
         {silenceEnabled && (
           <div className="grid grid-cols-2 gap-4">
             <Field label="Délai (secondes)">
-              <input type="number" defaultValue={7} min={1} max={60} className="input-field" />
+              <input
+                type="number"
+                defaultValue={agent.silenceTimeoutSec ?? 7}
+                min={1} max={60}
+                onChange={(e) => onChange?.("silenceTimeoutSec", parseInt(e.target.value))}
+                className="input-field"
+              />
             </Field>
             <Field label="Nb rappels max">
-              <input type="number" defaultValue={2} min={0} max={10} className="input-field" />
+              <input
+                type="number"
+                defaultValue={agent.maxSilenceRetries ?? 2}
+                min={0} max={10}
+                onChange={(e) => onChange?.("maxSilenceRetries", parseInt(e.target.value))}
+                className="input-field"
+              />
             </Field>
           </div>
         )}

@@ -13,6 +13,7 @@ import { TabAnalyses } from "@/components/dashboard/agent-editor/tab-analyses";
 import { TabApi } from "@/components/dashboard/agent-editor/tab-api";
 import { TabVersions } from "@/components/dashboard/agent-editor/tab-versions";
 import { TabOutils } from "@/components/dashboard/agent-editor/tab-outils";
+import { TestModal } from "@/components/dashboard/agent-editor/test-modal";
 
 const TABS = [
   { id: "agent", label: "AGENT" },
@@ -72,8 +73,6 @@ export default function AgentEditorPage({
 
   const [publishing, setPublishing] = useState(false);
   const [showTestModal, setShowTestModal] = useState(false);
-  const [testPhone, setTestPhone] = useState("");
-  const [testLoading, setTestLoading] = useState(false);
 
   const handlePublish = async () => {
     setPublishing(true);
@@ -94,30 +93,6 @@ export default function AgentEditorPage({
       toast(e.message || "Erreur lors de la publication", "error");
     }
     setPublishing(false);
-  };
-
-  const handleTest = () => {
-    setShowTestModal(true);
-  };
-
-  const handleLaunchTest = async () => {
-    if (!testPhone.trim()) return;
-    setTestLoading(true);
-    try {
-      const res = await fetch("/api/vapi/call-test", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ agentId: id, phoneNumber: testPhone }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error?.message || "Erreur");
-      toast(`Appel test lancé vers ${testPhone}`);
-      setShowTestModal(false);
-      setTestPhone("");
-    } catch (e: any) {
-      toast(e.message || "Erreur lors du lancement", "error");
-    }
-    setTestLoading(false);
   };
 
   if (isLoading) return <PageSkeleton />;
@@ -153,7 +128,7 @@ export default function AgentEditorPage({
             {updateAgent.isPending ? "SAUVEGARDE..." : "SAUVEGARDER"}
           </button>
           <button
-            onClick={handleTest}
+            onClick={() => setShowTestModal(true)}
             className="flex items-center gap-1.5 rounded-lg border border-primary/30 px-4 py-2 text-xs font-bold text-primary transition-colors hover:border-primary"
           >
             <span className="material-symbols-outlined text-sm">play_circle</span>
@@ -196,59 +171,27 @@ export default function AgentEditorPage({
           {activeTab === "parole" && <TabParole agent={editableAgent} onChange={(field: string, value: any) => setEdits((prev) => ({ ...prev, [field]: value }))} />}
           {activeTab === "outils" && <TabOutils agent={editableAgent} onChange={(field: string, value: any) => setEdits((prev) => ({ ...prev, [field]: value }))} />}
           {activeTab === "reglages" && <TabReglages agent={editableAgent} onChange={(field: string, value: any) => setEdits((prev) => ({ ...prev, [field]: value }))} />}
-          {activeTab === "analyses" && <TabAnalyses />}
+          {activeTab === "analyses" && <TabAnalyses agentId={id} />}
           {activeTab === "versions" && <TabVersions />}
           {activeTab === "api" && <TabApi agent={editableAgent} />}
         </div>
       </div>
 
-      {/* Test call modal */}
+      {/* Test Modal */}
       {showTestModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="w-full max-w-md rounded-2xl border border-white/10 bg-surface p-8">
-            <h2 className="mb-2 text-xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
-              Tester l&apos;agent
-            </h2>
-            <p className="mb-6 text-sm text-on-surface-variant">
-              {agent.vapiAgentId
-                ? "Lancez un appel test vers un numéro réel."
-                : "Vous devez d'abord publier l'agent pour pouvoir le tester."
-              }
-            </p>
-
-            {agent.vapiAgentId ? (
-              <div className="space-y-4">
-                <div>
-                  <label className="mb-1 block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Numéro de téléphone</label>
-                  <input
-                    value={testPhone}
-                    onChange={(e) => setTestPhone(e.target.value)}
-                    placeholder="+33612345678"
-                    className="w-full rounded-lg bg-surface-container-lowest px-4 py-2.5 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-1 focus:ring-primary"
-                  />
-                </div>
-                <div className="flex justify-end gap-3">
-                  <button onClick={() => setShowTestModal(false)} className="rounded-lg px-5 py-2.5 text-sm text-on-surface-variant">Annuler</button>
-                  <button
-                    onClick={handleLaunchTest}
-                    disabled={testLoading || !testPhone.trim()}
-                    className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-primary to-secondary px-5 py-2.5 text-sm font-bold text-white disabled:opacity-50"
-                  >
-                    <span className="material-symbols-outlined text-sm">call</span>
-                    {testLoading ? "Lancement..." : "Lancer l'appel"}
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className="flex justify-end gap-3">
-                <button onClick={() => setShowTestModal(false)} className="rounded-lg px-5 py-2.5 text-sm text-on-surface-variant">Fermer</button>
-                <button onClick={() => { setShowTestModal(false); handlePublish(); }} className="rounded-lg bg-gradient-to-r from-primary to-secondary px-5 py-2.5 text-sm font-bold text-white">
-                  Publier d&apos;abord
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
+        <TestModal
+          agent={{
+            id: agent.id,
+            name: edits.name || agent.name,
+            vapiAgentId: agent.vapiAgentId,
+            prompt: edits.prompt || agent.prompt,
+            firstMessage: edits.firstMessage || agent.firstMessage,
+            language: edits.language || agent.language,
+            voiceProvider: edits.voiceProvider || agent.voiceProvider,
+            voiceId: edits.voiceId || agent.voiceId,
+          }}
+          onClose={() => setShowTestModal(false)}
+        />
       )}
     </div>
   );

@@ -1,18 +1,17 @@
 "use client";
 
 import { useState } from "react";
+import { useWorkspace } from "@/providers/workspace-provider";
+import { useAuth } from "@/providers/auth-provider";
 
 interface TabApiProps {
-  agent: { id: string; name: string };
+  agent: { id: string; name: string; workspaceId?: string; vapiAgentId?: string; voiceProvider?: string; voiceId?: string; llmModel?: string; temperature?: number; language?: string };
 }
-
-const IDS = [
-  { label: "Company ID", value: "comp_callpme_prod" },
-  { label: "Workspace ID", value: "ws_1a2b3c4d5e" },
-];
 
 export function TabApi({ agent }: TabApiProps) {
   const [copied, setCopied] = useState<string | null>(null);
+  const { workspaceId } = useWorkspace();
+  const { user } = useAuth();
 
   const copy = (label: string, value: string) => {
     navigator.clipboard.writeText(value);
@@ -20,15 +19,22 @@ export function TabApi({ agent }: TabApiProps) {
     setTimeout(() => setCopied(null), 2000);
   };
 
-  const entries = [...IDS, { label: "Agent ID", value: agent.id }];
+  const entries = [
+    { label: "User ID", value: user?.id || "—" },
+    { label: "Workspace ID", value: workspaceId || agent.workspaceId || "—" },
+    { label: "Agent ID", value: agent.id || "—" },
+    ...(agent.vapiAgentId ? [{ label: "Vapi Agent ID", value: agent.vapiAgentId }] : []),
+  ];
 
   const config = JSON.stringify(
     {
       agentId: agent.id,
+      workspaceId: workspaceId || agent.workspaceId,
       name: agent.name,
-      voice: { provider: "cartesia", voiceId: "gabriel-fr" },
-      llm: { model: "gemini-2.5-flash", temperature: 0.4 },
-      language: "fr-FR",
+      voice: { provider: agent.voiceProvider || "cartesia", voiceId: agent.voiceId || "" },
+      llm: { model: agent.llmModel || "gemini-2.5-flash", temperature: agent.temperature ?? 0.4 },
+      language: agent.language || "fr-FR",
+      ...(agent.vapiAgentId ? { vapiAgentId: agent.vapiAgentId } : {}),
     },
     null,
     2
@@ -51,7 +57,8 @@ export function TabApi({ agent }: TabApiProps) {
               </div>
               <button
                 onClick={() => copy(e.label, e.value)}
-                className="ml-4 flex items-center gap-1 rounded-lg bg-surface-container-high px-3 py-1.5 text-xs font-bold text-on-surface-variant transition-all hover:text-primary"
+                disabled={e.value === "—"}
+                className="ml-4 flex items-center gap-1 rounded-lg bg-surface-container-high px-3 py-1.5 text-xs font-bold text-on-surface-variant transition-all hover:text-primary disabled:opacity-30"
               >
                 <span className="material-symbols-outlined text-sm">
                   {copied === e.label ? "check" : "content_copy"}
