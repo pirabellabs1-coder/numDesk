@@ -136,8 +136,21 @@ function VocalMode({ agent }: { agent: TestModalProps["agent"] }) {
       const lang = agent.language || "fr-FR";
       const transcriberLang = lang.startsWith("fr") ? "fr" : lang.split("-")[0] || "fr";
 
+      // Build voice config with proper model and speed settings per provider
+      const voiceConfig: Record<string, unknown> = {
+        provider: vapiVoiceProvider,
+        voiceId: voiceId,
+      };
+      if (voiceProvider === "cartesia") {
+        voiceConfig.model = "sonic-2";
+        voiceConfig.language = transcriberLang;
+        voiceConfig.experimentalControls = { speed: "normal" };
+      }
+      if (voiceProvider === "elevenlabs") {
+        voiceConfig.model = "eleven_multilingual_v2";
+      }
+
       // Use inline assistant config so the test ALWAYS matches the editor selection
-      // This avoids relying on the stored Vapi assistant config which may be stale
       await vapi.start({
         model: {
           provider: "google",
@@ -145,10 +158,7 @@ function VocalMode({ agent }: { agent: TestModalProps["agent"] }) {
           messages: [{ role: "system", content: agent.prompt || "Tu es un assistant téléphonique professionnel." }],
           temperature: 0.4,
         },
-        voice: {
-          provider: vapiVoiceProvider,
-          voiceId: voiceId,
-        },
+        voice: voiceConfig,
         transcriber: {
           provider: "deepgram",
           language: transcriberLang,
