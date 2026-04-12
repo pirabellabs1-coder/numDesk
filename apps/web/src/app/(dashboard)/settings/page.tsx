@@ -3,13 +3,22 @@
 import { useState } from "react";
 import { useAuth } from "@/providers/auth-provider";
 import { useToast } from "@/providers/toast-provider";
+import { useWorkspace } from "@/providers/workspace-provider";
+import { useWorkspaceMembers, useSendInvitation, useCancelInvitation } from "@/hooks/use-workspace-members";
 import { createClient } from "@/lib/supabase/client";
 
 export default function SettingsPage() {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { workspaceId } = useWorkspace();
+  const { data: membersData } = useWorkspaceMembers(workspaceId);
+  const sendInvitation = useSendInvitation();
+  const cancelInvitation = useCancelInvitation();
   const [tab, setTab] = useState("profile");
   const [saving, setSaving] = useState(false);
+  const [showInviteModal, setShowInviteModal] = useState(false);
+  const [inviteEmail, setInviteEmail] = useState("");
+  const [inviteRole, setInviteRole] = useState("member");
 
   // Extract user data from auth
   const meta = user?.user_metadata || {};
@@ -147,17 +156,24 @@ export default function SettingsPage() {
       {tab === "members" && (
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <p className="text-sm text-on-surface-variant">1 membre dans ce workspace</p>
-            <button className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-primary to-secondary px-4 py-2 text-sm font-bold text-white">
+            <p className="text-sm text-on-surface-variant">
+              {(membersData?.members?.length || 1)} membre{(membersData?.members?.length || 1) > 1 ? "s" : ""} dans ce workspace
+            </p>
+            <button
+              onClick={() => setShowInviteModal(true)}
+              className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-primary to-secondary px-4 py-2 text-sm font-bold text-white"
+            >
               <span className="material-symbols-outlined text-sm">person_add</span>
               Inviter un membre
             </button>
           </div>
+
+          {/* Members table */}
           <div className="overflow-hidden rounded-2xl border border-white/5 bg-card">
             <table className="w-full border-collapse">
               <thead>
                 <tr className="bg-surface-container-low/50">
-                  {["Membre", "Rôle", "Dernière connexion", ""].map((h) => (
+                  {["Membre", "Rôle", "Statut", ""].map((h) => (
                     <th key={h} className="px-6 py-4 text-left text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
                       {h}
                     </th>
@@ -165,29 +181,140 @@ export default function SettingsPage() {
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-t border-white/5">
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-3">
-                      <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-secondary text-xs font-bold text-white">
-                        {initials}
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium text-on-surface">{`${firstName} ${lastName}`.trim() || "Utilisateur"}</p>
-                        <p className="text-xs text-on-surface-variant">{email}</p>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className="rounded-md bg-primary/10 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-primary">
-                      Admin
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 text-xs text-on-surface-variant">Aujourd&apos;hui</td>
-                  <td className="px-6 py-4 text-xs text-on-surface-variant">Vous</td>
-                </tr>
+                {(membersData?.members || [{ id: "self", email, firstName, lastName, role: "owner", userId: user?.id }]).map((m: any) => {
+                  const mInitials = `${(m.firstName || "")[0] || ""}${(m.lastName || "")[0] || ""}`.toUpperCase() || "?";
+                  const mName = `${m.firstName || ""} ${m.lastName || ""}`.trim() || m.email?.split("@")[0] || "—";
+                  const isYou = m.userId === user?.id;
+                  return (
+                    <tr key={m.id} className="border-t border-white/5">
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-3">
+                          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-secondary text-xs font-bold text-white">
+                            {mInitials}
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium text-on-surface">{mName}</p>
+                            <p className="text-xs text-on-surface-variant">{m.email}</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className={`rounded-md px-2 py-1 text-[10px] font-bold uppercase tracking-wider ${
+                          m.role === "owner" ? "bg-secondary/10 text-secondary" : "bg-primary/10 text-primary"
+                        }`}>
+                          {m.role === "owner" ? "Propriétaire" : m.role === "admin" ? "Admin" : "Membre"}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 text-xs text-on-surface-variant">
+                        {isYou ? "Connecté" : "Actif"}
+                      </td>
+                      <td className="px-6 py-4 text-xs text-on-surface-variant">
+                        {isYou ? "Vous" : ""}
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
+
+          {/* Pending invitations */}
+          {(membersData?.invitations?.length || 0) > 0 && (
+            <div className="space-y-3">
+              <h3 className="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Invitations en attente</h3>
+              {membersData!.invitations.map((inv: any) => (
+                <div key={inv.id} className="flex items-center justify-between rounded-xl border border-white/5 bg-card px-5 py-3">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-400/10">
+                      <span className="material-symbols-outlined text-sm text-orange-400">mail</span>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-on-surface">{inv.email}</p>
+                      <p className="text-[10px] text-on-surface-variant">
+                        Expire le {new Date(inv.expiresAt).toLocaleDateString("fr-FR")}
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => cancelInvitation.mutate(inv.id, {
+                      onSuccess: () => toast("Invitation annulée"),
+                      onError: (e: any) => toast(e.message || "Erreur", "error"),
+                    })}
+                    className="rounded-lg px-3 py-1.5 text-xs font-bold text-on-surface-variant transition-colors hover:bg-error/10 hover:text-error"
+                  >
+                    Annuler
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Invite modal */}
+          {showInviteModal && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+              <div className="w-full max-w-md rounded-2xl border border-white/10 bg-surface p-8">
+                <h2 className="mb-2 text-xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
+                  Inviter un membre
+                </h2>
+                <p className="mb-6 text-sm text-on-surface-variant">
+                  Un email d&apos;invitation sera envoyé avec un lien d&apos;accès au workspace.
+                </p>
+                <div className="space-y-4">
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-semibold text-on-surface-variant">Email</label>
+                    <input
+                      type="email"
+                      value={inviteEmail}
+                      onChange={(e) => setInviteEmail(e.target.value)}
+                      placeholder="collaborateur@email.com"
+                      className="input-field"
+                      autoFocus
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-semibold text-on-surface-variant">Rôle</label>
+                    <select
+                      value={inviteRole}
+                      onChange={(e) => setInviteRole(e.target.value)}
+                      className="input-field"
+                    >
+                      <option value="member">Membre — Lecture et utilisation</option>
+                      <option value="admin">Admin — Gestion complète</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="mt-6 flex justify-end gap-3">
+                  <button
+                    onClick={() => { setShowInviteModal(false); setInviteEmail(""); }}
+                    className="rounded-lg px-5 py-2.5 text-sm text-on-surface-variant hover:text-on-surface"
+                  >
+                    Annuler
+                  </button>
+                  <button
+                    onClick={() => {
+                      if (!inviteEmail.trim() || !workspaceId) return;
+                      sendInvitation.mutate(
+                        { workspaceId, email: inviteEmail.trim(), role: inviteRole },
+                        {
+                          onSuccess: () => {
+                            toast("Invitation envoyée par email !");
+                            setShowInviteModal(false);
+                            setInviteEmail("");
+                          },
+                          onError: (e: any) => toast(e.message || "Erreur lors de l'envoi", "error"),
+                        }
+                      );
+                    }}
+                    disabled={sendInvitation.isPending || !inviteEmail.trim()}
+                    className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-primary to-secondary px-5 py-2.5 text-sm font-bold text-white disabled:opacity-50"
+                  >
+                    <span className="material-symbols-outlined text-sm">send</span>
+                    {sendInvitation.isPending ? "Envoi..." : "Envoyer l'invitation"}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
 

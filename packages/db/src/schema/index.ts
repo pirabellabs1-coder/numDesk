@@ -31,3 +31,5 @@ export * from "./subscriptions";
 export * from "./credit-purchases";
 export * from "./promo-codes";
 export * from "./notifications";
+export * from "./workspace-members";
+export * from "./workspace-invitations";

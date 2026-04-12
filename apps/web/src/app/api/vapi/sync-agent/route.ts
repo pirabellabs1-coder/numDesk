@@ -25,6 +25,7 @@ export async function POST(req: NextRequest) {
         firstMessage: agent.firstMessage || undefined,
         voiceProvider: agent.voiceProvider || undefined,
         voiceId: agent.voiceId || undefined,
+        llmModel: agent.llmModel || "gemini-2.5-flash",
         language: agent.language || undefined,
         temperature: Number(agent.temperature) || 0.4,
       });

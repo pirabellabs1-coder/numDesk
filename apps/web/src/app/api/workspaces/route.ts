@@ -1,8 +1,8 @@
 import { NextRequest } from "next/server";
 import { withAuth, apiSuccess, handleApiError, validateBody } from "@/lib/api-helpers";
 import { getDb } from "@/lib/db";
-import { workspaces, users, subscriptions } from "@vocalia/db";
-import { eq } from "drizzle-orm";
+import { workspaces, users, subscriptions, workspaceMembers } from "@vocalia/db";
+import { eq, or } from "drizzle-orm";
 import { createWorkspaceSchema, PLANS } from "@vocalia/shared";
 import type { PlanSlug } from "@vocalia/shared";
 
@@ -28,8 +28,29 @@ export async function GET() {
     const { user } = await withAuth();
     const db = getDb();
     const profileId = await getUserProfileId(user);
-    const results = await db.select().from(workspaces).where(eq(workspaces.userId, profileId));
-    return apiSuccess(results);
+
+    // Get owned workspaces
+    const owned = await db.select().from(workspaces).where(eq(workspaces.userId, profileId));
+
+    // Get workspaces where user is a member (invited)
+    const memberRows = await db.select({ workspaceId: workspaceMembers.workspaceId }).from(workspaceMembers).where(eq(workspaceMembers.userId, profileId));
+    const memberWorkspaceIds = memberRows.map((r) => r.workspaceId);
+
+    let shared: typeof owned = [];
+    if (memberWorkspaceIds.length > 0) {
+      shared = await db.select().from(workspaces).where(
+        or(...memberWorkspaceIds.map((id) => eq(workspaces.id, id)))
+      );
+    }
+
+    // Merge and deduplicate
+    const allIds = new Set(owned.map((w) => w.id));
+    const merged = [...owned];
+    for (const w of shared) {
+      if (!allIds.has(w.id)) merged.push(w);
+    }
+
+    return apiSuccess(merged);
   } catch (error) {
     return handleApiError(error);
   }

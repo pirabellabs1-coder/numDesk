@@ -121,18 +121,31 @@ export async function updateVapiAssistant(assistantId: string, updates: {
   firstMessage?: string;
   voiceProvider?: string;
   voiceId?: string;
+  llmModel?: string;
   language?: string;
   temperature?: number;
 }) {
   const body: Record<string, unknown> = {};
   if (updates.name) body.name = updates.name;
   if (updates.firstMessage) body.firstMessage = updates.firstMessage;
-  if (updates.prompt) {
-    body.model = { messages: [{ role: "system", content: updates.prompt }] };
+
+  // Vapi requires provider + model whenever model object is sent
+  const needsModel = updates.prompt || updates.temperature !== undefined || updates.llmModel;
+  if (needsModel) {
+    const llmModel = updates.llmModel || "gemini-2.5-flash";
+    const modelObj: Record<string, unknown> = {
+      provider: getModelProvider(llmModel),
+      model: llmModel,
+    };
+    if (updates.prompt) {
+      modelObj.messages = [{ role: "system", content: updates.prompt }];
+    }
+    if (updates.temperature !== undefined) {
+      modelObj.temperature = updates.temperature;
+    }
+    body.model = modelObj;
   }
-  if (updates.temperature !== undefined) {
-    body.model = { ...(body.model as Record<string, unknown> || {}), temperature: updates.temperature };
-  }
+
   if (updates.voiceProvider || updates.voiceId) {
     body.voice = getVoiceConfig(updates.voiceProvider, updates.voiceId);
   }
