@@ -12,6 +12,7 @@ import { TabReglages } from "@/components/dashboard/agent-editor/tab-reglages";
 import { TabAnalyses } from "@/components/dashboard/agent-editor/tab-analyses";
 import { TabApi } from "@/components/dashboard/agent-editor/tab-api";
 import { TabVersions } from "@/components/dashboard/agent-editor/tab-versions";
+import { TabOutils } from "@/components/dashboard/agent-editor/tab-outils";
 
 const TABS = [
   { id: "agent", label: "AGENT" },
@@ -192,13 +193,7 @@ export default function AgentEditorPage({
         <div className="mx-auto max-w-3xl">
           {activeTab === "agent" && <TabAgent agent={editableAgent} onChange={(field: string, value: any) => setEdits((prev) => ({ ...prev, [field]: value }))} />}
           {activeTab === "parole" && <TabParole agent={editableAgent} onChange={(field: string, value: any) => setEdits((prev) => ({ ...prev, [field]: value }))} />}
-          {activeTab === "outils" && (
-            <div className="py-8 text-center text-on-surface-variant">
-              <span className="material-symbols-outlined mb-3 text-4xl">build</span>
-              <p>Aucun outil externe configuré.</p>
-              <p className="mt-2 text-xs">Les outils seront disponibles une fois l&apos;intégration Vapi complète.</p>
-            </div>
-          )}
+          {activeTab === "outils" && <TabOutils agent={editableAgent} onChange={(field: string, value: any) => setEdits((prev) => ({ ...prev, [field]: value }))} />}
           {activeTab === "reglages" && <TabReglages agent={editableAgent} onChange={(field: string, value: any) => setEdits((prev) => ({ ...prev, [field]: value }))} />}
           {activeTab === "analyses" && <TabAnalyses />}
           {activeTab === "versions" && <TabVersions />}

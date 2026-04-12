@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useVoices } from "@/hooks/use-voices";
+import { Play, Pause, Loader2, Volume2 } from "lucide-react";
 
 const providerColors: Record<string, string> = {
   cartesia: "text-tertiary",
@@ -11,9 +12,16 @@ const providerColors: Record<string, string> = {
 };
 
 const qualityBadge: Record<string, { label: string; style: string }> = {
-  premium: { label: "Premium", style: "bg-secondary/10 text-secondary" },
-  standard: { label: "Standard", style: "bg-white/5 text-on-surface-variant" },
-  custom: { label: "Custom", style: "bg-orange-400/10 text-orange-400" },
+  premium: { label: "PREMIUM", style: "bg-secondary/10 text-secondary" },
+  standard: { label: "STANDARD", style: "bg-white/5 text-on-surface-variant" },
+  custom: { label: "CUSTOM", style: "bg-orange-400/10 text-orange-400" },
+};
+
+const providerLabel: Record<string, string> = {
+  cartesia: "Cartesia",
+  elevenlabs: "ElevenLabs",
+  google: "Google",
+  custom: "Custom",
 };
 
 export function TabParole({ agent, onChange }: { agent?: any; onChange?: (field: string, value: any) => void }) {
@@ -22,13 +30,73 @@ export function TabParole({ agent, onChange }: { agent?: any; onChange?: (field:
   const [hesitations, setHesitations] = useState(true);
   const [frNumbers, setFrNumbers] = useState(true);
 
+  // Audio preview state
+  const [playingVoiceId, setPlayingVoiceId] = useState<string | null>(null);
+  const [loadingVoiceId, setLoadingVoiceId] = useState<string | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
   const voiceList = voicesData ?? [];
 
   const handleSelectVoice = (voice: any) => {
-    const voiceLabel = `${voice.provider === "cartesia" ? "Cartesia" : voice.provider === "elevenlabs" ? "ElevenLabs" : voice.provider === "google" ? "Google" : "Custom"} — ${voice.name}`;
+    const voiceLabel = `${providerLabel[voice.provider] || "Custom"} — ${voice.name}`;
     setSelectedVoiceId(voice.voiceId || voice.id);
     onChange?.("voiceId", voiceLabel);
     onChange?.("voiceProvider", voice.provider);
+  };
+
+  const handlePreview = async (voice: any, e: React.MouseEvent) => {
+    e.stopPropagation();
+    const vid = voice.voiceId || voice.id;
+
+    // If already playing this voice, stop it
+    if (playingVoiceId === vid && audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
+      setPlayingVoiceId(null);
+      return;
+    }
+
+    // Stop any existing audio
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
+      setPlayingVoiceId(null);
+    }
+
+    setLoadingVoiceId(vid);
+
+    try {
+      const res = await fetch("/api/voices/preview", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          voiceId: voice.voiceId || voice.id,
+          provider: voice.provider,
+        }),
+      });
+
+      if (!res.ok) {
+        setLoadingVoiceId(null);
+        return;
+      }
+
+      const data = await res.json();
+      if (!data.audio) { setLoadingVoiceId(null); return; }
+
+      const audio = new Audio(`data:audio/mp3;base64,${data.audio}`);
+      audioRef.current = audio;
+
+      audio.onended = () => {
+        setPlayingVoiceId(null);
+        audioRef.current = null;
+      };
+
+      await audio.play();
+      setPlayingVoiceId(vid);
+      setLoadingVoiceId(null);
+    } catch {
+      setLoadingVoiceId(null);
+    }
   };
 
   return (
@@ -59,8 +127,12 @@ export function TabParole({ agent, onChange }: { agent?: any; onChange?: (field:
         ) : (
           <div className="space-y-2">
             {voiceList.map((v: any) => {
-              const isSelected = selectedVoiceId === (v.voiceId || v.id) || agent?.voiceId?.includes(v.name);
+              const vid = v.voiceId || v.id;
+              const isSelected = selectedVoiceId === vid || agent?.voiceId?.includes(v.name);
               const quality = qualityBadge[v.quality as string] ?? qualityBadge["standard"]!;
+              const isPlaying = playingVoiceId === vid;
+              const isLoading = loadingVoiceId === vid;
+
               return (
                 <button
                   key={v.id}
@@ -71,15 +143,18 @@ export function TabParole({ agent, onChange }: { agent?: any; onChange?: (field:
                       : "border-white/5 bg-surface-container-low hover:border-white/10"
                   }`}
                 >
-                  <div className={`flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br ${
+                  {/* Avatar */}
+                  <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br ${
                     v.gender === "male" ? "from-primary to-secondary" : "from-secondary to-tertiary"
                   }`}>
                     <span className="material-symbols-outlined text-sm text-white">person</span>
                   </div>
-                  <div className="flex-1">
+
+                  {/* Info */}
+                  <div className="flex-1 min-w-0">
                     <p className="text-sm font-bold text-on-surface">
                       <span className={providerColors[v.provider] ?? "text-on-surface-variant"}>
-                        {v.provider === "cartesia" ? "Cartesia" : v.provider === "elevenlabs" ? "ElevenLabs" : v.provider === "google" ? "Google" : "Custom"}
+                        {providerLabel[v.provider] || "Custom"}
                       </span>
                       {" — "}{v.name}
                     </p>
@@ -87,11 +162,35 @@ export function TabParole({ agent, onChange }: { agent?: any; onChange?: (field:
                       {v.gender === "male" ? "Homme" : "Femme"} · {v.language}
                     </p>
                   </div>
-                  <span className={`rounded-md px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${quality.style}`}>
+
+                  {/* Play preview button */}
+                  <button
+                    onClick={(e) => handlePreview(v, e)}
+                    disabled={isLoading}
+                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-all ${
+                      isPlaying
+                        ? "bg-primary text-white"
+                        : "bg-white/5 text-on-surface-variant hover:bg-white/10 hover:text-primary"
+                    }`}
+                    title="Écouter la voix"
+                  >
+                    {isLoading ? (
+                      <Loader2 size={14} className="animate-spin" />
+                    ) : isPlaying ? (
+                      <Pause size={14} />
+                    ) : (
+                      <Play size={14} className="ml-0.5" />
+                    )}
+                  </button>
+
+                  {/* Quality badge */}
+                  <span className={`shrink-0 rounded-md px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${quality.style}`}>
                     {quality.label}
                   </span>
+
+                  {/* Selected check */}
                   {isSelected && (
-                    <span className="material-symbols-outlined text-primary">check_circle</span>
+                    <span className="material-symbols-outlined shrink-0 text-primary">check_circle</span>
                   )}
                 </button>
               );
