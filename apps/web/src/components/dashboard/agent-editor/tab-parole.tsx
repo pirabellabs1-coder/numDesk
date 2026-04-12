@@ -35,7 +35,8 @@ export function TabParole({ agent, onChange }: { agent?: any; onChange?: (field:
   const [loadingVoiceId, setLoadingVoiceId] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const voiceList = voicesData ?? [];
+  // Filter out Google voices — not supported by Vapi
+  const voiceList = (voicesData ?? []).filter((v: any) => v.provider !== "google");
 
   const handleSelectVoice = (voice: any) => {
     const actualVoiceId = voice.voiceId || voice.id;

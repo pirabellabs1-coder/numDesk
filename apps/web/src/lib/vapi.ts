@@ -68,11 +68,11 @@ function getVoiceConfig(voiceProvider?: string, voiceId?: string) {
   if (voiceProvider === "deepgram" && cleanVoiceId) {
     return { provider: "deepgram" as const, voiceId: cleanVoiceId };
   }
-  // Google TTS voices are not supported by Vapi — fall back to Cartesia default
-  // All other unknown providers also fall back
+  // Google TTS voices are not supported by Vapi — fall back to Cartesia French voice
+  // All other unknown providers also fall back to Sophie (Calm) — French female
   return {
     provider: "cartesia" as const,
-    voiceId: "a0e99841-438c-4a64-b679-ae501e7d6091",
+    voiceId: "a8a1eb38-5f15-4c1d-8722-7ac0f329727d",
   };
 }
 

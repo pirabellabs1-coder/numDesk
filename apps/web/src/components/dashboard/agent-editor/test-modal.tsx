@@ -367,10 +367,15 @@ function CustomMode({ agent, onClose }: { agent: TestModalProps["agent"]; onClos
     if (!testPhone.trim()) return;
     setTestLoading(true);
     try {
+      // Normalize to E.164 format: ensure + prefix
+      let normalizedPhone = testPhone.trim().replace(/\s+/g, "");
+      if (!normalizedPhone.startsWith("+")) {
+        normalizedPhone = "+" + normalizedPhone;
+      }
       const res = await fetch("/api/vapi/call-test", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ agentId: agent.id, phoneNumber: testPhone }),
+        body: JSON.stringify({ agentId: agent.id, phoneNumber: normalizedPhone }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error?.message || "Erreur");
@@ -435,9 +440,10 @@ function CustomMode({ agent, onClose }: { agent: TestModalProps["agent"]; onClos
             <input
               value={testPhone}
               onChange={(e) => setTestPhone(e.target.value)}
-              placeholder="+33612345678"
+              placeholder="+22901234567"
               className="w-full rounded-lg bg-surface-container-lowest px-4 py-2.5 font-mono text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-1 focus:ring-primary"
             />
+            <p className="mt-1 text-[10px] text-on-surface-variant">Format E.164 avec indicatif pays (ex: +229, +33, +1)</p>
           </div>
 
           <button

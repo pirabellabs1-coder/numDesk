@@ -9,10 +9,16 @@ import { checkCredits } from "@/lib/check-credits";
 export async function POST(req: NextRequest) {
   try {
     await withAuth();
-    const { agentId, phoneNumber } = await req.json();
+    const { agentId, phoneNumber: rawPhone } = await req.json();
 
-    if (!agentId || !phoneNumber) {
+    if (!agentId || !rawPhone) {
       return apiError("VALIDATION_ERROR", "agentId et phoneNumber requis", 422);
+    }
+
+    // Normalize to E.164 format
+    let phoneNumber = rawPhone.trim().replace(/\s+/g, "");
+    if (!phoneNumber.startsWith("+")) {
+      phoneNumber = "+" + phoneNumber;
     }
 
     const db = getDb();
