@@ -188,12 +188,23 @@ export async function deleteVapiAssistant(assistantId: string) {
   return res.json();
 }
 
-export async function createVapiCall(assistantId: string, phoneNumber: string) {
-  const res = await fetch(`${VAPI_API_URL}/call/phone`, {
+export async function createVapiCall(assistantId: string, phoneNumber: string, phoneNumberId?: string) {
+  // List available Vapi phone numbers if no phoneNumberId provided
+  if (!phoneNumberId) {
+    const phoneNums = await listVapiPhoneNumbers();
+    if (phoneNums.length > 0) {
+      phoneNumberId = phoneNums[0].id;
+    } else {
+      throw new Error("Aucun numéro de téléphone configuré dans Vapi. Importez d'abord un numéro Twilio ou SIP dans votre compte Vapi pour passer des appels sortants.");
+    }
+  }
+
+  const res = await fetch(`${VAPI_API_URL}/call`, {
     method: "POST",
     headers: getVapiHeaders(),
     body: JSON.stringify({
       assistantId,
+      phoneNumberId,
       customer: { number: phoneNumber },
     }),
   });
@@ -203,6 +214,19 @@ export async function createVapiCall(assistantId: string, phoneNumber: string) {
     let detail = errText;
     try { detail = JSON.parse(errText).message || errText; } catch {}
     throw new Error(`Erreur appel Vapi (${res.status}): ${detail}`);
+  }
+
+  return res.json();
+}
+
+export async function listVapiPhoneNumbers() {
+  const res = await fetch(`${VAPI_API_URL}/phone-number`, {
+    method: "GET",
+    headers: getVapiHeaders(),
+  });
+
+  if (!res.ok) {
+    return [];
   }
 
   return res.json();
