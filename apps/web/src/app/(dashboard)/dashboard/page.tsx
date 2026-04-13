@@ -30,7 +30,7 @@ const statusStyles: Record<string, string> = {
 };
 
 export default function DashboardPage() {
-  const { workspaceId, workspace } = useWorkspace();
+  const { workspaceId, workspace, ownedWorkspaces, sharedWorkspaces, setActiveWorkspace } = useWorkspace();
   const { user } = useAuth();
   const { data: statsData, isLoading: loadingStats } = useStats(workspaceId);
   const { data: convData } = useConversations(workspaceId, { limit: 4 });
@@ -168,6 +168,68 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
+
+      {/* Workspace switcher — visible when user has shared workspaces */}
+      {sharedWorkspaces.length > 0 && (
+        <div className="rounded-2xl border border-white/5 bg-card p-3 sm:p-4">
+          <div className="mb-3 flex items-center gap-2">
+            <span className="material-symbols-outlined text-sm text-on-surface-variant">swap_horiz</span>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Mes espaces</span>
+          </div>
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
+            {/* Personal workspaces */}
+            {ownedWorkspaces.map((w) => (
+              <button
+                key={w.id}
+                onClick={() => setActiveWorkspace(w.id)}
+                className={`flex items-center gap-3 rounded-xl border px-4 py-3 text-left transition-all ${
+                  w.id === workspaceId
+                    ? "border-primary/30 bg-primary/5"
+                    : "border-white/5 hover:border-white/10 hover:bg-white/[0.02]"
+                }`}
+              >
+                <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${
+                  w.id === workspaceId ? "bg-primary/20" : "bg-surface-container-high"
+                }`}>
+                  <span className={`material-symbols-outlined text-base ${w.id === workspaceId ? "text-primary" : "text-on-surface-variant"}`}>business</span>
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className={`truncate text-sm font-bold ${w.id === workspaceId ? "text-primary" : "text-on-surface"}`}>{w.name}</p>
+                  <p className="text-[10px] text-on-surface-variant">Espace personnel</p>
+                </div>
+                {w.id === workspaceId && (
+                  <span className="material-symbols-outlined text-sm text-primary">check_circle</span>
+                )}
+              </button>
+            ))}
+            {/* Shared workspaces */}
+            {sharedWorkspaces.map((w) => (
+              <button
+                key={w.id}
+                onClick={() => setActiveWorkspace(w.id)}
+                className={`flex items-center gap-3 rounded-xl border px-4 py-3 text-left transition-all ${
+                  w.id === workspaceId
+                    ? "border-secondary/30 bg-secondary/5"
+                    : "border-white/5 hover:border-white/10 hover:bg-white/[0.02]"
+                }`}
+              >
+                <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${
+                  w.id === workspaceId ? "bg-secondary/20" : "bg-surface-container-high"
+                }`}>
+                  <span className={`material-symbols-outlined text-base ${w.id === workspaceId ? "text-secondary" : "text-on-surface-variant"}`}>group</span>
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className={`truncate text-sm font-bold ${w.id === workspaceId ? "text-secondary" : "text-on-surface"}`}>{w.name}</p>
+                  <p className="text-[10px] text-on-surface-variant">Espace partagé</p>
+                </div>
+                {w.id === workspaceId && (
+                  <span className="material-symbols-outlined text-sm text-secondary">check_circle</span>
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">

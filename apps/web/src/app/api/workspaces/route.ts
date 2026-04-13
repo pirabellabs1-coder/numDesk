@@ -43,11 +43,11 @@ export async function GET() {
       );
     }
 
-    // Merge and deduplicate
-    const allIds = new Set(owned.map((w) => w.id));
-    const merged = [...owned];
+    // Merge and deduplicate, tagging owned vs shared
+    const ownedIds = new Set(owned.map((w) => w.id));
+    const merged = owned.map((w) => ({ ...w, isOwned: true }));
     for (const w of shared) {
-      if (!allIds.has(w.id)) merged.push(w);
+      if (!ownedIds.has(w.id)) merged.push({ ...w, isOwned: false });
     }
 
     return apiSuccess(merged);

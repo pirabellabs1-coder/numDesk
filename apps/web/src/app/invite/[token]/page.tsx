@@ -47,7 +47,7 @@ export default function AcceptInvitePage({ params }: { params: Promise<{ token: 
 
   const goToWorkspace = () => {
     if (workspaceId) {
-      localStorage.setItem("activeWorkspaceId", workspaceId);
+      localStorage.setItem("active-workspace", workspaceId);
     }
     router.push("/dashboard");
   };

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useState, useRef, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { useSidebar } from "./sidebar-context";
 import { useWorkspace } from "@/providers/workspace-provider";
@@ -42,8 +43,21 @@ const navItems = [
 export function Sidebar() {
   const pathname = usePathname();
   const { isOpen, toggle } = useSidebar();
-  const { workspace } = useWorkspace();
+  const { workspace, workspaces, ownedWorkspaces, sharedWorkspaces, setActiveWorkspace } = useWorkspace();
   const { user, signOut } = useAuth();
+  const [switcherOpen, setSwitcherOpen] = useState(false);
+  const switcherRef = useRef<HTMLDivElement>(null);
+
+  // Close switcher on click outside
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (switcherRef.current && !switcherRef.current.contains(e.target as Node)) {
+        setSwitcherOpen(false);
+      }
+    };
+    if (switcherOpen) document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [switcherOpen]);
 
   const planSlug = ((workspace as any)?.planSlug as PlanSlug) || "trial";
 
@@ -93,18 +107,83 @@ export function Sidebar() {
         </div>
 
         {/* Workspace switcher */}
-        <div className="mb-2 px-1">
-          <button className="flex w-full items-center justify-between rounded-lg border border-white/5 bg-surface-container-low px-2.5 py-2 transition-all hover:border-primary/30">
-            <div className="flex items-center gap-2">
-              <div className="flex h-6 w-6 items-center justify-center rounded bg-primary/20">
-                <span className="material-symbols-outlined text-xs text-primary">business</span>
+        <div className="relative mb-2 px-1" ref={switcherRef}>
+          <button
+            onClick={() => setSwitcherOpen(!switcherOpen)}
+            className="flex w-full items-center justify-between rounded-lg border border-white/5 bg-surface-container-low px-2.5 py-2 transition-all hover:border-primary/30"
+          >
+            <div className="flex items-center gap-2 min-w-0">
+              <div className={`flex h-6 w-6 shrink-0 items-center justify-center rounded ${workspace?.isOwned ? "bg-primary/20" : "bg-secondary/20"}`}>
+                <span className={`material-symbols-outlined text-xs ${workspace?.isOwned ? "text-primary" : "text-secondary"}`}>
+                  {workspace?.isOwned ? "business" : "group"}
+                </span>
               </div>
-              <div className="text-left">
-                <p className="text-[11px] font-bold text-on-surface">Global Agency</p>
+              <div className="min-w-0 text-left">
+                <p className="truncate text-[11px] font-bold text-on-surface">{workspace?.name || "Workspace"}</p>
+                <p className="text-[9px] text-on-surface-variant">{workspace?.isOwned ? "Personnel" : "Partagé"}</p>
               </div>
             </div>
-            <span className="material-symbols-outlined text-sm text-on-surface-variant">unfold_more</span>
+            <span className={`material-symbols-outlined text-sm text-on-surface-variant transition-transform ${switcherOpen ? "rotate-180" : ""}`}>unfold_more</span>
           </button>
+
+          {/* Dropdown */}
+          {switcherOpen && (
+            <div className="absolute left-0 right-0 top-full z-50 mt-1 overflow-hidden rounded-xl border border-white/10 bg-surface/95 shadow-2xl backdrop-blur-xl">
+              {/* Espace personnel */}
+              {ownedWorkspaces.length > 0 && (
+                <div>
+                  <p className="px-3 pb-1 pt-2.5 text-[9px] font-bold uppercase tracking-widest text-on-surface-variant">
+                    Espace personnel
+                  </p>
+                  {ownedWorkspaces.map((w) => (
+                    <button
+                      key={w.id}
+                      onClick={() => { setActiveWorkspace(w.id); setSwitcherOpen(false); }}
+                      className={`flex w-full items-center gap-2 px-3 py-2 text-left transition-all hover:bg-white/[0.04] ${w.id === workspace?.id ? "bg-primary/5" : ""}`}
+                    >
+                      <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-primary/20">
+                        <span className="material-symbols-outlined text-[10px] text-primary">business</span>
+                      </div>
+                      <span className="truncate text-[11px] text-on-surface">{w.name}</span>
+                      {w.id === workspace?.id && (
+                        <span className="material-symbols-outlined ml-auto text-xs text-primary">check</span>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {/* Espaces partagés */}
+              {sharedWorkspaces.length > 0 && (
+                <div className={ownedWorkspaces.length > 0 ? "border-t border-white/5" : ""}>
+                  <p className="px-3 pb-1 pt-2.5 text-[9px] font-bold uppercase tracking-widest text-on-surface-variant">
+                    Espaces partagés
+                  </p>
+                  {sharedWorkspaces.map((w) => (
+                    <button
+                      key={w.id}
+                      onClick={() => { setActiveWorkspace(w.id); setSwitcherOpen(false); }}
+                      className={`flex w-full items-center gap-2 px-3 py-2 text-left transition-all hover:bg-white/[0.04] ${w.id === workspace?.id ? "bg-secondary/5" : ""}`}
+                    >
+                      <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-secondary/20">
+                        <span className="material-symbols-outlined text-[10px] text-secondary">group</span>
+                      </div>
+                      <span className="truncate text-[11px] text-on-surface">{w.name}</span>
+                      {w.id === workspace?.id && (
+                        <span className="material-symbols-outlined ml-auto text-xs text-secondary">check</span>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              <div className="border-t border-white/5 p-1.5">
+                <p className="px-2 py-1 text-[9px] text-on-surface-variant/50">
+                  {workspaces.length} workspace{workspaces.length > 1 ? "s" : ""}
+                </p>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Navigation - scrollable if needed */}

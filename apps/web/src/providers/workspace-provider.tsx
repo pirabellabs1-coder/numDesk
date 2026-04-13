@@ -15,6 +15,7 @@ type Workspace = {
   overageRateCents: number | null;
   cycleDurationDays: number;
   createdAt: string;
+  isOwned: boolean;
 };
 
 type WorkspaceContextType = {
@@ -22,6 +23,8 @@ type WorkspaceContextType = {
   workspace: Workspace | null;
   activeWorkspace: Workspace | null;
   workspaces: Workspace[];
+  ownedWorkspaces: Workspace[];
+  sharedWorkspaces: Workspace[];
   setActiveWorkspace: (id: string) => void;
   loading: boolean;
 };
@@ -31,6 +34,8 @@ const WorkspaceContext = createContext<WorkspaceContextType>({
   workspace: null,
   activeWorkspace: null,
   workspaces: [],
+  ownedWorkspaces: [],
+  sharedWorkspaces: [],
   setActiveWorkspace: () => {},
   loading: true,
 });
@@ -92,9 +97,11 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
   };
 
   const workspace = workspaces.find((w) => w.id === activeId) ?? null;
+  const ownedWorkspaces = workspaces.filter((w) => w.isOwned);
+  const sharedWorkspaces = workspaces.filter((w) => !w.isOwned);
 
   return (
-    <WorkspaceContext.Provider value={{ workspaceId: activeId, workspace, activeWorkspace: workspace, workspaces, setActiveWorkspace, loading }}>
+    <WorkspaceContext.Provider value={{ workspaceId: activeId, workspace, activeWorkspace: workspace, workspaces, ownedWorkspaces, sharedWorkspaces, setActiveWorkspace, loading }}>
       {children}
     </WorkspaceContext.Provider>
   );

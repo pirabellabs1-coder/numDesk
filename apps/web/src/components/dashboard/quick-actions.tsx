@@ -35,10 +35,10 @@ export function QuickActions() {
         <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
       )}
 
-      <div className="fixed bottom-6 left-[264px] z-50">
+      <div className="fixed bottom-6 left-4 sm:left-6 lg:left-[264px] z-50">
         {/* Actions menu */}
         {isOpen && (
-          <div className="mb-3 w-56 overflow-hidden rounded-2xl border border-white/10 bg-surface/95 shadow-2xl backdrop-blur-xl">
+          <div className="mb-3 w-[calc(100vw-2rem)] sm:w-56 max-w-[224px] overflow-hidden rounded-2xl border border-white/10 bg-surface/95 shadow-2xl backdrop-blur-xl">
             <div className="px-4 py-3 border-b border-white/5">
               <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Actions rapides</p>
             </div>

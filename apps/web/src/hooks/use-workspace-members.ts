@@ -26,3 +26,12 @@ export function useCancelInvitation() {
     onSuccess: () => qc.invalidateQueries({ queryKey: ["workspace-members"] }),
   });
 }
+
+export function useRemoveMember() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (input: { memberId: string; workspaceId: string }) =>
+      apiFetch<any>(`/workspaces/members?member_id=${input.memberId}&workspace_id=${input.workspaceId}`, { method: "DELETE" }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["workspace-members"] }),
+  });
+}

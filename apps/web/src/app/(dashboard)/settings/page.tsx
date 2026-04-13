@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useAuth } from "@/providers/auth-provider";
 import { useToast } from "@/providers/toast-provider";
 import { useWorkspace } from "@/providers/workspace-provider";
-import { useWorkspaceMembers, useSendInvitation, useCancelInvitation } from "@/hooks/use-workspace-members";
+import { useWorkspaceMembers, useSendInvitation, useCancelInvitation, useRemoveMember } from "@/hooks/use-workspace-members";
 import { createClient } from "@/lib/supabase/client";
 
 export default function SettingsPage() {
@@ -14,11 +14,13 @@ export default function SettingsPage() {
   const { data: membersData } = useWorkspaceMembers(workspaceId);
   const sendInvitation = useSendInvitation();
   const cancelInvitation = useCancelInvitation();
+  const removeMember = useRemoveMember();
   const [tab, setTab] = useState("profile");
   const [saving, setSaving] = useState(false);
   const [showInviteModal, setShowInviteModal] = useState(false);
   const [inviteEmail, setInviteEmail] = useState("");
   const [inviteRole, setInviteRole] = useState("member");
+  const [confirmRemoveId, setConfirmRemoveId] = useState<string | null>(null);
 
   // Extract user data from auth
   const meta = user?.user_metadata || {};
@@ -173,7 +175,7 @@ export default function SettingsPage() {
             <table className="w-full min-w-[500px] border-collapse">
               <thead>
                 <tr className="bg-surface-container-low/50">
-                  {["Membre", "Rôle", "Statut", ""].map((h) => (
+                  {["Membre", "Rôle", "Statut", "Actions"].map((h) => (
                     <th key={h} className="px-3 py-3 sm:px-4 md:px-6 md:py-4 text-left text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
                       {h}
                     </th>
@@ -208,8 +210,44 @@ export default function SettingsPage() {
                       <td className="px-3 py-3 sm:px-4 md:px-6 md:py-4 text-xs text-on-surface-variant">
                         {isYou ? "Connecté" : "Actif"}
                       </td>
-                      <td className="px-3 py-3 sm:px-4 md:px-6 md:py-4 text-xs text-on-surface-variant">
-                        {isYou ? "Vous" : ""}
+                      <td className="px-3 py-3 sm:px-4 md:px-6 md:py-4 text-right">
+                        {isYou ? (
+                          <span className="text-xs text-on-surface-variant">Vous</span>
+                        ) : m.role === "owner" ? null : (
+                          confirmRemoveId === m.id ? (
+                            <div className="flex items-center justify-end gap-2">
+                              <span className="text-xs text-on-surface-variant">Confirmer ?</span>
+                              <button
+                                onClick={() => {
+                                  removeMember.mutate(
+                                    { memberId: m.id, workspaceId: workspaceId! },
+                                    {
+                                      onSuccess: () => { toast("Membre retiré"); setConfirmRemoveId(null); },
+                                      onError: (e: any) => { toast(e.message || "Erreur", "error"); setConfirmRemoveId(null); },
+                                    }
+                                  );
+                                }}
+                                disabled={removeMember.isPending}
+                                className="rounded-lg bg-error/10 px-3 py-1.5 text-xs font-bold text-error transition-colors hover:bg-error/20"
+                              >
+                                {removeMember.isPending ? "..." : "Oui, retirer"}
+                              </button>
+                              <button
+                                onClick={() => setConfirmRemoveId(null)}
+                                className="rounded-lg px-3 py-1.5 text-xs text-on-surface-variant hover:text-on-surface"
+                              >
+                                Non
+                              </button>
+                            </div>
+                          ) : (
+                            <button
+                              onClick={() => setConfirmRemoveId(m.id)}
+                              className="rounded-lg px-3 py-1.5 text-xs font-bold text-on-surface-variant transition-colors hover:bg-error/10 hover:text-error"
+                            >
+                              Retirer
+                            </button>
+                          )
+                        )}
                       </td>
                     </tr>
                   );

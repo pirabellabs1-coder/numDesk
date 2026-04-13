@@ -155,6 +155,48 @@ export async function POST(req: NextRequest) {
   }
 }
 
+// DELETE — Remove a member from workspace
+export async function DELETE(req: NextRequest) {
+  try {
+    const { user } = await withAuth();
+    const userId = await getProfileId(user);
+    if (!userId) return apiError("UNAUTHORIZED", "Utilisateur introuvable", 401);
+
+    const memberId = req.nextUrl.searchParams.get("member_id");
+    const workspaceId = req.nextUrl.searchParams.get("workspace_id");
+    if (!memberId || !workspaceId) return apiError("VALIDATION_ERROR", "member_id et workspace_id requis", 422);
+
+    const db = getDb();
+
+    // Verify workspace exists and requester is owner
+    const [workspace] = await db.select().from(workspaces).where(eq(workspaces.id, workspaceId));
+    if (!workspace) return apiError("NOT_FOUND", "Workspace introuvable", 404);
+    if (workspace.userId !== userId) {
+      return apiError("FORBIDDEN", "Seul le propriétaire peut retirer des membres", 403);
+    }
+
+    // Find the member record
+    const [member] = await db
+      .select()
+      .from(workspaceMembers)
+      .where(and(eq(workspaceMembers.id, memberId), eq(workspaceMembers.workspaceId, workspaceId)));
+
+    if (!member) return apiError("NOT_FOUND", "Membre introuvable", 404);
+
+    // Cannot remove yourself (owner)
+    if (member.userId === userId) {
+      return apiError("FORBIDDEN", "Vous ne pouvez pas vous retirer vous-même", 403);
+    }
+
+    // Delete the member
+    await db.delete(workspaceMembers).where(eq(workspaceMembers.id, memberId));
+
+    return apiSuccess({ message: "Membre retiré du workspace" });
+  } catch (error) {
+    return handleApiError(error);
+  }
+}
+
 function buildInvitationEmail(inviterName: string, workspaceName: string, acceptUrl: string) {
   return `
     <div style="font-family:'Inter',system-ui,sans-serif;max-width:580px;margin:0 auto;padding:40px 20px;background:#0A0B0F;">
