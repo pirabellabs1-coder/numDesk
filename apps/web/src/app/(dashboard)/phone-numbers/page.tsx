@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { usePhoneNumbers, useCreatePhoneNumber, useDeletePhoneNumber } from "@/hooks/use-phone-numbers";
 import { useAgents } from "@/hooks/use-agents";
 import { useWorkspace } from "@/providers/workspace-provider";
@@ -9,7 +10,7 @@ import { PageSkeleton } from "@/components/ui/page-skeleton";
 import { ErrorState } from "@/components/ui/error-state";
 import { EmptyState } from "@/components/ui/empty-state";
 
-type AddMode = null | "sip" | "twilio";
+type AddMode = null | "choose" | "sip" | "twilio";
 
 export default function PhoneNumbersPage() {
   const { workspaceId } = useWorkspace();
@@ -18,6 +19,7 @@ export default function PhoneNumbersPage() {
   const createNumber = useCreatePhoneNumber();
   const deleteNumber = useDeletePhoneNumber();
   const { toast } = useToast();
+  const searchParams = useSearchParams();
 
   const [addMode, setAddMode] = useState<AddMode>(null);
   const [showDelete, setShowDelete] = useState<string | null>(null);
@@ -31,7 +33,20 @@ export default function PhoneNumbersPage() {
   const [twilioNumbers, setTwilioNumbers] = useState<any[]>([]);
   const [twilioLoading, setTwilioLoading] = useState(false);
 
-  const openAdd = (mode: "sip" | "twilio") => {
+  // Auto-open choice modal from topbar button (?add=true)
+  useEffect(() => {
+    if (searchParams.get("add") === "true" && addMode === null) {
+      setAddMode("choose");
+      // Clean URL without triggering navigation
+      window.history.replaceState({}, "", "/phone-numbers");
+    }
+  }, [searchParams, addMode]);
+
+  const openChoose = () => {
+    setAddMode("choose");
+  };
+
+  const pickProvider = (mode: "sip" | "twilio") => {
     setAddMode(mode);
     setSipForm({ number: "", friendlyName: "", agentId: "" });
     setTwilioForm({ accountSid: "", authToken: "", number: "", friendlyName: "" });
@@ -60,7 +75,6 @@ export default function PhoneNumbersPage() {
     if (!twilioForm.accountSid.trim() || !twilioForm.authToken.trim()) return;
     setTwilioLoading(true);
     try {
-      // Fetch available numbers from Twilio
       const res = await fetch("/api/twilio/numbers", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -115,16 +129,10 @@ export default function PhoneNumbersPage() {
           <h1 className="text-4xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Numéros de téléphone</h1>
           <p className="mt-2 text-on-surface-variant">{activeCount} actif(s) sur {numList.length} numéro(s)</p>
         </div>
-        <div className="flex items-center gap-2">
-          <button onClick={() => openAdd("sip")} className="flex items-center gap-2 rounded-lg border border-white/10 px-4 py-2.5 text-sm font-bold text-on-surface transition-all hover:border-white/20">
-            <span className="material-symbols-outlined text-sm">router</span>
-            SIP Trunk
-          </button>
-          <button onClick={() => openAdd("twilio")} className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-primary to-secondary px-5 py-2.5 text-sm font-bold text-white">
-            <span className="material-symbols-outlined text-sm">cloud</span>
-            Twilio
-          </button>
-        </div>
+        <button onClick={openChoose} className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-primary to-secondary px-5 py-2.5 text-sm font-bold text-white transition-all hover:brightness-110">
+          <span className="material-symbols-outlined text-sm">add</span>
+          Ajouter un numéro
+        </button>
       </div>
 
       {/* KPIs */}
@@ -151,7 +159,7 @@ export default function PhoneNumbersPage() {
 
       {/* Number list */}
       {numList.length === 0 ? (
-        <EmptyState icon="call" title="Aucun numéro configuré" description="Ajoutez un numéro SIP ou Twilio pour recevoir et passer des appels avec vos agents IA." actionLabel="Ajouter un numéro SIP" onAction={() => openAdd("sip")} />
+        <EmptyState icon="call" title="Aucun numéro configuré" description="Ajoutez un numéro SIP ou Twilio pour recevoir et passer des appels avec vos agents IA." actionLabel="Ajouter un numéro" onAction={openChoose} />
       ) : (
         <div className="space-y-3">
           {numList.map((num: any) => (
@@ -199,6 +207,52 @@ export default function PhoneNumbersPage() {
         </div>
       </div>
 
+      {/* ─── CHOICE MODAL ─── */}
+      {addMode === "choose" && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setAddMode(null)}>
+          <div className="w-full max-w-md rounded-2xl border border-white/10 bg-surface p-8" onClick={(e) => e.stopPropagation()}>
+            <h2 className="mb-2 text-xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Ajouter un numéro</h2>
+            <p className="mb-6 text-sm text-on-surface-variant">Choisissez le fournisseur pour votre numéro de téléphone.</p>
+
+            <div className="space-y-3">
+              {/* SIP Trunk option */}
+              <button
+                onClick={() => pickProvider("sip")}
+                className="flex w-full items-center gap-4 rounded-xl border border-white/5 bg-surface-container-low p-5 text-left transition-all hover:border-primary/30 hover:bg-surface-container"
+              >
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10">
+                  <span className="material-symbols-outlined text-xl text-primary">router</span>
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-bold text-on-surface">SIP Trunk</p>
+                  <p className="mt-0.5 text-xs text-on-surface-variant">Connectez un numéro via votre trunk SIP existant</p>
+                </div>
+                <span className="material-symbols-outlined text-on-surface-variant">chevron_right</span>
+              </button>
+
+              {/* Twilio option */}
+              <button
+                onClick={() => pickProvider("twilio")}
+                className="flex w-full items-center gap-4 rounded-xl border border-white/5 bg-surface-container-low p-5 text-left transition-all hover:border-secondary/30 hover:bg-surface-container"
+              >
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-secondary/10">
+                  <span className="material-symbols-outlined text-xl text-secondary">cloud</span>
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-bold text-on-surface">Twilio</p>
+                  <p className="mt-0.5 text-xs text-on-surface-variant">Importez un numéro depuis votre compte Twilio</p>
+                </div>
+                <span className="material-symbols-outlined text-on-surface-variant">chevron_right</span>
+              </button>
+            </div>
+
+            <div className="mt-6 flex justify-end">
+              <button onClick={() => setAddMode(null)} className="rounded-lg px-5 py-2.5 text-sm font-bold uppercase tracking-wider text-on-surface-variant hover:text-on-surface">Annuler</button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* ─── SIP MODAL ─── */}
       {addMode === "sip" && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
@@ -226,7 +280,7 @@ export default function PhoneNumbersPage() {
               </div>
             </div>
             <div className="mt-6 flex justify-end gap-3">
-              <button onClick={() => setAddMode(null)} className="rounded-lg px-5 py-2.5 text-sm font-bold uppercase tracking-wider text-on-surface-variant hover:text-on-surface">Annuler</button>
+              <button onClick={() => setAddMode("choose")} className="rounded-lg px-5 py-2.5 text-sm font-bold uppercase tracking-wider text-on-surface-variant hover:text-on-surface">Retour</button>
               <button onClick={handleCreateSip} disabled={createNumber.isPending || !sipForm.number.trim()} className="rounded-lg bg-gradient-to-r from-primary to-secondary px-5 py-2.5 text-sm font-bold uppercase tracking-wider text-white disabled:opacity-50">
                 {createNumber.isPending ? "Enregistrement..." : "Enregistrer"}
               </button>
@@ -239,7 +293,7 @@ export default function PhoneNumbersPage() {
       {addMode === "twilio" && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
           <div className="w-full max-w-lg rounded-2xl border border-white/10 bg-surface p-8">
-            <h2 className="mb-6 text-xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Ajouter un numéro</h2>
+            <h2 className="mb-6 text-xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Ajouter un numéro Twilio</h2>
 
             {twilioStep === 1 ? (
               <>
@@ -263,7 +317,7 @@ export default function PhoneNumbersPage() {
                   </div>
                 </div>
                 <div className="mt-6 flex justify-end gap-3">
-                  <button onClick={() => setAddMode(null)} className="rounded-lg px-5 py-2.5 text-sm font-bold uppercase tracking-wider text-on-surface-variant hover:text-on-surface">Annuler</button>
+                  <button onClick={() => setAddMode("choose")} className="rounded-lg px-5 py-2.5 text-sm font-bold uppercase tracking-wider text-on-surface-variant hover:text-on-surface">Retour</button>
                   <button onClick={handleTwilioContinue} disabled={twilioLoading || !twilioForm.accountSid.trim() || !twilioForm.authToken.trim()} className="rounded-lg bg-gradient-to-r from-primary to-secondary px-5 py-2.5 text-sm font-bold uppercase tracking-wider text-white disabled:opacity-50">
                     {twilioLoading ? "Chargement..." : "Continuer"}
                   </button>
