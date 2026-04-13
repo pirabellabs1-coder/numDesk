@@ -54,16 +54,27 @@ function getTranscriberLanguage(lang?: string): string {
   return "fr";
 }
 
-function getVoiceConfig(voiceProvider?: string, voiceId?: string) {
+function getVoiceConfig(voiceProvider?: string, voiceId?: string, language?: string) {
   // If voiceId is a display label like "Cartesia — Fabien" (legacy data), strip to default
   const isDisplayLabel = voiceId && voiceId.includes(" — ");
   const cleanVoiceId = isDisplayLabel ? undefined : voiceId;
+  const lang = language?.split("-")[0] || "fr";
 
   if (voiceProvider === "elevenlabs" && cleanVoiceId) {
-    return { provider: "11labs" as const, voiceId: cleanVoiceId };
+    return {
+      provider: "11labs" as const,
+      voiceId: cleanVoiceId,
+      model: "eleven_multilingual_v2",
+    };
   }
   if (voiceProvider === "cartesia" && cleanVoiceId) {
-    return { provider: "cartesia" as const, voiceId: cleanVoiceId };
+    return {
+      provider: "cartesia" as const,
+      voiceId: cleanVoiceId,
+      model: "sonic-2",
+      language: lang,
+      experimentalControls: { speed: "normal" },
+    };
   }
   if (voiceProvider === "deepgram" && cleanVoiceId) {
     return { provider: "deepgram" as const, voiceId: cleanVoiceId };
@@ -73,6 +84,9 @@ function getVoiceConfig(voiceProvider?: string, voiceId?: string) {
   return {
     provider: "cartesia" as const,
     voiceId: "a8a1eb38-5f15-4c1d-8722-7ac0f329727d",
+    model: "sonic-2",
+    language: lang,
+    experimentalControls: { speed: "normal" },
   };
 }
 
@@ -96,7 +110,7 @@ export async function createVapiAssistant(agent: {
       messages: [{ role: "system", content: agent.prompt || "Tu es un assistant téléphonique professionnel." }],
       temperature: agent.temperature ?? 0.4,
     },
-    voice: getVoiceConfig(agent.voiceProvider, agent.voiceId),
+    voice: getVoiceConfig(agent.voiceProvider, agent.voiceId, agent.language),
     firstMessage: agent.firstMessage || "Bonjour, comment puis-je vous aider ?",
     transcriber: {
       provider: "deepgram",
@@ -152,7 +166,7 @@ export async function updateVapiAssistant(assistantId: string, updates: {
   }
 
   if (updates.voiceProvider || updates.voiceId) {
-    body.voice = getVoiceConfig(updates.voiceProvider, updates.voiceId);
+    body.voice = getVoiceConfig(updates.voiceProvider, updates.voiceId, updates.language);
   }
   if (updates.language) {
     body.transcriber = { provider: "deepgram", language: getTranscriberLanguage(updates.language) };
