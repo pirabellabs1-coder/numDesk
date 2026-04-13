@@ -32,7 +32,7 @@ const navItems = [
 export function AdminSidebar() {
   const pathname = usePathname();
   const { isOpen, toggle } = useSidebar();
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
 
   const meta = user?.user_metadata || {};
   const firstName = meta.first_name || meta.full_name?.split(" ")[0] || "";
@@ -113,13 +113,13 @@ export function AdminSidebar() {
             <span className="material-symbols-outlined text-[18px]">arrow_back</span>
             <span className="text-[13px]">Espace client</span>
           </Link>
-          <Link
-            href="/login"
-            className="flex items-center gap-2.5 rounded-lg px-3 py-[6px] text-on-surface-variant transition-all hover:text-error"
+          <button
+            onClick={() => signOut()}
+            className="flex w-full items-center gap-2.5 rounded-lg px-3 py-[6px] text-on-surface-variant transition-all hover:text-error"
           >
             <span className="material-symbols-outlined text-[18px]">logout</span>
             <span className="text-[13px]">Déconnexion</span>
-          </Link>
+          </button>
 
           <div className="flex items-center gap-2.5 px-3 py-2">
             <div className="flex h-7 w-7 items-center justify-center rounded-full border border-error/30 bg-surface-container-high text-on-surface-variant">

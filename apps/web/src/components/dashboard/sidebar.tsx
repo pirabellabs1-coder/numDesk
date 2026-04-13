@@ -43,7 +43,7 @@ export function Sidebar() {
   const pathname = usePathname();
   const { isOpen, toggle } = useSidebar();
   const { workspace } = useWorkspace();
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
 
   const planSlug = ((workspace as any)?.planSlug as PlanSlug) || "trial";
 
@@ -166,13 +166,13 @@ export function Sidebar() {
             <span className="material-symbols-outlined text-[18px]">settings</span>
             <span className="text-[13px]">Paramètres</span>
           </Link>
-          <Link
-            href="/login"
-            className="flex items-center gap-2.5 rounded-lg px-3 py-[6px] text-on-surface-variant transition-all hover:text-error"
+          <button
+            onClick={() => signOut()}
+            className="flex w-full items-center gap-2.5 rounded-lg px-3 py-[6px] text-on-surface-variant transition-all hover:text-error"
           >
             <span className="material-symbols-outlined text-[18px]">logout</span>
             <span className="text-[13px]">Déconnexion</span>
-          </Link>
+          </button>
 
           <div className="flex items-center gap-2.5 px-3 py-2">
             <div className="flex h-7 w-7 items-center justify-center rounded-full border border-primary/30 bg-surface-container-high text-on-surface-variant">

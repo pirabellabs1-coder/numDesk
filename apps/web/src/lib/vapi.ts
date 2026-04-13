@@ -54,13 +54,21 @@ function getTranscriberLanguage(lang?: string): string {
   return "fr";
 }
 
-// chunkPlan ensures TTS waits for full sentences before speaking,
-// preventing the "voice cuts mid-sentence" problem.
-// Vapi max minCharacters = 80. Only sentence-ending punctuation to avoid mid-sentence cuts.
+// chunkPlan controls how the LLM text stream is split before being sent to TTS.
+//
+// Previous attempts that FAILED:
+// - punctuationBoundaries: [".", "!", "?"] with minCharacters: 80 => voice still cuts
+//   because the TTS eagerly speaks each sentence at punctuation, creating audible gaps.
+// - Empty punctuationBoundaries [] => Vapi API rejects ("should not be empty").
+// - minCharacters > 80 => Vapi API rejects ("must not be greater than 80").
+//
+// WORKING FIX: Disable chunkPlan entirely (enabled: false).
+// This lets the voice provider (Cartesia sonic-2) handle its own natural text buffering
+// and speech flow instead of Vapi artificially splitting the LLM stream into chunks.
+// Cartesia's internal chunking is optimized for natural-sounding speech and does not
+// produce the mid-sentence cuts that Vapi's chunkPlan causes.
 const CHUNK_PLAN = {
-  enabled: true,
-  minCharacters: 80,
-  punctuationBoundaries: [".", "!", "?"],
+  enabled: false,
 };
 
 function getVoiceConfig(voiceProvider?: string, voiceId?: string, language?: string) {
