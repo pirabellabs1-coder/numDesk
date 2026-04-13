@@ -12,8 +12,18 @@ const STATUS_STYLE: Record<string, string> = {
   suspended: "bg-error/10 text-error",
   member: "bg-primary/10 text-primary",
   admin: "bg-secondary/10 text-secondary",
+  trialing: "bg-orange-400/10 text-orange-400",
+  past_due: "bg-error/10 text-error",
+  canceled: "bg-white/5 text-on-surface-variant",
 };
-const STATUS_LABEL: Record<string, string> = { active: "Actif", inactive: "Inactif", suspended: "Suspendu", member: "Membre", admin: "Admin" };
+const STATUS_LABEL: Record<string, string> = { active: "Actif", inactive: "Inactif", suspended: "Suspendu", member: "Membre", admin: "Admin", trialing: "Essai", past_due: "Impayé", canceled: "Annulé" };
+const PLAN_STYLE: Record<string, string> = {
+  trial: "bg-white/5 text-on-surface-variant",
+  starter: "bg-primary/10 text-primary",
+  pro: "bg-secondary/10 text-secondary",
+  enterprise: "bg-tertiary/10 text-tertiary",
+};
+const PLAN_LABEL: Record<string, string> = { trial: "Essai", starter: "Starter", pro: "Pro", enterprise: "Enterprise" };
 
 function formatRelativeDate(dateStr: string | null): string {
   if (!dateStr) return "—";
@@ -106,10 +116,12 @@ export function AdminMembers() {
                 <tr className="border-b border-white/5 text-left text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
                   <th className="px-5 py-3">Membre</th>
                   <th className="px-5 py-3">Agence</th>
+                  <th className="px-5 py-3">Plan</th>
                   <th className="px-5 py-3">Statut</th>
                   <th className="px-5 py-3">Rôle</th>
                   <th className="px-5 py-3">Workspaces</th>
                   <th className="px-5 py-3">Minutes</th>
+                  <th className="px-5 py-3">Agents</th>
                   <th className="px-5 py-3">Conversations</th>
                   <th className="px-5 py-3">Dépensé</th>
                   <th className="px-5 py-3">Dernière activité</th>
@@ -126,13 +138,17 @@ export function AdminMembers() {
                     </td>
                     <td className="px-5 py-3 text-sm text-on-surface-variant">{m.agencyName || "—"}</td>
                     <td className="px-5 py-3">
+                      <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${PLAN_STYLE[m.planSlug] || PLAN_STYLE.trial}`}>{PLAN_LABEL[m.planSlug] || "Essai"}</span>
+                    </td>
+                    <td className="px-5 py-3">
                       <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${STATUS_STYLE[m.status] || STATUS_STYLE.inactive}`}>{STATUS_LABEL[m.status] || "Inactif"}</span>
                     </td>
                     <td className="px-5 py-3">
                       <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${STATUS_STYLE[m.role] || STATUS_STYLE.member}`}>{STATUS_LABEL[m.role] || m.role}</span>
                     </td>
                     <td className="px-5 py-3 text-sm font-bold text-on-surface">{m.workspaceCount ?? 0}</td>
-                    <td className="px-5 py-3 text-sm text-on-surface">{m.totalMinutesUsed ?? 0}</td>
+                    <td className="px-5 py-3 text-sm text-on-surface">{m.totalMinutesUsed ?? 0}/{m.totalMinutesIncluded ?? 0}</td>
+                    <td className="px-5 py-3 text-sm text-on-surface">{m.totalAgents ?? 0}{m.publishedAgents > 0 && <span className="text-tertiary"> ({m.publishedAgents} publiés)</span>}</td>
                     <td className="px-5 py-3 text-sm text-on-surface">{m.totalConversations ?? 0}</td>
                     <td className="px-5 py-3 text-sm text-on-surface">{formatEuros(m.totalSpentCents ?? 0)}</td>
                     <td className="px-5 py-3 text-sm text-on-surface-variant">{formatRelativeDate(m.lastActivity)}</td>
@@ -155,17 +171,20 @@ export function AdminMembers() {
                 </div>
               </div>
 
-              <div className="mb-2">
+              <div className="mb-2 flex gap-2">
+                <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${PLAN_STYLE[detail.planSlug] || PLAN_STYLE.trial}`}>{PLAN_LABEL[detail.planSlug] || "Essai"}</span>
                 <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${STATUS_STYLE[detail.status] || STATUS_STYLE.inactive}`}>{STATUS_LABEL[detail.status] || "Inactif"}</span>
               </div>
 
               <div className="space-y-2 text-xs text-on-surface-variant">
                 <div className="flex justify-between"><span>Agence</span><span className="font-bold text-on-surface">{detail.agencyName || "—"}</span></div>
                 <div className="flex justify-between"><span>Rôle</span><span className="font-bold text-on-surface">{detail.role}</span></div>
+                <div className="flex justify-between"><span>Plan</span><span className="font-bold text-on-surface">{PLAN_LABEL[detail.planSlug] || "Essai"}</span></div>
+                <div className="flex justify-between"><span>Abonnement</span><span className="font-bold text-on-surface">{STATUS_LABEL[detail.subscriptionStatus] || "—"}</span></div>
                 <div className="flex justify-between"><span>Workspaces</span><span className="font-bold text-on-surface">{detail.workspaceCount ?? 0}</span></div>
-                <div className="flex justify-between"><span>Agents</span><span className="font-bold text-on-surface">{detail.totalAgents ?? 0}</span></div>
+                <div className="flex justify-between"><span>Agents</span><span className="font-bold text-on-surface">{detail.totalAgents ?? 0} ({detail.publishedAgents ?? 0} publiés)</span></div>
                 <div className="flex justify-between"><span>Conversations</span><span className="font-bold text-on-surface">{detail.totalConversations ?? 0}</span></div>
-                <div className="flex justify-between"><span>Minutes utilisées</span><span className="font-bold text-on-surface">{detail.totalMinutesUsed ?? 0}</span></div>
+                <div className="flex justify-between"><span>Minutes</span><span className="font-bold text-on-surface">{detail.totalMinutesUsed ?? 0} / {detail.totalMinutesIncluded ?? 0}</span></div>
                 <div className="flex justify-between"><span>Dépensé</span><span className="font-bold text-on-surface">{formatEuros(detail.totalSpentCents ?? 0)}</span></div>
                 <div className="flex justify-between"><span>Dernière activité</span><span className="font-bold text-on-surface">{formatRelativeDate(detail.lastActivity)}</span></div>
                 <div className="flex justify-between"><span>Inscrit le</span><span className="font-bold text-on-surface">{new Date(detail.createdAt).toLocaleDateString("fr-FR")}</span></div>
@@ -177,9 +196,15 @@ export function AdminMembers() {
                   <p className="mb-2 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Workspaces</p>
                   <div className="space-y-1">
                     {detail.workspaces.map((ws: any) => (
-                      <div key={ws.id} className="flex items-center justify-between rounded-lg bg-surface-container-lowest px-3 py-2">
-                        <span className="text-xs text-on-surface">{ws.name}</span>
-                        <span className="text-[10px] text-on-surface-variant">{ws.minutesUsed ?? 0}/{ws.minutesIncluded ?? 0} min</span>
+                      <div key={ws.id} className="rounded-lg bg-surface-container-lowest px-3 py-2">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs text-on-surface">{ws.name}</span>
+                          <span className={`rounded-full px-1.5 py-0.5 text-[9px] font-bold ${PLAN_STYLE[ws.planSlug] || PLAN_STYLE.trial}`}>{PLAN_LABEL[ws.planSlug] || "Essai"}</span>
+                        </div>
+                        <div className="mt-1 flex items-center justify-between text-[10px] text-on-surface-variant">
+                          <span>{ws.minutesUsed ?? 0}/{ws.minutesIncluded ?? 0} min</span>
+                          <span>{ws.agentCount ?? 0} agents</span>
+                        </div>
                       </div>
                     ))}
                   </div>

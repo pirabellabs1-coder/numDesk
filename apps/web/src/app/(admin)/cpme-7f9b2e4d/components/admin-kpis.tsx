@@ -16,10 +16,10 @@ export function AdminKpis() {
   const totalCalls = stats?.totalCalls ?? 0;
 
   const kpiData = [
-    { label: "Membres actifs", value: stats?.members ?? 0, unit: "", icon: "group", color: "text-primary", bg: "bg-primary/10" },
+    { label: "Membres inscrits", value: stats?.members ?? 0, unit: "", icon: "group", color: "text-primary", bg: "bg-primary/10" },
     { label: "Workspaces actifs", value: stats?.workspaces ?? 0, unit: "", icon: "workspaces", color: "text-secondary", bg: "bg-secondary/10" },
     { label: "Minutes consommées", value: stats?.minutesConsumed ?? 0, unit: " min", icon: "schedule", color: "text-tertiary", bg: "bg-tertiary/10" },
-    { label: "MRR estimé", value: stats?.mrr ?? 0, unit: " €", icon: "payments", color: "text-orange-400", bg: "bg-orange-400/10" },
+    { label: "Revenus total", value: stats?.totalRevenue ?? stats?.mrr ?? 0, unit: " €", icon: "payments", color: "text-orange-400", bg: "bg-orange-400/10" },
   ];
 
   return (
@@ -101,12 +101,22 @@ export function AdminKpis() {
 
         {/* Revenue trend */}
         <div className="rounded-2xl border border-white/5 bg-card p-6">
-          <h3 className="mb-2 font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>MRR</h3>
-          <p className="mb-4 text-xs text-on-surface-variant">Revenu mensuel récurrent</p>
-          <div className="flex items-end gap-4">
-            <p className="text-4xl font-bold text-tertiary" style={{ fontFamily: "Inter, sans-serif" }}>{(stats?.mrr ?? 0).toLocaleString("fr-FR")} €</p>
+          <h3 className="mb-2 font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Revenus</h3>
+          <p className="mb-4 text-xs text-on-surface-variant">Revenus de la plateforme</p>
+          <div className="space-y-3">
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">MRR (30 jours)</p>
+              <p className="text-2xl font-bold text-tertiary" style={{ fontFamily: "Inter, sans-serif" }}>{(stats?.mrr ?? 0).toLocaleString("fr-FR")} €</p>
+            </div>
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Total cumulé</p>
+              <p className="text-2xl font-bold text-primary" style={{ fontFamily: "Inter, sans-serif" }}>{(stats?.totalRevenue ?? 0).toLocaleString("fr-FR")} €</p>
+            </div>
           </div>
-          <p className="mt-3 text-xs text-on-surface-variant">{stats?.workspaces ?? 0} workspace(s) actif(s)</p>
+          <div className="mt-3 flex items-center justify-between text-xs text-on-surface-variant">
+            <span>{stats?.workspaces ?? 0} workspace(s)</span>
+            <span>{stats?.publishedAgents ?? 0} agent(s) publiés</span>
+          </div>
         </div>
       </div>
 

@@ -7,7 +7,7 @@ export function AdminRevenue() {
   const { data: revenue, isLoading } = useAdminRevenue();
 
   if (isLoading) return <PageSkeleton />;
-  const rev = revenue ?? { mrr: 0, totalRevenue: 0, activeSubscriptions: 0, cycles: [] };
+  const rev = revenue ?? { mrr: 0, totalRevenue: 0, activeSubscriptions: 0, cycles: [], recentPurchases: [] };
 
   return (
     <div className="space-y-6">
@@ -34,6 +34,28 @@ export function AdminRevenue() {
         </div>
       </div>
 
+      {/* Recent credit purchases */}
+      {rev.recentPurchases?.length > 0 && (
+        <div className="rounded-2xl border border-white/5 bg-card p-6">
+          <h3 className="mb-4 font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Achats de crédits récents</h3>
+          <div className="overflow-hidden rounded-lg">
+            <table className="w-full">
+              <thead><tr className="text-left text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
+                <th className="px-4 py-2">Date</th><th className="px-4 py-2">Workspace</th><th className="px-4 py-2">Minutes</th><th className="px-4 py-2">Montant</th>
+              </tr></thead>
+              <tbody>{rev.recentPurchases.map((p: any) => (
+                <tr key={p.id} className="border-t border-white/5">
+                  <td className="px-4 py-2 text-sm text-on-surface-variant">{new Date(p.createdAt).toLocaleDateString("fr-FR")}</td>
+                  <td className="px-4 py-2 text-sm text-on-surface">{p.workspaceName || "—"}</td>
+                  <td className="px-4 py-2 text-sm font-bold text-on-surface">{(p.minutesPurchased ?? 0).toLocaleString("fr-FR")} min</td>
+                  <td className="px-4 py-2 text-sm font-bold text-tertiary">{((p.amountCents ?? 0) / 100).toFixed(2)} €</td>
+                </tr>
+              ))}</tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
       {/* Billing cycles */}
       {rev.cycles.length > 0 && (
         <div className="rounded-2xl border border-white/5 bg-card p-6">
@@ -53,6 +75,14 @@ export function AdminRevenue() {
               ))}</tbody>
             </table>
           </div>
+        </div>
+      )}
+
+      {rev.cycles.length === 0 && (!rev.recentPurchases || rev.recentPurchases.length === 0) && (
+        <div className="flex flex-col items-center justify-center rounded-2xl border border-white/5 bg-card p-12">
+          <span className="material-symbols-outlined mb-3 text-4xl text-on-surface-variant/50">payments</span>
+          <p className="text-sm font-medium text-on-surface">Aucune transaction</p>
+          <p className="mt-1 text-xs text-on-surface-variant">Les transactions apparaîtront ici lorsque vos clients achèteront des crédits</p>
         </div>
       )}
     </div>

@@ -23,10 +23,27 @@ export function AdminAnalytics() {
   const totalMinutes = stats?.minutesConsumed ?? 0;
   const wsList = workspaces ?? [];
 
+  const sentimentTotal =
+    (stats?.sentimentPositive ?? 0) +
+    (stats?.sentimentNeutral ?? 0) +
+    (stats?.sentimentNegative ?? 0);
+
   const sentiments = [
-    { label: "Positif", value: 0, color: "bg-tertiary" },
-    { label: "Neutre", value: 0, color: "bg-primary" },
-    { label: "Négatif", value: 0, color: "bg-error" },
+    {
+      label: "Positif",
+      value: sentimentTotal > 0 ? Math.round((stats.sentimentPositive / sentimentTotal) * 100) : 0,
+      color: "bg-tertiary",
+    },
+    {
+      label: "Neutre",
+      value: sentimentTotal > 0 ? Math.round((stats.sentimentNeutral / sentimentTotal) * 100) : 0,
+      color: "bg-primary",
+    },
+    {
+      label: "Négatif",
+      value: sentimentTotal > 0 ? Math.round((stats.sentimentNegative / sentimentTotal) * 100) : 0,
+      color: "bg-error",
+    },
   ];
 
   // Top workspaces from real data
