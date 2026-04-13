@@ -54,6 +54,15 @@ function getTranscriberLanguage(lang?: string): string {
   return "fr";
 }
 
+// chunkPlan ensures TTS waits for full sentences before speaking,
+// preventing the "voice cuts mid-sentence" problem.
+// Vapi max minCharacters = 80. Only sentence-ending punctuation to avoid mid-sentence cuts.
+const CHUNK_PLAN = {
+  enabled: true,
+  minCharacters: 80,
+  punctuationBoundaries: [".", "!", "?"],
+};
+
 function getVoiceConfig(voiceProvider?: string, voiceId?: string, language?: string) {
   // If voiceId is a display label like "Cartesia — Fabien" (legacy data), strip to default
   const isDisplayLabel = voiceId && voiceId.includes(" — ");
@@ -65,6 +74,7 @@ function getVoiceConfig(voiceProvider?: string, voiceId?: string, language?: str
       provider: "11labs" as const,
       voiceId: cleanVoiceId,
       model: "eleven_multilingual_v2",
+      chunkPlan: CHUNK_PLAN,
     };
   }
   if (voiceProvider === "cartesia" && cleanVoiceId) {
@@ -74,10 +84,15 @@ function getVoiceConfig(voiceProvider?: string, voiceId?: string, language?: str
       model: "sonic-2",
       language: lang,
       experimentalControls: { speed: "normal" },
+      chunkPlan: CHUNK_PLAN,
     };
   }
   if (voiceProvider === "deepgram" && cleanVoiceId) {
-    return { provider: "deepgram" as const, voiceId: cleanVoiceId };
+    return {
+      provider: "deepgram" as const,
+      voiceId: cleanVoiceId,
+      chunkPlan: CHUNK_PLAN,
+    };
   }
   // Google TTS voices are not supported by Vapi — fall back to Cartesia French voice
   // All other unknown providers also fall back to Sophie (Calm) — French female
@@ -87,6 +102,7 @@ function getVoiceConfig(voiceProvider?: string, voiceId?: string, language?: str
     model: "sonic-2",
     language: lang,
     experimentalControls: { speed: "normal" },
+    chunkPlan: CHUNK_PLAN,
   };
 }
 
