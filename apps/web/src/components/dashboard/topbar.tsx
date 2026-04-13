@@ -46,7 +46,7 @@ const actionButtons: Record<string, { label: string; href: string; icon: string 
   "/campaigns": { label: "Nouvelle campagne", href: "/campaigns/new", icon: "add" },
   "/conversations": { label: "Actualiser", href: "#", icon: "refresh" },
   "/knowledge": { label: "Nouvelle base", href: "/knowledge/new", icon: "add" },
-  "/phone-numbers": { label: "Ajouter un numéro", href: "/phone-numbers?add=true", icon: "add" },
+  "/phone-numbers": { label: "Ajouter un numéro", href: "/phone-numbers", icon: "add" },
   "/dashboard": { label: "Créer un agent", href: "/agents/new", icon: "add" },
   "/billing": { label: "Acheter des minutes", href: "/billing", icon: "add" },
 };

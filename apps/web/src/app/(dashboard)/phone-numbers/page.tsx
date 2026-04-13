@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { useState } from "react";
 import { usePhoneNumbers, useCreatePhoneNumber, useDeletePhoneNumber } from "@/hooks/use-phone-numbers";
 import { useAgents } from "@/hooks/use-agents";
 import { useWorkspace } from "@/providers/workspace-provider";
@@ -19,7 +18,6 @@ export default function PhoneNumbersPage() {
   const createNumber = useCreatePhoneNumber();
   const deleteNumber = useDeletePhoneNumber();
   const { toast } = useToast();
-  const searchParams = useSearchParams();
 
   const [addMode, setAddMode] = useState<AddMode>(null);
   const [showDelete, setShowDelete] = useState<string | null>(null);
@@ -32,15 +30,6 @@ export default function PhoneNumbersPage() {
   const [twilioForm, setTwilioForm] = useState({ accountSid: "", authToken: "", number: "", friendlyName: "" });
   const [twilioNumbers, setTwilioNumbers] = useState<any[]>([]);
   const [twilioLoading, setTwilioLoading] = useState(false);
-
-  // Auto-open choice modal from topbar button (?add=true)
-  useEffect(() => {
-    if (searchParams.get("add") === "true" && addMode === null) {
-      setAddMode("choose");
-      // Clean URL without triggering navigation
-      window.history.replaceState({}, "", "/phone-numbers");
-    }
-  }, [searchParams, addMode]);
 
   const openChoose = () => {
     setAddMode("choose");

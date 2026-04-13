@@ -8,11 +8,31 @@ import { useToast } from "@/providers/toast-provider";
 
 const STATUS_STYLE: Record<string, string> = {
   active: "bg-tertiary/10 text-tertiary",
+  inactive: "bg-white/5 text-on-surface-variant",
   suspended: "bg-error/10 text-error",
   member: "bg-primary/10 text-primary",
   admin: "bg-secondary/10 text-secondary",
 };
-const STATUS_LABEL: Record<string, string> = { active: "Actif", suspended: "Suspendu", member: "Membre", admin: "Admin" };
+const STATUS_LABEL: Record<string, string> = { active: "Actif", inactive: "Inactif", suspended: "Suspendu", member: "Membre", admin: "Admin" };
+
+function formatRelativeDate(dateStr: string | null): string {
+  if (!dateStr) return "—";
+  const date = new Date(dateStr);
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffMin = Math.floor(diffMs / 60000);
+  if (diffMin < 1) return "A l'instant";
+  if (diffMin < 60) return `Il y a ${diffMin} min`;
+  const diffH = Math.floor(diffMin / 60);
+  if (diffH < 24) return `Il y a ${diffH}h`;
+  const diffD = Math.floor(diffH / 24);
+  if (diffD < 30) return `Il y a ${diffD}j`;
+  return date.toLocaleDateString("fr-FR");
+}
+
+function formatEuros(cents: number): string {
+  return `${(cents / 100).toFixed(2)} \u20ac`;
+}
 
 export function AdminMembers() {
   const { data: members, isLoading } = useAdminMembers();
@@ -56,18 +76,22 @@ export function AdminMembers() {
       </div>
 
       {/* KPIs */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-4 gap-4">
         <div className="rounded-2xl border border-white/5 bg-card p-5">
           <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Total membres</p>
           <p className="mt-1 text-3xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>{memberList.length}</p>
         </div>
         <div className="rounded-2xl border border-white/5 bg-card p-5">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Admins</p>
-          <p className="mt-1 text-3xl font-bold text-secondary" style={{ fontFamily: "Inter, sans-serif" }}>{memberList.filter((m: any) => m.role === "admin").length}</p>
+          <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Membres actifs</p>
+          <p className="mt-1 text-3xl font-bold text-tertiary" style={{ fontFamily: "Inter, sans-serif" }}>{memberList.filter((m: any) => m.status === "active").length}</p>
         </div>
         <div className="rounded-2xl border border-white/5 bg-card p-5">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Workspaces total</p>
-          <p className="mt-1 text-3xl font-bold text-primary" style={{ fontFamily: "Inter, sans-serif" }}>{memberList.reduce((a: number, m: any) => a + (m.workspaceCount ?? 0), 0)}</p>
+          <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Revenue total</p>
+          <p className="mt-1 text-3xl font-bold text-primary" style={{ fontFamily: "Inter, sans-serif" }}>{formatEuros(memberList.reduce((a: number, m: any) => a + (m.totalSpentCents ?? 0), 0))}</p>
+        </div>
+        <div className="rounded-2xl border border-white/5 bg-card p-5">
+          <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Minutes totales</p>
+          <p className="mt-1 text-3xl font-bold text-secondary" style={{ fontFamily: "Inter, sans-serif" }}>{memberList.reduce((a: number, m: any) => a + (m.totalMinutesUsed ?? 0), 0)}</p>
         </div>
       </div>
 
@@ -82,9 +106,13 @@ export function AdminMembers() {
                 <tr className="border-b border-white/5 text-left text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
                   <th className="px-5 py-3">Membre</th>
                   <th className="px-5 py-3">Agence</th>
+                  <th className="px-5 py-3">Statut</th>
                   <th className="px-5 py-3">Rôle</th>
                   <th className="px-5 py-3">Workspaces</th>
-                  <th className="px-5 py-3">Inscrit le</th>
+                  <th className="px-5 py-3">Minutes</th>
+                  <th className="px-5 py-3">Conversations</th>
+                  <th className="px-5 py-3">Dépensé</th>
+                  <th className="px-5 py-3">Dernière activité</th>
                 </tr>
               </thead>
               <tbody>
@@ -98,10 +126,16 @@ export function AdminMembers() {
                     </td>
                     <td className="px-5 py-3 text-sm text-on-surface-variant">{m.agencyName || "—"}</td>
                     <td className="px-5 py-3">
+                      <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${STATUS_STYLE[m.status] || STATUS_STYLE.inactive}`}>{STATUS_LABEL[m.status] || "Inactif"}</span>
+                    </td>
+                    <td className="px-5 py-3">
                       <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${STATUS_STYLE[m.role] || STATUS_STYLE.member}`}>{STATUS_LABEL[m.role] || m.role}</span>
                     </td>
                     <td className="px-5 py-3 text-sm font-bold text-on-surface">{m.workspaceCount ?? 0}</td>
-                    <td className="px-5 py-3 text-sm text-on-surface-variant">{new Date(m.createdAt).toLocaleDateString("fr-FR")}</td>
+                    <td className="px-5 py-3 text-sm text-on-surface">{m.totalMinutesUsed ?? 0}</td>
+                    <td className="px-5 py-3 text-sm text-on-surface">{m.totalConversations ?? 0}</td>
+                    <td className="px-5 py-3 text-sm text-on-surface">{formatEuros(m.totalSpentCents ?? 0)}</td>
+                    <td className="px-5 py-3 text-sm text-on-surface-variant">{formatRelativeDate(m.lastActivity)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -121,10 +155,19 @@ export function AdminMembers() {
                 </div>
               </div>
 
+              <div className="mb-2">
+                <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${STATUS_STYLE[detail.status] || STATUS_STYLE.inactive}`}>{STATUS_LABEL[detail.status] || "Inactif"}</span>
+              </div>
+
               <div className="space-y-2 text-xs text-on-surface-variant">
                 <div className="flex justify-between"><span>Agence</span><span className="font-bold text-on-surface">{detail.agencyName || "—"}</span></div>
                 <div className="flex justify-between"><span>Rôle</span><span className="font-bold text-on-surface">{detail.role}</span></div>
                 <div className="flex justify-between"><span>Workspaces</span><span className="font-bold text-on-surface">{detail.workspaceCount ?? 0}</span></div>
+                <div className="flex justify-between"><span>Agents</span><span className="font-bold text-on-surface">{detail.totalAgents ?? 0}</span></div>
+                <div className="flex justify-between"><span>Conversations</span><span className="font-bold text-on-surface">{detail.totalConversations ?? 0}</span></div>
+                <div className="flex justify-between"><span>Minutes utilisées</span><span className="font-bold text-on-surface">{detail.totalMinutesUsed ?? 0}</span></div>
+                <div className="flex justify-between"><span>Dépensé</span><span className="font-bold text-on-surface">{formatEuros(detail.totalSpentCents ?? 0)}</span></div>
+                <div className="flex justify-between"><span>Dernière activité</span><span className="font-bold text-on-surface">{formatRelativeDate(detail.lastActivity)}</span></div>
                 <div className="flex justify-between"><span>Inscrit le</span><span className="font-bold text-on-surface">{new Date(detail.createdAt).toLocaleDateString("fr-FR")}</span></div>
               </div>
 

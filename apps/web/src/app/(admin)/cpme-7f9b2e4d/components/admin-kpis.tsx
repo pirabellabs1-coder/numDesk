@@ -1,61 +1,26 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { useAdminStats, useAdminWorkspaces } from "@/hooks/use-admin";
 
-const HEALTH_CHECKS = [
-  { name: "Vapi AI", score: 99 },
-  { name: "Telnyx SIP", score: 100 },
-  { name: "Cartesia TTS", score: 97 },
-  { name: "Gemini LLM", score: 98 },
+const SERVICES = [
+  { name: "Vapi AI" },
+  { name: "Telnyx SIP" },
+  { name: "Cartesia TTS" },
+  { name: "Gemini LLM" },
 ];
-
-const platformHealth = Math.round(
-  HEALTH_CHECKS.reduce((s, h) => s + h.score, 0) / HEALTH_CHECKS.length
-);
-
-// Sparkline data will be empty when no history exists
-const SPARKLINE_DATA = [
-  [0], [0], [0], [0],
-];
-
-function Sparkline({ data, color }: { data: number[]; color: string }) {
-  const max = Math.max(...data);
-  return (
-    <div className="flex h-8 items-end gap-0.5">
-      {data.map((v, i) => (
-        <div
-          key={i}
-          className={`flex-1 rounded-sm ${color} opacity-60 transition-all`}
-          style={{ height: `${(v / max) * 100}%` }}
-        />
-      ))}
-    </div>
-  );
-}
 
 export function AdminKpis() {
   const { data: stats } = useAdminStats();
   const { data: workspacesData } = useAdminWorkspaces();
-  const [activeCalls, setActiveCalls] = useState(0);
 
-  // Real data only — no fake trends
+  const totalCalls = stats?.totalCalls ?? 0;
+
   const kpiData = [
-    { label: "Membres actifs", value: stats?.members ?? 0, unit: "", icon: "group", color: "text-primary", bg: "bg-primary/10", trend: 0, trendLabel: "" },
-    { label: "Workspaces actifs", value: stats?.workspaces ?? 0, unit: "", icon: "workspaces", color: "text-secondary", bg: "bg-secondary/10", trend: 0, trendLabel: "" },
-    { label: "Minutes consommées", value: stats?.minutesConsumed ?? 0, unit: " min", icon: "schedule", color: "text-tertiary", bg: "bg-tertiary/10", trend: 0, trendLabel: "" },
-    { label: "MRR estimé", value: stats?.mrr ?? 0, unit: " €", icon: "payments", color: "text-orange-400", bg: "bg-orange-400/10", trend: 0, trendLabel: "" },
+    { label: "Membres actifs", value: stats?.members ?? 0, unit: "", icon: "group", color: "text-primary", bg: "bg-primary/10" },
+    { label: "Workspaces actifs", value: stats?.workspaces ?? 0, unit: "", icon: "workspaces", color: "text-secondary", bg: "bg-secondary/10" },
+    { label: "Minutes consommées", value: stats?.minutesConsumed ?? 0, unit: " min", icon: "schedule", color: "text-tertiary", bg: "bg-tertiary/10" },
+    { label: "MRR estimé", value: stats?.mrr ?? 0, unit: " €", icon: "payments", color: "text-orange-400", bg: "bg-orange-400/10" },
   ];
-
-  useEffect(() => {
-    const t = setInterval(() => {
-      setActiveCalls((n) => {
-        const delta = Math.random() > 0.5 ? 1 : -1;
-        return Math.max(0, Math.min(20, n + delta));
-      });
-    }, 3000);
-    return () => clearInterval(t);
-  }, []);
 
   return (
     <div className="space-y-6">
@@ -64,60 +29,44 @@ export function AdminKpis() {
         <div className="absolute -right-8 -top-8 h-40 w-40 rounded-full bg-tertiary/5 blur-3xl" />
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Santé globale de la plateforme</p>
-            <div className="mt-2 flex items-end gap-3">
-              <span className="text-6xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>{platformHealth}</span>
-              <span className="mb-2 text-2xl font-bold text-tertiary">%</span>
-            </div>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Santé de la plateforme</p>
             <div className="mt-2 flex items-center gap-2">
               <span className="relative flex h-2.5 w-2.5">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-tertiary opacity-75" />
                 <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-tertiary" />
               </span>
-              <span className="text-xs font-bold text-tertiary">Tous les systèmes opérationnels</span>
+              <span className="text-sm font-bold text-tertiary">Tous les systèmes opérationnels</span>
             </div>
           </div>
           <div className="flex gap-6">
-            {HEALTH_CHECKS.map((h) => (
-              <div key={h.name} className="text-center">
-                <div className={`text-lg font-bold ${h.score >= 99 ? "text-tertiary" : h.score >= 95 ? "text-orange-400" : "text-error"}`} style={{ fontFamily: "Inter, sans-serif" }}>
-                  {h.score}%
-                </div>
-                <p className="text-[10px] text-on-surface-variant">{h.name}</p>
+            {SERVICES.map((s) => (
+              <div key={s.name} className="text-center">
+                <div className="text-xs font-bold text-tertiary">Opérationnel</div>
+                <p className="text-[10px] text-on-surface-variant">{s.name}</p>
               </div>
             ))}
           </div>
-          <div className="rounded-2xl border border-tertiary/20 bg-tertiary/5 p-5 text-center">
-            <span className="material-symbols-outlined text-3xl text-tertiary">phone_in_talk</span>
-            <div className="mt-1 text-2xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>{activeCalls}</div>
-            <p className="text-[10px] text-tertiary font-bold uppercase tracking-wider">Appels actifs</p>
+          <div className="rounded-2xl border border-primary/20 bg-primary/5 p-5 text-center">
+            <span className="material-symbols-outlined text-3xl text-primary">call</span>
+            <div className="mt-1 text-2xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>{totalCalls.toLocaleString("fr-FR")}</div>
+            <p className="text-[10px] text-primary font-bold uppercase tracking-wider">Appels traités</p>
           </div>
         </div>
       </div>
 
       {/* KPI Grid */}
       <div className="grid grid-cols-4 gap-4">
-        {kpiData.map((k, i) => (
+        {kpiData.map((k) => (
           <div key={k.label} className="group rounded-2xl border border-white/5 bg-card p-5 transition-all hover:border-white/10">
             <div className="mb-4 flex items-start justify-between">
               <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${k.bg}`}>
                 <span className={`material-symbols-outlined ${k.color}`}>{k.icon}</span>
               </div>
-              <Sparkline data={SPARKLINE_DATA[i] ?? []} color={k.bg} />
             </div>
             <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">{k.label}</p>
             <p className="mt-1 text-3xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
               {k.value.toLocaleString("fr-FR")}{k.unit}
             </p>
-            <div className="mt-2 flex items-center gap-1">
-              <span className={`material-symbols-outlined text-xs ${k.trend > 0 ? "text-tertiary" : "text-error"}`}>
-                {k.trend > 0 ? "trending_up" : "trending_down"}
-              </span>
-              <span className={`text-xs font-bold ${k.trend > 0 ? "text-tertiary" : "text-error"}`}>
-                {k.trend > 0 ? "+" : ""}{k.trend}
-              </span>
-              <span className="text-xs text-on-surface-variant">{k.trendLabel}</span>
-            </div>
           </div>
         ))}
       </div>
@@ -136,19 +85,18 @@ export function AdminKpis() {
               <div className="flex items-center gap-1"><div className="h-2 w-2 rounded-full bg-secondary" /><span className="text-on-surface-variant">Sortants</span></div>
             </div>
           </div>
-          <div className="flex h-44 items-end gap-[3px]">
-            {Array.from({ length: 30 }, (_, i) => {
-              const inbound = 20 + Math.round(Math.sin(i * 0.5) * 15 + Math.sin(i * 1.7) * 10 + i * 0.8);
-              const outbound = 8 + Math.round(Math.cos(i * 0.3) * 8 + Math.sin(i * 2.1) * 5);
-              const max = 70;
-              return (
-                <div key={i} className="flex flex-1 items-end gap-[1px]">
-                  <div className="flex-1 rounded-t-sm bg-primary/70 transition-all hover:bg-primary" style={{ height: `${(inbound / max) * 100}%` }} />
-                  <div className="flex-1 rounded-t-sm bg-secondary/50 transition-all hover:bg-secondary" style={{ height: `${(outbound / max) * 100}%` }} />
-                </div>
-              );
-            })}
-          </div>
+          {totalCalls > 0 ? (
+            <div className="flex h-44 items-end justify-center">
+              <p className="text-sm text-on-surface-variant">Graphique disponible prochainement</p>
+            </div>
+          ) : (
+            <div className="flex h-44 items-center justify-center rounded-xl bg-white/[0.02]">
+              <div className="text-center">
+                <span className="material-symbols-outlined text-3xl text-on-surface-variant/50">bar_chart</span>
+                <p className="mt-2 text-sm text-on-surface-variant">Les données seront disponibles après les premiers appels</p>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Revenue trend */}
@@ -195,30 +143,35 @@ export function AdminKpis() {
 
         {/* Status distribution */}
         <div className="rounded-2xl border border-white/5 bg-card p-6">
-          <h3 className="mb-4 font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Distribution des statuts</h3>
+          <h3 className="mb-1 font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Distribution des statuts</h3>
+          <p className="mb-4 text-[10px] text-on-surface-variant">Basé sur les conversations enregistrées</p>
           <div className="flex items-center gap-8">
             <div className="relative mx-auto h-32 w-32 shrink-0">
               <svg className="h-full w-full -rotate-90" viewBox="0 0 100 100">
                 <circle cx="50" cy="50" r="38" fill="none" stroke="#1F1F24" strokeWidth="10" />
-                {(stats?.totalCalls ?? 0) > 0 && <circle cx="50" cy="50" r="38" fill="none" stroke="#00D4AA" strokeWidth="10" strokeDasharray="238" strokeLinecap="round" />}
+                {totalCalls > 0 && <circle cx="50" cy="50" r="38" fill="none" stroke="#00D4AA" strokeWidth="10" strokeDasharray="238" strokeLinecap="round" />}
               </svg>
               <div className="absolute inset-0 flex items-center justify-center">
-                <p className="text-lg font-bold text-on-surface">{(stats?.totalCalls ?? 0).toLocaleString("fr-FR")}</p>
+                <p className="text-lg font-bold text-on-surface">{totalCalls.toLocaleString("fr-FR")}</p>
               </div>
             </div>
             <div className="flex-1 space-y-2.5">
-              {[
-                { label: "Succès", value: 0, color: "bg-tertiary", text: "text-tertiary" },
-                { label: "Manqué", value: 0, color: "bg-on-surface-variant", text: "text-on-surface-variant" },
-                { label: "Interrompu", value: 0, color: "bg-error", text: "text-error" },
-                { label: "Messagerie", value: 0, color: "bg-secondary", text: "text-secondary" },
-              ].map((s) => (
-                <div key={s.label} className="flex items-center gap-2">
-                  <div className={`h-2.5 w-2.5 rounded-full ${s.color}`} />
-                  <span className="flex-1 text-xs text-on-surface-variant">{s.label}</span>
-                  <span className={`text-xs font-bold ${s.text}`}>{s.value}%</span>
-                </div>
-              ))}
+              {totalCalls > 0 ? (
+                [
+                  { label: "Succès", color: "bg-tertiary", text: "text-tertiary" },
+                  { label: "Manqué", color: "bg-on-surface-variant", text: "text-on-surface-variant" },
+                  { label: "Interrompu", color: "bg-error", text: "text-error" },
+                  { label: "Messagerie", color: "bg-secondary", text: "text-secondary" },
+                ].map((s) => (
+                  <div key={s.label} className="flex items-center gap-2">
+                    <div className={`h-2.5 w-2.5 rounded-full ${s.color}`} />
+                    <span className="flex-1 text-xs text-on-surface-variant">{s.label}</span>
+                    <span className={`text-xs font-bold ${s.text}`}>--</span>
+                  </div>
+                ))
+              ) : (
+                <p className="text-xs text-on-surface-variant">Aucune conversation enregistrée pour le moment</p>
+              )}
             </div>
           </div>
         </div>
