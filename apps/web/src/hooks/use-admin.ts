@@ -94,6 +94,14 @@ export function useAdminRevenue() {
   return useQuery({ queryKey: ["admin-revenue"], queryFn: () => apiFetch<any>("/admin/revenue") });
 }
 
+export function useAdminHealth() {
+  return useQuery({
+    queryKey: ["admin-health"],
+    queryFn: () => apiFetch<any>("/admin/health"),
+    refetchInterval: 60000, // refresh every 60s
+  });
+}
+
 export function useAdminLogs() {
   return useQuery({ queryKey: ["admin-logs"], queryFn: () => apiFetch<any[]>("/admin/logs"), refetchInterval: 10000 });
 }

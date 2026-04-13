@@ -19,12 +19,11 @@ export function AdminAlerts() {
   const { data: alertsData, isLoading } = useAdminAlerts();
   const ackAlert = useAckAlert();
   const { toast } = useToast();
+  const [scanning, setScanning] = useState(false);
 
   if (isLoading) return <PageSkeleton />;
   const alertList = alertsData ?? [];
   const unacked = alertList.filter((a: any) => !a.isAcknowledged).length;
-
-  const [scanning, setScanning] = useState(false);
 
   const handleAck = async (id: string) => {
     try { await ackAlert.mutateAsync(id); toast("Alerte acquittée"); }

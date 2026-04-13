@@ -1,19 +1,30 @@
 "use client";
 
-import { useAdminStats, useAdminWorkspaces } from "@/hooks/use-admin";
-
-const SERVICES = [
-  { name: "Vapi AI" },
-  { name: "Telnyx SIP" },
-  { name: "Cartesia TTS" },
-  { name: "Gemini LLM" },
-];
+import { useAdminStats, useAdminWorkspaces, useAdminHealth } from "@/hooks/use-admin";
 
 export function AdminKpis() {
   const { data: stats } = useAdminStats();
   const { data: workspacesData } = useAdminWorkspaces();
+  const { data: health } = useAdminHealth();
 
   const totalCalls = stats?.totalCalls ?? 0;
+  const services = health?.services ?? [];
+  const overallStatus = health?.overall ?? "operational";
+  const activity = health?.activity ?? {};
+
+  const statusConfig: Record<string, { label: string; color: string; dotColor: string }> = {
+    operational: { label: "Opérationnel", color: "text-tertiary", dotColor: "bg-tertiary" },
+    degraded: { label: "Dégradé", color: "text-orange-400", dotColor: "bg-orange-400" },
+    down: { label: "Hors ligne", color: "text-error", dotColor: "bg-error" },
+  };
+
+  const overallConfig = statusConfig[overallStatus] ?? statusConfig["operational"]!;
+  const overallLabel =
+    overallStatus === "operational"
+      ? "Tous les systèmes opérationnels"
+      : overallStatus === "degraded"
+        ? "Certains services dégradés"
+        : "Services critiques hors ligne";
 
   const kpiData = [
     { label: "Membres inscrits", value: stats?.members ?? 0, unit: "", icon: "group", color: "text-primary", bg: "bg-primary/10" },
@@ -32,19 +43,37 @@ export function AdminKpis() {
             <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Santé de la plateforme</p>
             <div className="mt-2 flex items-center gap-2">
               <span className="relative flex h-2.5 w-2.5">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-tertiary opacity-75" />
-                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-tertiary" />
+                <span className={`absolute inline-flex h-full w-full animate-ping rounded-full ${overallConfig.dotColor} opacity-75`} />
+                <span className={`relative inline-flex h-2.5 w-2.5 rounded-full ${overallConfig.dotColor}`} />
               </span>
-              <span className="text-sm font-bold text-tertiary">Tous les systèmes opérationnels</span>
+              <span className={`text-sm font-bold ${overallConfig.color}`}>{overallLabel}</span>
             </div>
+            {(activity.callsLast24h > 0 || activity.callsLast7d > 0) && (
+              <div className="mt-2 flex gap-4 text-[10px] text-on-surface-variant">
+                <span>{activity.callsLast24h} appel(s) / 24h</span>
+                <span>{activity.callsLast7d} appel(s) / 7j</span>
+                <span>{activity.publishedAgents} agent(s) publiés</span>
+              </div>
+            )}
           </div>
           <div className="flex gap-6">
-            {SERVICES.map((s) => (
-              <div key={s.name} className="text-center">
-                <div className="text-xs font-bold text-tertiary">Opérationnel</div>
-                <p className="text-[10px] text-on-surface-variant">{s.name}</p>
-              </div>
-            ))}
+            {services.length > 0 ? services.map((s: any) => {
+              const sc = statusConfig[s.status] ?? statusConfig["operational"]!;
+              return (
+                <div key={s.name} className="text-center">
+                  <div className={`text-xs font-bold ${sc.color}`}>{sc.label}</div>
+                  <p className="text-[10px] text-on-surface-variant">{s.name}</p>
+                  {s.latencyMs != null && <p className="text-[9px] text-on-surface-variant/50">{s.latencyMs}ms</p>}
+                </div>
+              );
+            }) : (
+              ["Vapi AI", "Cartesia TTS", "Gemini LLM", "Supabase"].map((name) => (
+                <div key={name} className="text-center">
+                  <div className="text-xs font-bold text-on-surface-variant/50">...</div>
+                  <p className="text-[10px] text-on-surface-variant">{name}</p>
+                </div>
+              ))
+            )}
           </div>
           <div className="rounded-2xl border border-primary/20 bg-primary/5 p-5 text-center">
             <span className="material-symbols-outlined text-3xl text-primary">call</span>
