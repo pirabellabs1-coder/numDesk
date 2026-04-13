@@ -1,9 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { apiFetch } from "./api-client";
 
-export function useKeywords() {
+export function useKeywords(workspaceId: string | null) {
   return useQuery({
-    queryKey: ["keywords"],
-    queryFn: () => apiFetch<any[]>("/keywords"),
+    queryKey: ["keywords", workspaceId],
+    queryFn: () => apiFetch<any[]>(`/keywords?workspace_id=${workspaceId}`),
+    enabled: !!workspaceId,
   });
 }

@@ -83,7 +83,7 @@ export default function CareersPage() {
           {openings.map((job) => (
             <Link
               key={job.title}
-              href={`mailto:careers@pirabel.com?subject=Candidature : ${job.title}`}
+              href={`mailto:careers@callpme.com?subject=Candidature : ${job.title}`}
               className="group block rounded-2xl border border-white/5 bg-card p-6 transition-all hover:border-primary/20"
             >
               <div className="flex items-start justify-between">
@@ -115,8 +115,8 @@ export default function CareersPage() {
       <div className="mt-16 text-center">
         <p className="font-body text-sm text-on-surface-variant">
           Votre profil ne correspond pas ? Envoyez une candidature spontanée à{" "}
-          <a href="mailto:careers@pirabel.com" className="text-primary hover:underline">
-            careers@pirabel.com
+          <a href="mailto:careers@callpme.com" className="text-primary hover:underline">
+            careers@callpme.com
           </a>
         </p>
       </div>

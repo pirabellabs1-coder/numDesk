@@ -26,7 +26,7 @@ function extractKeywords(conversations: any[]): { word: string; count: number; t
   return Array.from(wordMap.entries())
     .sort((a, b) => b[1] - a[1])
     .slice(0, 25)
-    .map(([word, count], i) => ({ word, count, trend: Math.round(Math.sin(i * 1.3) * 15) }));
+    .map(([word, count]) => ({ word, count, trend: 0 }));
 }
 
 export default function KeywordsPage() {
