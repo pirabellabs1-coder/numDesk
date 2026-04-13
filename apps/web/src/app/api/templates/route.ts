@@ -1,6 +1,7 @@
 import { withAuth, apiSuccess, handleApiError } from "@/lib/api-helpers";
 
-// Agent templates are static/seeded data
+// Agent templates are platform-level presets — static catalog, not user data.
+// These serve as quick-start templates when creating new agents.
 const templates = [
   { id: "tpl-1", name: "Support Client FR", description: "Agent de support client généraliste.", icon: "support_agent", category: "Support", voice: "Cartesia — Sophie", llm: "Gemini 2.5 Flash", prompt: "Tu es un agent de support client professionnel et empathique..." },
   { id: "tpl-2", name: "Assistant Commercial", description: "Qualification de leads entrants.", icon: "storefront", category: "Sales", voice: "Cartesia — Gabriel", llm: "GPT-4o", prompt: "Tu es un assistant commercial chevronné..." },

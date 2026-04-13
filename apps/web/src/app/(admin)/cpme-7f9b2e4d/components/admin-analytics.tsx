@@ -58,17 +58,8 @@ export function AdminAnalytics() {
       color: ["from-primary to-secondary", "from-secondary to-tertiary", "from-tertiary to-primary", "from-primary/80 to-secondary/80", "from-secondary/80 to-tertiary/80"][i] ?? "from-primary to-secondary",
     }));
 
-  // Heatmap (simulated pattern based on real call volume)
-  const heatmap = Array.from({ length: 7 }, (_, day) =>
-    Array.from({ length: 24 }, (_, hour) => {
-      const isWeekend = day >= 5;
-      const isWorkHour = hour >= 9 && hour <= 18;
-      const scale = totalCalls > 0 ? 1 : 0;
-      const base = isWeekend ? 5 * scale : isWorkHour ? 80 * scale : 10 * scale;
-      const peak = (hour === 10 || hour === 14) ? 40 * scale : 0;
-      return Math.min(100, base + peak);
-    })
-  );
+  // Heatmap from real hourly conversation distribution
+  const heatmap: number[][] = stats?.heatmap ?? Array.from({ length: 7 }, () => Array(24).fill(0));
 
   return (
     <div className="space-y-6">
