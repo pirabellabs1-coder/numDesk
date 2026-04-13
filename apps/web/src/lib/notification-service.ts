@@ -104,13 +104,17 @@ function buildFallbackEmail(params: CreateNotificationParams) {
 
 /**
  * Send email via Brevo SMTP API
+ * Returns true if sent successfully, false otherwise.
  */
-async function sendBrevoEmail(to: string, subject: string, html: string) {
+async function sendBrevoEmail(to: string, subject: string, html: string): Promise<boolean> {
   const brevoKey = process.env.BREVO_SMTP_KEY;
-  if (!brevoKey) return;
+  if (!brevoKey) {
+    console.warn("[Email] BREVO_SMTP_KEY not configured — skipping email to", to);
+    return false;
+  }
 
   try {
-    await fetch("https://api.brevo.com/v3/smtp/email", {
+    const res = await fetch("https://api.brevo.com/v3/smtp/email", {
       method: "POST",
       headers: {
         "api-key": brevoKey,
@@ -123,16 +127,28 @@ async function sendBrevoEmail(to: string, subject: string, html: string) {
         htmlContent: html,
       }),
     });
-  } catch {
-    // Silently fail — email is best-effort
+
+    if (!res.ok) {
+      const body = await res.text().catch(() => "");
+      console.error(`[Email] Brevo API error ${res.status} for ${to}: ${body}`);
+      return false;
+    }
+
+    console.log(`[Email] Sent to ${to} — subject: "${subject}"`);
+    return true;
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error(`[Email] Network error sending to ${to}: ${message}`);
+    return false;
   }
 }
 
 /**
- * Send email directly (without DB notification) — for admin alerts, transactional emails
+ * Send email directly (without DB notification) — for admin alerts, transactional emails.
+ * Returns true if sent successfully.
  */
-export async function sendDirectEmail(to: string, subject: string, html: string) {
-  await sendBrevoEmail(to, subject, html);
+export async function sendDirectEmail(to: string, subject: string, html: string): Promise<boolean> {
+  return sendBrevoEmail(to, subject, html);
 }
 
 // ── Pre-built notification templates with beautiful emails ──

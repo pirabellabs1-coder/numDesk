@@ -1,8 +1,8 @@
 import { NextRequest } from "next/server";
 import { withAuth, apiSuccess, handleApiError } from "@/lib/api-helpers";
 import { getDb } from "@/lib/db";
-import { conversations, agents } from "@vocalia/db";
-import { eq, desc, and, sql } from "drizzle-orm";
+import { recordings, conversations, agents } from "@vocalia/db";
+import { eq, desc, and, sql, count } from "drizzle-orm";
 
 export async function GET(req: NextRequest) {
   try {
@@ -11,7 +11,34 @@ export async function GET(req: NextRequest) {
     if (!workspaceId) return apiSuccess([]);
     const db = getDb();
 
-    // Pull recordings from conversations that have audioUrl
+    // Check if the dedicated recordings table has data for this workspace
+    const [recCount] = await db
+      .select({ total: count() })
+      .from(recordings)
+      .where(eq(recordings.workspaceId, workspaceId));
+
+    if (Number(recCount?.total ?? 0) > 0) {
+      // Use the dedicated recordings table
+      const rows = await db
+        .select()
+        .from(recordings)
+        .where(eq(recordings.workspaceId, workspaceId))
+        .orderBy(desc(recordings.createdAt));
+
+      const results = rows.map((r) => ({
+        ...r,
+        agentName: r.agentName || "Agent inconnu",
+        callerNumber: r.callerNumber || "Inconnu",
+        durationSeconds: r.durationSeconds || 0,
+        duration: formatDuration(r.durationSeconds || 0),
+        sentiment: r.sentiment || "neutral",
+        tags: r.tags || [],
+      }));
+
+      return apiSuccess(results);
+    }
+
+    // Fallback: pull from conversations that have audioUrl
     const rows = await db
       .select({
         id: conversations.id,
@@ -37,7 +64,6 @@ export async function GET(req: NextRequest) {
       )
       .orderBy(desc(conversations.createdAt));
 
-    // Format duration for display
     const results = rows.map((r) => ({
       ...r,
       agentName: r.agentName || "Agent inconnu",

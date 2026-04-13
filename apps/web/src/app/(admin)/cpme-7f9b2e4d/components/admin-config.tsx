@@ -1,8 +1,5 @@
 "use client";
 
-import { useState } from "react";
-import { useToast } from "@/providers/toast-provider";
-
 const LLM_MODELS = [
   { id: "gemini-2.5-flash", name: "Gemini 2.5 Flash", provider: "Google", latency: "~200ms", cost: "Bas", isDefault: true },
   { id: "gpt-4o", name: "GPT-4o", provider: "OpenAI", latency: "~350ms", cost: "Moyen", isDefault: false },
@@ -17,21 +14,6 @@ const VOICE_PROVIDERS = [
 ];
 
 export function AdminConfig() {
-  const { toast } = useToast();
-
-  const [limits, setLimits] = useState({
-    rateLimit: 100,
-    maxAgentsPerWorkspace: 10,
-    maxContactsPerWorkspace: 5000,
-    maxCampaignContacts: 500,
-    retentionDays: 90,
-    maxFileSize: 10,
-  });
-
-  const handleSave = () => {
-    toast("Configuration sauvegardée");
-  };
-
   return (
     <div className="space-y-6">
       <div>
@@ -73,25 +55,31 @@ export function AdminConfig() {
 
       {/* Global Limits */}
       <div className="rounded-2xl border border-white/5 bg-card p-6">
-        <h3 className="mb-4 font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Limites globales</h3>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Limites globales de la plateforme</h3>
+          <span className="rounded-full bg-secondary/10 px-3 py-1 text-[10px] font-bold text-secondary uppercase tracking-wider">Référence</span>
+        </div>
         <div className="grid grid-cols-2 gap-4">
           {[
-            { key: "rateLimit", label: "Rate limit (req/min)", value: limits.rateLimit },
-            { key: "maxAgentsPerWorkspace", label: "Agents max / workspace", value: limits.maxAgentsPerWorkspace },
-            { key: "maxContactsPerWorkspace", label: "Contacts max / workspace", value: limits.maxContactsPerWorkspace },
-            { key: "maxCampaignContacts", label: "Contacts max / campagne", value: limits.maxCampaignContacts },
-            { key: "retentionDays", label: "Rétention audio (jours)", value: limits.retentionDays },
-            { key: "maxFileSize", label: "Taille max fichier (Mo)", value: limits.maxFileSize },
+            { label: "Rate limit", value: "100 req/min", icon: "speed" },
+            { label: "Agents max / workspace", value: "Selon plan", icon: "smart_toy" },
+            { label: "Contacts max / workspace", value: "5 000", icon: "contacts" },
+            { label: "Contacts max / campagne", value: "500", icon: "campaign" },
+            { label: "Rétention audio", value: "90 jours", icon: "schedule" },
+            { label: "Taille max fichier", value: "10 Mo", icon: "upload_file" },
           ].map((limit) => (
-            <div key={limit.key}>
-              <label className="mb-1 block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">{limit.label}</label>
-              <input type="number" value={limit.value} onChange={(e) => setLimits({ ...limits, [limit.key]: +e.target.value })} className="w-full rounded-lg bg-surface-container-lowest px-4 py-2.5 text-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary" />
+            <div key={limit.label} className="flex items-center gap-3 rounded-xl border border-white/5 p-4">
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-surface-container-high">
+                <span className="material-symbols-outlined text-sm text-on-surface-variant">{limit.icon}</span>
+              </div>
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">{limit.label}</p>
+                <p className="text-sm font-bold text-on-surface">{limit.value}</p>
+              </div>
             </div>
           ))}
         </div>
-        <div className="mt-4 flex justify-end">
-          <button onClick={handleSave} className="rounded-lg bg-gradient-to-r from-primary to-secondary px-5 py-2.5 text-sm font-bold text-white">Sauvegarder la configuration</button>
-        </div>
+        <p className="mt-4 text-xs text-on-surface-variant">Ces valeurs sont définies au niveau de la plateforme. Contactez l'équipe technique pour modifier ces limites.</p>
       </div>
     </div>
   );

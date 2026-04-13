@@ -46,7 +46,7 @@ const measures = [
     title: "Webhooks",
     items: [
       "Signature HMAC-SHA256 sur chaque webhook",
-      "Header X-Vocalia-Signature pour validation",
+      "Header X-Callpme-Signature pour validation",
       "Retry automatique avec backoff exponentiel",
       "Logs de livraison avec statut HTTP",
     ],

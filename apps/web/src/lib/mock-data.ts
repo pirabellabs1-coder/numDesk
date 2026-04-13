@@ -464,7 +464,7 @@ export const mockAgentVersions = [
 // ── Marketplace Intégrations ──
 
 export const mockIntegrations = [
-  { id: "int-1", name: "Zapier", icon: "bolt", description: "Connectez Vocalia à 5000+ applications via des Zaps automatisés.", category: "Productivité" as const, status: "connected" as const },
+  { id: "int-1", name: "Zapier", icon: "bolt", description: "Connectez Callpme à 5000+ applications via des Zaps automatisés.", category: "Productivité" as const, status: "connected" as const },
   { id: "int-2", name: "Google Sheets", icon: "table_chart", description: "Exportez automatiquement les données d'appels vers Google Sheets.", category: "Productivité" as const, status: "connected" as const },
   { id: "int-3", name: "HubSpot", icon: "hub", description: "Synchronisez vos contacts et créez des deals automatiquement après chaque appel.", category: "CRM" as const, status: "available" as const },
   { id: "int-4", name: "Salesforce", icon: "cloud", description: "Intégration native avec Salesforce pour la gestion des leads et opportunités.", category: "CRM" as const, status: "soon" as const },

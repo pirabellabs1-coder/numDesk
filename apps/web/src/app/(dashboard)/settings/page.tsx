@@ -296,8 +296,12 @@ export default function SettingsPage() {
                       sendInvitation.mutate(
                         { workspaceId, email: inviteEmail.trim(), role: inviteRole },
                         {
-                          onSuccess: () => {
-                            toast("Invitation envoyée par email !");
+                          onSuccess: (data: any) => {
+                            if (data?.emailSent === false) {
+                              toast("Invitation créée mais l'email n'a pas pu être envoyé. Vérifiez la configuration email.", "error");
+                            } else {
+                              toast("Invitation envoyée par email !");
+                            }
                             setShowInviteModal(false);
                             setInviteEmail("");
                           },

@@ -143,9 +143,13 @@ export async function POST(req: NextRequest) {
     const acceptUrl = `${baseUrl}/invite/${token}`;
 
     const emailHtml = buildInvitationEmail(inviterName, workspace.name, acceptUrl);
-    await sendDirectEmail(email.toLowerCase(), `${inviterName} vous invite à rejoindre "${workspace.name}" sur Callpme`, emailHtml);
+    const emailSent = await sendDirectEmail(email.toLowerCase(), `${inviterName} vous invite à rejoindre "${workspace.name}" sur Callpme`, emailHtml);
 
-    return apiSuccess({ invitation, message: "Invitation envoyée" });
+    return apiSuccess({
+      invitation,
+      message: emailSent ? "Invitation envoyée" : "Invitation créée (email non envoyé — vérifiez la configuration Brevo)",
+      emailSent,
+    });
   } catch (error) {
     return handleApiError(error);
   }

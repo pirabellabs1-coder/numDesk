@@ -18,7 +18,7 @@ const footerSections = [
       { label: "Webhooks", href: "#developers" },
       { label: "SDK Node.js", href: "#developers" },
       { label: "SDK Python", href: "#developers" },
-      { label: "Documentation", href: "/docs" },
+      { label: "Documentation", href: "#developers" },
     ],
   },
   {
