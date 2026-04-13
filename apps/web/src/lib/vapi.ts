@@ -138,8 +138,12 @@ export async function createVapiAssistant(agent: {
     firstMessage: agent.firstMessage || "Bonjour, comment puis-je vous aider ?",
     transcriber: {
       provider: "deepgram",
+      model: "nova-2",
       language: getTranscriberLanguage(agent.language),
     },
+    silenceTimeoutSeconds: 30,
+    maxDurationSeconds: 600,
+    responseDelaySeconds: 0.4,
   };
 
   const res = await fetch(`${VAPI_API_URL}/assistant`, {
@@ -192,9 +196,17 @@ export async function updateVapiAssistant(assistantId: string, updates: {
   if (updates.voiceProvider || updates.voiceId) {
     body.voice = getVoiceConfig(updates.voiceProvider, updates.voiceId, updates.language);
   }
-  if (updates.language) {
-    body.transcriber = { provider: "deepgram", language: getTranscriberLanguage(updates.language) };
-  }
+  // Always send transcriber with nova-2 model for best French recognition
+  body.transcriber = {
+    provider: "deepgram",
+    model: "nova-2",
+    language: getTranscriberLanguage(updates.language),
+  };
+
+  // Always update conversation settings
+  body.silenceTimeoutSeconds = 30;
+  body.maxDurationSeconds = 600;
+  body.responseDelaySeconds = 0.4;
 
   const res = await fetch(`${VAPI_API_URL}/assistant/${assistantId}`, {
     method: "PATCH",

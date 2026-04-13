@@ -83,16 +83,23 @@ export function TestModal({ agent, onClose }: TestModalProps) {
 function VocalMode({ agent }: { agent: TestModalProps["agent"] }) {
   const [status, setStatus] = useState<"idle" | "connecting" | "active" | "ended">("idle");
   const [transcript, setTranscript] = useState<Message[]>([]);
+  const [isSpeaking, setIsSpeaking] = useState(false);
   const vapiRef = useRef<any>(null);
   const { toast } = useToast();
+  const transcriptEndRef = useRef<HTMLDivElement>(null);
+
+  // Auto-scroll transcript
+  useEffect(() => {
+    transcriptEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [transcript]);
 
   const startCall = useCallback(async () => {
     setStatus("connecting");
     setTranscript([]);
+    setIsSpeaking(false);
 
     try {
-      // Step 1: Sync the current voice selection to Vapi before starting
-      // This ensures the stored assistant has the right voice config
+      // Step 1: Sync the current voice/transcriber selection to Vapi before starting
       const syncRes = await fetch("/api/vapi/sync-agent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -116,7 +123,6 @@ function VocalMode({ agent }: { agent: TestModalProps["agent"] }) {
       }
 
       // Step 2: Start the call using the stored Vapi assistant
-      // This avoids chunking issues that occur with inline assistants
       const { default: Vapi } = await import("@vapi-ai/web");
       const publicKey = process.env.NEXT_PUBLIC_VAPI_PUBLIC_KEY;
       if (!publicKey) {
@@ -132,39 +138,70 @@ function VocalMode({ agent }: { agent: TestModalProps["agent"] }) {
         setStatus("active");
       });
 
+      // Merge consecutive transcript messages from the same role
+      // Deepgram sends multiple "final" events for a single utterance
       vapi.on("message", (msg: any) => {
-        if (msg.type === "transcript" && msg.transcriptType === "final") {
-          setTranscript((prev) => [...prev, {
-            role: msg.role === "assistant" ? "agent" : "user",
-            content: msg.transcript,
-            timestamp: new Date().toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }),
-          }]);
+        if (msg.type === "transcript" && msg.transcriptType === "final" && msg.transcript) {
+          const role: "agent" | "user" = msg.role === "assistant" ? "agent" : "user";
+          const text = msg.transcript.trim();
+          if (!text) return;
+
+          setTranscript((prev) => {
+            const last = prev[prev.length - 1];
+            // Merge with previous message if same role (Deepgram sends partial finals)
+            if (last && last.role === role) {
+              const updated = [...prev];
+              updated[updated.length - 1] = {
+                ...last,
+                content: last.content + " " + text,
+              };
+              return updated;
+            }
+            return [...prev, {
+              role,
+              content: text,
+              timestamp: new Date().toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }),
+            }];
+          });
         }
+      });
+
+      // Speech detection — shows when user is speaking
+      vapi.on("speech-start", () => {
+        setIsSpeaking(true);
+      });
+      vapi.on("speech-end", () => {
+        setIsSpeaking(false);
       });
 
       vapi.on("call-end", () => {
         setStatus("ended");
+        setIsSpeaking(false);
         vapiRef.current = null;
       });
 
       vapi.on("error", (err: any) => {
+        console.error("[Vapi error]", err);
         toast(err?.message || "Erreur lors de l'appel vocal", "error");
         setStatus("idle");
+        setIsSpeaking(false);
         vapiRef.current = null;
       });
 
       await vapi.start(assistantId);
     } catch (e: any) {
+      console.error("[Vapi start error]", e);
       toast(e.message || "Impossible de démarrer l'appel vocal", "error");
       setStatus("idle");
     }
-  }, [agent.vapiAgentId, toast]);
+  }, [agent.id, agent.voiceProvider, agent.voiceId, toast]);
 
   const endCall = useCallback(() => {
     if (vapiRef.current) {
       vapiRef.current.stop();
       vapiRef.current = null;
     }
+    setIsSpeaking(false);
     setStatus("ended");
   }, []);
 
@@ -182,18 +219,22 @@ function VocalMode({ agent }: { agent: TestModalProps["agent"] }) {
       {/* Status indicator */}
       <div className="mb-6 flex flex-col items-center gap-4">
         <div className={`flex h-20 w-20 items-center justify-center rounded-full ${
-          status === "active" ? "bg-tertiary/10 animate-pulse" : status === "connecting" ? "bg-primary/10" : "bg-surface-container-high"
+          status === "active"
+            ? isSpeaking ? "bg-primary/10 animate-pulse" : "bg-tertiary/10 animate-pulse"
+            : status === "connecting" ? "bg-primary/10" : "bg-surface-container-high"
         }`}>
           <span className={`material-symbols-outlined text-3xl ${
-            status === "active" ? "text-tertiary" : status === "connecting" ? "text-primary" : "text-on-surface-variant"
+            status === "active"
+              ? isSpeaking ? "text-primary" : "text-tertiary"
+              : status === "connecting" ? "text-primary" : "text-on-surface-variant"
           }`}>
-            {status === "active" ? "graphic_eq" : status === "connecting" ? "sync" : "mic"}
+            {status === "active" ? (isSpeaking ? "mic" : "graphic_eq") : status === "connecting" ? "sync" : "mic"}
           </span>
         </div>
         <p className="text-sm font-medium text-on-surface-variant">
           {status === "idle" && "Cliquez pour démarrer un test vocal"}
           {status === "connecting" && "Connexion en cours..."}
-          {status === "active" && "Conversation en cours — parlez !"}
+          {status === "active" && (isSpeaking ? "Vous parlez..." : "L'agent écoute — parlez !")}
           {status === "ended" && "Conversation terminée"}
         </p>
       </div>
@@ -211,6 +252,7 @@ function VocalMode({ agent }: { agent: TestModalProps["agent"] }) {
               </div>
             </div>
           ))}
+          <div ref={transcriptEndRef} />
         </div>
       )}
 
@@ -241,7 +283,7 @@ function VocalMode({ agent }: { agent: TestModalProps["agent"] }) {
           </div>
         )}
         <p className="text-center text-xs text-on-surface-variant">
-          Le test synchronise automatiquement la voix avant de démarrer.
+          Autorisez le microphone quand le navigateur le demande.
         </p>
       </div>
     </div>
