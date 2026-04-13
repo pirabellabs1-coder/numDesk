@@ -136,10 +136,17 @@ function VocalMode({ agent }: { agent: TestModalProps["agent"] }) {
       const lang = agent.language || "fr-FR";
       const transcriberLang = lang.startsWith("fr") ? "fr" : lang.split("-")[0] || "fr";
 
-      // Build voice config with proper model and speed settings per provider
+      // Build voice config with proper model, speed and chunking settings
       const voiceConfig: Record<string, unknown> = {
         provider: vapiVoiceProvider,
         voiceId: voiceId,
+        // Chunk plan: wait for full sentences before sending to TTS
+        // This prevents the voice from cutting words/fragments mid-sentence
+        chunkPlan: {
+          enabled: true,
+          minCharacters: 80,
+          punctuationBoundaries: [".", "!", "?", ";"],
+        },
       };
       if (voiceProvider === "cartesia") {
         voiceConfig.model = "sonic-2";
@@ -155,7 +162,7 @@ function VocalMode({ agent }: { agent: TestModalProps["agent"] }) {
         model: {
           provider: "google",
           model: "gemini-2.5-flash",
-          messages: [{ role: "system", content: agent.prompt || "Tu es un assistant téléphonique professionnel." }],
+          messages: [{ role: "system", content: agent.prompt || "Tu es un assistant téléphonique professionnel. Réponds toujours en français avec des phrases complètes et naturelles." }],
           temperature: 0.4,
         },
         voice: voiceConfig,

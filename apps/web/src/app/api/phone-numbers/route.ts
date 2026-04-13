@@ -10,6 +10,10 @@ const createPhoneSchema = z.object({
   number: z.string().min(1),
   provider: z.string().default("sip_trunk"),
   friendlyName: z.string().optional(),
+  sipTrunkId: z.string().uuid().optional(),
+  twilioSid: z.string().optional(),
+  assignedAgentId: z.string().uuid().optional(),
+  countryCode: z.string().optional(),
 });
 
 export async function GET(req: NextRequest) {
