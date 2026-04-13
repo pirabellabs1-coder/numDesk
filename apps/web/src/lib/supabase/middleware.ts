@@ -36,7 +36,7 @@ export async function updateSession(request: NextRequest) {
   const isPublicRoute = publicRoutes.includes(pathname);
   const isApiRoute = pathname.startsWith("/api/");
   const isAuthCallback = pathname.startsWith("/api/auth/callback");
-  const isAdminRoute = pathname.startsWith("/admin");
+  const isAdminRoute = pathname.startsWith("/cpme-7f9b2e4d");
 
   // Allow API routes, auth callback, and admin routes (has own auth) through
   if (isApiRoute || isAuthCallback || isAdminRoute) {

@@ -30,7 +30,7 @@ export default function AdminLoginPage() {
         return;
       }
 
-      router.push("/admin");
+      router.push("/cpme-7f9b2e4d");
     } catch {
       setError("Erreur de connexion au serveur");
       setLoading(false);
@@ -75,7 +75,7 @@ export default function AdminLoginPage() {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               className="input-field"
-              placeholder="admin"
+              placeholder="identifiant"
               required
               autoComplete="username"
             />

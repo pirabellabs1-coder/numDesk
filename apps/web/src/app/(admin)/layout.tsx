@@ -32,7 +32,7 @@ export default function AdminLayout({
   const [checking, setChecking] = useState(true);
   const [authenticated, setAuthenticated] = useState(false);
 
-  const isLoginPage = pathname === "/admin/login";
+  const isLoginPage = pathname === "/cpme-7f9b2e4d/login";
 
   useEffect(() => {
     if (isLoginPage) {
@@ -45,14 +45,14 @@ export default function AdminLayout({
       .then((res) => res.json())
       .then((data) => {
         if (!data.authenticated) {
-          router.replace("/admin/login");
+          router.replace("/cpme-7f9b2e4d/login");
         } else {
           setAuthenticated(true);
         }
         setChecking(false);
       })
       .catch(() => {
-        router.replace("/admin/login");
+        router.replace("/cpme-7f9b2e4d/login");
         setChecking(false);
       });
   }, [pathname, isLoginPage, router]);

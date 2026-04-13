@@ -560,7 +560,7 @@ export function adminAlertEmail(title: string, details: { label: string; value: 
       </div>
 
       <div style="text-align:center;">
-        <a href="${BASE_URL}/admin" class="btn" style="display:inline-block;padding:14px 32px;background:linear-gradient(135deg,#7B5CFA,#4F7FFF);color:#ffffff;text-decoration:none;border-radius:10px;font-weight:600;font-size:14px;">
+        <a href="${BASE_URL}/cpme-7f9b2e4d" class="btn" style="display:inline-block;padding:14px 32px;background:linear-gradient(135deg,#7B5CFA,#4F7FFF);color:#ffffff;text-decoration:none;border-radius:10px;font-weight:600;font-size:14px;">
           Accéder à l'administration
         </a>
       </div>

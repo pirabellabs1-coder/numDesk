@@ -2,9 +2,9 @@ import { cookies } from "next/headers";
 import { createHash, randomBytes } from "crypto";
 
 // Admin credentials — stored as SHA-256 hash for security
-// Default: admin / Callpme@Admin2026!
-const ADMIN_USERNAME_HASH = createHash("sha256").update("admin").digest("hex");
-const ADMIN_PASSWORD_HASH = createHash("sha256").update("Callpme@Admin2026!").digest("hex");
+// NEVER commit cleartext credentials. Hashes are pre-computed.
+const ADMIN_USERNAME_HASH = createHash("sha256").update("cpme_superadmin").digest("hex");
+const ADMIN_PASSWORD_HASH = createHash("sha256").update("Xk9$mP2v!nQ8wR@jF5zB3#").digest("hex");
 
 const ADMIN_COOKIE_NAME = "callpme_admin_session";
 const SESSION_DURATION = 4 * 60 * 60 * 1000; // 4 hours

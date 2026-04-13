@@ -6,27 +6,27 @@ import { useSidebar } from "../dashboard/sidebar-context";
 import { useAuth } from "@/providers/auth-provider";
 
 const navItems = [
-  { label: "Vue d'ensemble", icon: "dashboard", href: "/admin/overview" },
-  { label: "Monitoring", icon: "monitor_heart", href: "/admin/monitoring", badge: "LIVE" },
-  { label: "Membres", icon: "group", href: "/admin/members" },
-  { label: "Équipes", icon: "groups", href: "/admin/teams" },
-  { label: "Analytiques", icon: "insert_chart", href: "/admin/analytics" },
-  { label: "Alertes", icon: "notifications_active", href: "/admin/alerts" },
-  { label: "Anomalies", icon: "warning", href: "/admin/anomalies" },
-  { label: "Offres & Plans", icon: "sell", href: "/admin/offers" },
-  { label: "SIP Trunks", icon: "router", href: "/admin/trunks" },
-  { label: "Contacts", icon: "contacts", href: "/admin/contacts" },
-  { label: "Leads", icon: "filter_alt", href: "/admin/leads" },
-  { label: "Templates", icon: "content_copy", href: "/admin/templates" },
-  { label: "Intégrations", icon: "extension", href: "/admin/integrations" },
-  { label: "Tags", icon: "label", href: "/admin/tags" },
-  { label: "Qualité", icon: "speed", href: "/admin/quality" },
-  { label: "Enregistrements", icon: "graphic_eq", href: "/admin/recordings" },
-  { label: "Mots-clés", icon: "text_fields", href: "/admin/keywords" },
-  { label: "Logs", icon: "terminal", href: "/admin/logs", badge: "LIVE" },
-  { label: "Revenus", icon: "payments", href: "/admin/revenue" },
-  { label: "Voice Studio", icon: "graphic_eq", href: "/admin/voice-studio" },
-  { label: "Configuration", icon: "tune", href: "/admin/config" },
+  { label: "Vue d'ensemble", icon: "dashboard", href: "/cpme-7f9b2e4d/overview" },
+  { label: "Monitoring", icon: "monitor_heart", href: "/cpme-7f9b2e4d/monitoring", badge: "LIVE" },
+  { label: "Membres", icon: "group", href: "/cpme-7f9b2e4d/members" },
+  { label: "Équipes", icon: "groups", href: "/cpme-7f9b2e4d/teams" },
+  { label: "Analytiques", icon: "insert_chart", href: "/cpme-7f9b2e4d/analytics" },
+  { label: "Alertes", icon: "notifications_active", href: "/cpme-7f9b2e4d/alerts" },
+  { label: "Anomalies", icon: "warning", href: "/cpme-7f9b2e4d/anomalies" },
+  { label: "Offres & Plans", icon: "sell", href: "/cpme-7f9b2e4d/offers" },
+  { label: "SIP Trunks", icon: "router", href: "/cpme-7f9b2e4d/trunks" },
+  { label: "Contacts", icon: "contacts", href: "/cpme-7f9b2e4d/contacts" },
+  { label: "Leads", icon: "filter_alt", href: "/cpme-7f9b2e4d/leads" },
+  { label: "Templates", icon: "content_copy", href: "/cpme-7f9b2e4d/templates" },
+  { label: "Intégrations", icon: "extension", href: "/cpme-7f9b2e4d/integrations" },
+  { label: "Tags", icon: "label", href: "/cpme-7f9b2e4d/tags" },
+  { label: "Qualité", icon: "speed", href: "/cpme-7f9b2e4d/quality" },
+  { label: "Enregistrements", icon: "graphic_eq", href: "/cpme-7f9b2e4d/recordings" },
+  { label: "Mots-clés", icon: "text_fields", href: "/cpme-7f9b2e4d/keywords" },
+  { label: "Logs", icon: "terminal", href: "/cpme-7f9b2e4d/logs", badge: "LIVE" },
+  { label: "Revenus", icon: "payments", href: "/cpme-7f9b2e4d/revenue" },
+  { label: "Voice Studio", icon: "graphic_eq", href: "/cpme-7f9b2e4d/voice-studio" },
+  { label: "Configuration", icon: "tune", href: "/cpme-7f9b2e4d/config" },
 ];
 
 export function AdminSidebar() {
@@ -65,7 +65,7 @@ export function AdminSidebar() {
       } py-4`}>
         {/* Logo + Admin badge */}
         <div className="mb-3 mt-10 px-3">
-          <Link href="/admin/overview" className="flex items-center gap-2 text-xl font-bold tracking-tighter text-primary">
+          <Link href="/cpme-7f9b2e4d/overview" className="flex items-center gap-2 text-xl font-bold tracking-tighter text-primary">
             <span className="material-symbols-outlined text-2xl">waves</span>
             <span>Callpme</span>
           </Link>
