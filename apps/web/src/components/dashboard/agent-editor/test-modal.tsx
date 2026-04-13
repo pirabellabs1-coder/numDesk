@@ -136,17 +136,12 @@ function VocalMode({ agent }: { agent: TestModalProps["agent"] }) {
       const lang = agent.language || "fr-FR";
       const transcriberLang = lang.startsWith("fr") ? "fr" : lang.split("-")[0] || "fr";
 
-      // Build voice config with proper model, speed and chunking settings
+      // Build voice config — disable chunking so the voice provider handles
+      // the full audio stream naturally without Vapi splitting it into fragments
       const voiceConfig: Record<string, unknown> = {
         provider: vapiVoiceProvider,
         voiceId: voiceId,
-        // Chunk plan: wait for full sentences before sending to TTS
-        // This prevents the voice from cutting words/fragments mid-sentence
-        chunkPlan: {
-          enabled: true,
-          minCharacters: 80,
-          punctuationBoundaries: [".", "!", "?", ";"],
-        },
+        chunkPlan: { enabled: false },
       };
       if (voiceProvider === "cartesia") {
         voiceConfig.model = "sonic-2";
