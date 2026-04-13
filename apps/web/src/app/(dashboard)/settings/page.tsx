@@ -58,21 +58,21 @@ export default function SettingsPage() {
   ];
 
   return (
-    <section className="mx-auto max-w-3xl space-y-8">
+    <section className="mx-auto max-w-3xl space-y-4 sm:space-y-6 lg:space-y-8">
       <div>
-        <h1 className="text-4xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
+        <h1 className="text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
           Paramètres
         </h1>
         <p className="mt-2 text-on-surface-variant">Gérez votre profil et vos préférences</p>
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-0 border-b border-white/5">
+      <div className="flex flex-wrap gap-0 border-b border-white/5">
         {tabs.map((t) => (
           <button
             key={t.id}
             onClick={() => setTab(t.id)}
-            className={`border-b-2 px-6 py-3 text-sm font-bold tracking-wide transition-all ${
+            className={`border-b-2 px-3 py-2 text-xs sm:px-4 sm:py-3 sm:text-sm md:px-6 font-bold tracking-wide transition-all ${
               tab === t.id ? "border-primary text-primary" : "border-transparent text-on-surface-variant hover:text-on-surface"
             }`}
           >
@@ -104,7 +104,7 @@ export default function SettingsPage() {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-white/5 bg-card p-6 space-y-5">
+          <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6 space-y-5">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5">
                 <label className="text-xs font-semibold text-on-surface-variant">Prénom</label>
@@ -169,12 +169,12 @@ export default function SettingsPage() {
           </div>
 
           {/* Members table */}
-          <div className="overflow-hidden rounded-2xl border border-white/5 bg-card">
-            <table className="w-full border-collapse">
+          <div className="overflow-x-auto overflow-hidden rounded-2xl border border-white/5 bg-card">
+            <table className="w-full min-w-[500px] border-collapse">
               <thead>
                 <tr className="bg-surface-container-low/50">
                   {["Membre", "Rôle", "Statut", ""].map((h) => (
-                    <th key={h} className="px-6 py-4 text-left text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
+                    <th key={h} className="px-3 py-3 sm:px-4 md:px-6 md:py-4 text-left text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
                       {h}
                     </th>
                   ))}
@@ -187,7 +187,7 @@ export default function SettingsPage() {
                   const isYou = m.userId === user?.id;
                   return (
                     <tr key={m.id} className="border-t border-white/5">
-                      <td className="px-6 py-4">
+                      <td className="px-3 py-3 sm:px-4 md:px-6 md:py-4">
                         <div className="flex items-center gap-3">
                           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-secondary text-xs font-bold text-white">
                             {mInitials}
@@ -198,17 +198,17 @@ export default function SettingsPage() {
                           </div>
                         </div>
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="px-3 py-3 sm:px-4 md:px-6 md:py-4">
                         <span className={`rounded-md px-2 py-1 text-[10px] font-bold uppercase tracking-wider ${
                           m.role === "owner" ? "bg-secondary/10 text-secondary" : "bg-primary/10 text-primary"
                         }`}>
                           {m.role === "owner" ? "Propriétaire" : m.role === "admin" ? "Admin" : "Membre"}
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-xs text-on-surface-variant">
+                      <td className="px-3 py-3 sm:px-4 md:px-6 md:py-4 text-xs text-on-surface-variant">
                         {isYou ? "Connecté" : "Actif"}
                       </td>
-                      <td className="px-6 py-4 text-xs text-on-surface-variant">
+                      <td className="px-3 py-3 sm:px-4 md:px-6 md:py-4 text-xs text-on-surface-variant">
                         {isYou ? "Vous" : ""}
                       </td>
                     </tr>
@@ -252,7 +252,7 @@ export default function SettingsPage() {
           {/* Invite modal */}
           {showInviteModal && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-              <div className="w-full max-w-md rounded-2xl border border-white/10 bg-surface p-8">
+              <div className="w-full max-w-md rounded-2xl border border-white/10 bg-surface p-4 sm:p-6 md:p-8">
                 <h2 className="mb-2 text-xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
                   Inviter un membre
                 </h2>
@@ -310,7 +310,7 @@ export default function SettingsPage() {
                       );
                     }}
                     disabled={sendInvitation.isPending || !inviteEmail.trim()}
-                    className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-primary to-secondary px-5 py-2.5 text-sm font-bold text-white disabled:opacity-50"
+                    className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-primary to-secondary px-3 py-2 text-xs sm:px-5 sm:py-2.5 sm:text-sm font-bold text-white disabled:opacity-50"
                   >
                     <span className="material-symbols-outlined text-sm">send</span>
                     {sendInvitation.isPending ? "Envoi..." : "Envoyer l'invitation"}
@@ -332,7 +332,7 @@ export default function SettingsPage() {
             { label: "Webhook en échec", desc: "Alerte si un webhook échoue plus de 3 fois", default: true },
             { label: "Nouvel appel entrant", desc: "Notification en temps réel pour chaque appel entrant", default: false },
           ].map((n) => (
-            <div key={n.label} className="flex items-center justify-between rounded-2xl border border-white/5 bg-card p-5">
+            <div key={n.label} className="flex items-center justify-between rounded-2xl border border-white/5 bg-card p-4 sm:p-5">
               <div>
                 <p className="text-sm font-bold text-on-surface">{n.label}</p>
                 <p className="mt-0.5 text-xs text-on-surface-variant">{n.desc}</p>
@@ -382,7 +382,7 @@ function ProviderKeyField({ label, placeholder, hint }: { label: string; placeho
   const [providerSaved, setProviderSaved] = useState(false);
 
   return (
-    <div className="rounded-2xl border border-white/5 bg-card p-5">
+    <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-5">
       <div className="mb-1 flex items-center justify-between">
         <label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant">{label}</label>
         <span className="text-[10px] text-on-surface-variant">{hint}</span>

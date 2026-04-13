@@ -28,10 +28,10 @@ export function AdminMonitoring() {
   const activity = health?.activity ?? {};
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-end justify-between">
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Monitoring en temps réel</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Monitoring en temps réel</h1>
           <p className="mt-1 text-sm text-on-surface-variant">Latence et disponibilité des providers tiers — rafraîchi toutes les 60s</p>
         </div>
         <div className="flex items-center gap-2">
@@ -41,7 +41,7 @@ export function AdminMonitoring() {
       </div>
 
       {/* Global status */}
-      <div className="rounded-2xl border border-white/5 bg-card p-6">
+      <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
         <div className="flex items-center gap-4">
           <div className={`flex h-14 w-14 items-center justify-center rounded-2xl ${allOperational ? "bg-tertiary/10" : "bg-error/10"}`}>
             <span className={`material-symbols-outlined text-3xl ${allOperational ? "text-tertiary" : "text-error"}`}>{allOperational ? "check_circle" : "warning"}</span>
@@ -58,7 +58,7 @@ export function AdminMonitoring() {
       </div>
 
       {/* Activity metrics */}
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {[
           { label: "Appels 24h", value: activity.callsLast24h ?? 0, icon: "call" },
           { label: "Appels 7j", value: activity.callsLast7d ?? 0, icon: "date_range" },
@@ -76,7 +76,7 @@ export function AdminMonitoring() {
       </div>
 
       {/* Provider cards */}
-      <div className="grid grid-cols-2 gap-4 xl:grid-cols-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 xl:grid-cols-3">
         {isLoading
           ? Array.from({ length: 6 }).map((_, i) => (
               <div key={i} className="animate-pulse rounded-2xl border border-white/5 bg-card p-5 h-36" />
@@ -85,7 +85,7 @@ export function AdminMonitoring() {
               const status = statusConfig[service.status as ProviderStatus] ?? statusConfig.down;
               const icon = iconMap[service.name] ?? "cloud";
               return (
-                <div key={service.name} className="rounded-2xl border border-white/5 bg-card p-5">
+                <div key={service.name} className="rounded-2xl border border-white/5 bg-card p-4 sm:p-5">
                   <div className="mb-4 flex items-start justify-between">
                     <div className="flex items-center gap-3">
                       <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-surface-container-high">

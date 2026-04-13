@@ -41,7 +41,9 @@ export async function POST() {
           const fullName = [user.user_metadata?.first_name, user.user_metadata?.last_name].filter(Boolean).join(" ") || user.email || "Inconnu";
           await notifyAdminNewUser(adminEmail, fullName, user.email || "", planName);
         }
-      } catch {}
+      } catch (emailErr) {
+        console.error("[setup-profile] Welcome email failed:", emailErr instanceof Error ? emailErr.message : emailErr);
+      }
 
       return apiSuccess(created, 201);
     } catch {

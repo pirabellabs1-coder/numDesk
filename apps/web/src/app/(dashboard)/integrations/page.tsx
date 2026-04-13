@@ -209,32 +209,32 @@ export default function IntegrationsPage() {
   if (isLoading) return <PageSkeleton />;
 
   return (
-    <section className="mx-auto max-w-7xl space-y-8">
+    <section className="mx-auto max-w-7xl space-y-4 sm:space-y-6 lg:space-y-8">
       <div>
-        <h1 className="text-4xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Intégrations</h1>
+        <h1 className="text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Intégrations</h1>
         <p className="mt-2 text-on-surface-variant">
           {connectedProviders.length} connectée(s) · {availableIntegrations.length} disponibles · {soonIntegrations.length} à venir
         </p>
       </div>
 
       {/* KPIs */}
-      <div className="grid grid-cols-4 gap-4">
-        <div className="rounded-2xl border border-white/5 bg-card p-5">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-5">
           <div className="mb-2 flex items-center gap-2">
             <span className="relative flex h-2.5 w-2.5"><span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-tertiary opacity-75" /><span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-tertiary" /></span>
             <span className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Connectées</span>
           </div>
           <p className="text-3xl font-bold text-tertiary" style={{ fontFamily: "Inter, sans-serif" }}>{connectedProviders.length}</p>
         </div>
-        <div className="rounded-2xl border border-white/5 bg-card p-5">
+        <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-5">
           <div className="mb-2 flex items-center gap-2"><div className="h-2 w-2 rounded-full bg-primary" /><span className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Disponibles</span></div>
           <p className="text-3xl font-bold text-primary" style={{ fontFamily: "Inter, sans-serif" }}>{availableIntegrations.length}</p>
         </div>
-        <div className="rounded-2xl border border-white/5 bg-card p-5">
+        <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-5">
           <div className="mb-2 flex items-center gap-2"><div className="h-2 w-2 rounded-full bg-secondary" /><span className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">À venir</span></div>
           <p className="text-3xl font-bold text-secondary" style={{ fontFamily: "Inter, sans-serif" }}>{soonIntegrations.length}</p>
         </div>
-        <div className="rounded-2xl border border-white/5 bg-card p-5">
+        <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-5">
           <div className="mb-2 flex items-center gap-2"><div className="h-2 w-2 rounded-full bg-on-surface-variant" /><span className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Total</span></div>
           <p className="text-3xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>{allIntegrations.length}</p>
         </div>
@@ -255,9 +255,9 @@ export default function IntegrationsPage() {
       </div>
 
       {/* Filters */}
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-2">
         {categories.map((cat) => (
-          <button key={cat} onClick={() => setFilter(cat)} className={`rounded-lg px-4 py-2 text-sm font-bold transition-all ${filter === cat ? "bg-primary/10 text-primary" : "text-on-surface-variant hover:text-on-surface"}`}>
+          <button key={cat} onClick={() => setFilter(cat)} className={`rounded-lg px-3 py-2 text-xs sm:px-4 sm:text-sm font-bold transition-all ${filter === cat ? "bg-primary/10 text-primary" : "text-on-surface-variant hover:text-on-surface"}`}>
             {cat} ({cat === "Tous" ? allIntegrations.length : allIntegrations.filter((i) => i.category === cat).length})
           </button>
         ))}
@@ -322,7 +322,7 @@ export default function IntegrationsPage() {
       {/* Config Modal */}
       {selected && selected.status === "available" && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="w-full max-w-lg rounded-2xl border border-white/10 bg-surface p-8">
+          <div className="w-full max-w-lg rounded-2xl border border-white/10 bg-surface p-4 sm:p-6 md:p-8">
             <div className="mb-6 flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-surface-container-high">
@@ -386,7 +386,7 @@ export default function IntegrationsPage() {
 
             <div className="mt-6 flex justify-end gap-3">
               <button onClick={() => setSelectedId(null)} className="rounded-lg px-5 py-2.5 text-sm text-on-surface-variant hover:text-on-surface">Annuler</button>
-              <button onClick={handleConnect} disabled={connectMutation.isPending} className="rounded-lg bg-gradient-to-r from-primary to-secondary px-5 py-2.5 text-sm font-bold text-white disabled:opacity-50">
+              <button onClick={handleConnect} disabled={connectMutation.isPending} className="rounded-lg bg-gradient-to-r from-primary to-secondary px-3 py-2 text-xs sm:px-5 sm:py-2.5 sm:text-sm font-bold text-white disabled:opacity-50">
                 {connectMutation.isPending ? "Connexion..." : isConnected(selected.id) ? "Mettre à jour" : "Connecter"}
               </button>
             </div>

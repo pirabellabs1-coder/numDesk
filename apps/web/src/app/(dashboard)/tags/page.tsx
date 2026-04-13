@@ -79,13 +79,13 @@ export default function TagsPage() {
   const totalConversations = tagList.reduce((acc: number, t: any) => acc + (t.conversationCount ?? 0), 0);
 
   return (
-    <section className="mx-auto max-w-3xl space-y-8">
-      <div className="flex items-end justify-between">
+    <section className="mx-auto max-w-3xl space-y-4 sm:space-y-6 lg:space-y-8">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-4xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Tags</h1>
+          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Tags</h1>
           <p className="mt-2 text-on-surface-variant">{tagList.length} tag(s) · {totalConversations} conversation(s) taguée(s)</p>
         </div>
-        <button onClick={() => setShowAdd(true)} className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-primary to-secondary px-5 py-2.5 text-sm font-bold text-white">
+        <button onClick={() => setShowAdd(true)} className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-primary to-secondary px-3 py-2 text-xs sm:px-5 sm:py-2.5 sm:text-sm font-bold text-white">
           <span className="material-symbols-outlined text-sm">add</span>
           Nouveau tag
         </button>
@@ -183,7 +183,7 @@ export default function TagsPage() {
                 </div>
               ) : (
                 /* Display mode */
-                <div className="flex items-center gap-4 px-6 py-4">
+                <div className="flex items-center gap-4 px-3 py-3 sm:px-4 md:px-6 md:py-4">
                   <div className="h-4 w-4 shrink-0 rounded-full" style={{ backgroundColor: tag.color }} />
                   <span className="min-w-0 flex-1 text-sm font-bold text-on-surface">{tag.name}</span>
                   <span className="rounded-full px-3 py-1 text-[10px] font-bold" style={{ backgroundColor: `${tag.color}20`, color: tag.color }}>{tag.name}</span>

@@ -73,7 +73,7 @@ export default function DashboardPage() {
     : { positive: 0, neutral: 0, negative: 0 };
 
   return (
-    <section className="mx-auto max-w-7xl space-y-10">
+    <section className="mx-auto max-w-7xl space-y-6 sm:space-y-8 lg:space-y-10">
       {/* Customize panel */}
       {isCustomizing && (
         <div className="rounded-2xl border border-primary/20 bg-primary/[0.03] p-5">
@@ -121,7 +121,7 @@ export default function DashboardPage() {
         <div>
           <div className="flex items-center gap-3">
             <h1
-              className="text-4xl font-bold tracking-tight text-on-surface lg:text-5xl"
+              className="text-2xl font-bold tracking-tight text-on-surface sm:text-3xl lg:text-4xl"
               style={{ fontFamily: "Inter, sans-serif" }}
             >
               Bonjour, {userName}
@@ -143,7 +143,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Quota card */}
-        <div className="relative w-full overflow-hidden rounded-2xl border border-white/5 bg-card p-5 md:w-80">
+        <div className="relative w-full overflow-hidden rounded-2xl border border-white/5 bg-card p-4 sm:p-5 lg:w-80">
           <div className="absolute -mr-10 -mt-10 right-0 top-0 h-32 w-32 rounded-full bg-primary/5 blur-3xl" />
           <div className="mb-3 flex items-center justify-between">
             <span className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
@@ -219,7 +219,7 @@ export default function DashboardPage() {
         ].map((stat) => (
           <div
             key={stat.label}
-            className="group flex flex-col justify-between rounded-2xl border border-white/5 bg-card p-6 transition-colors duration-300 hover:bg-surface-container-low"
+            className="group flex flex-col justify-between rounded-2xl border border-white/5 bg-card p-4 sm:p-6 transition-colors duration-300 hover:bg-surface-container-low"
           >
             <div className="mb-4 flex items-center justify-between">
               <div
@@ -261,7 +261,7 @@ export default function DashboardPage() {
       {/* Charts row */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Calls per day chart — from real conversations */}
-        <div className="rounded-2xl border border-white/5 bg-card p-6 lg:col-span-2">
+        <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6 lg:col-span-2">
           <div className="mb-6 flex items-center justify-between">
             <div>
               <h2 className="font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Appels par jour</h2>
@@ -304,7 +304,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Donut chart - Agent distribution — from real agents */}
-        <div className="rounded-2xl border border-white/5 bg-card p-6">
+        <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
           <h2 className="mb-4 font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Répartition par agent</h2>
           {(() => {
             const agentsList = agentsData ?? [];
@@ -355,7 +355,7 @@ export default function DashboardPage() {
       {/* Trend line + Sentiment arc */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         {/* Minutes consumption curve — from real stats */}
-        <div className="rounded-2xl border border-white/5 bg-card p-6">
+        <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Consommation de minutes</h2>
             <span className="text-xs text-on-surface-variant">Ce mois</span>
@@ -391,7 +391,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Sentiment overview */}
-        <div className="rounded-2xl border border-white/5 bg-card p-6">
+        <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
           <h2 className="mb-4 font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
             Sentiments des appels
           </h2>
@@ -429,7 +429,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Main grid */}
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:gap-8 lg:grid-cols-3">
         {/* Recent conversations */}
         <div className="space-y-4 lg:col-span-2">
           <div className="flex items-center justify-between px-2">
@@ -456,7 +456,7 @@ export default function DashboardPage() {
                       (h) => (
                         <th
                           key={h}
-                          className={`px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant ${
+                          className={`px-3 py-3 sm:px-4 md:px-6 md:py-4 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant ${
                             h === "Date" ? "text-right" : ""
                           }`}
                         >
@@ -472,7 +472,7 @@ export default function DashboardPage() {
                       key={conv.id}
                       className="transition-colors hover:bg-white/[0.02]"
                     >
-                      <td className="px-6 py-5">
+                      <td className="px-3 py-3 sm:px-4 sm:py-4 md:px-6 md:py-5">
                         <div className="flex items-center gap-3">
                           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-surface-container-high text-on-surface-variant">
                             <span className="material-symbols-outlined text-sm">
@@ -484,7 +484,7 @@ export default function DashboardPage() {
                           </span>
                         </div>
                       </td>
-                      <td className="px-6 py-5">
+                      <td className="px-3 py-3 sm:px-4 sm:py-4 md:px-6 md:py-5">
                         <div className="flex items-center gap-2">
                           <span
                             className={`h-1.5 w-1.5 rounded-full ${conv.agentColor}`}
@@ -494,17 +494,17 @@ export default function DashboardPage() {
                           </span>
                         </div>
                       </td>
-                      <td className="px-6 py-5 font-mono text-xs text-on-surface-variant">
+                      <td className="px-3 py-3 sm:px-4 sm:py-4 md:px-6 md:py-5 font-mono text-xs text-on-surface-variant">
                         {conv.duration}
                       </td>
-                      <td className="px-6 py-5">
+                      <td className="px-3 py-3 sm:px-4 sm:py-4 md:px-6 md:py-5">
                         <span
                           className={`rounded-md px-2 py-1 text-[10px] font-bold uppercase tracking-wider ${statusStyles[conv.status]}`}
                         >
                           {conv.statusLabel}
                         </span>
                       </td>
-                      <td className="px-6 py-5 text-right text-xs text-on-surface-variant">
+                      <td className="px-3 py-3 sm:px-4 sm:py-4 md:px-6 md:py-5 text-right text-xs text-on-surface-variant">
                         {conv.date}
                       </td>
                     </tr>
@@ -518,7 +518,7 @@ export default function DashboardPage() {
         {/* Right widgets */}
         <div className="space-y-6">
           {/* Live activity — from real data */}
-          <div className="relative overflow-hidden rounded-3xl border border-white/5 bg-card p-6">
+          <div className="relative overflow-hidden rounded-3xl border border-white/5 bg-card p-4 sm:p-6">
             <div className="mb-6 flex items-center justify-between">
               <h3 className="font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Activité</h3>
               <Link href="/live" className="flex items-center gap-2 text-xs text-primary hover:underline">
@@ -574,7 +574,7 @@ export default function DashboardPage() {
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           {/* Active campaigns widget */}
           {widgets.find((w) => w.type === "active_campaigns")?.enabled && (
-            <div className="rounded-2xl border border-white/5 bg-card p-6">
+            <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
               <h3 className="mb-4 font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
                 Campagnes en cours
               </h3>
@@ -599,7 +599,7 @@ export default function DashboardPage() {
 
           {/* Sentiment widget */}
           {widgets.find((w) => w.type === "sentiment")?.enabled && (
-            <div className="rounded-2xl border border-white/5 bg-card p-6">
+            <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
               <h3 className="mb-4 font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
                 Sentiment du jour
               </h3>
@@ -623,7 +623,7 @@ export default function DashboardPage() {
 
           {/* Recent activity widget */}
           {widgets.find((w) => w.type === "recent_activity")?.enabled && (
-            <div className="rounded-2xl border border-white/5 bg-card p-6">
+            <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
               <div className="mb-4 flex items-center justify-between">
                 <h3 className="font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
                   Activité récente

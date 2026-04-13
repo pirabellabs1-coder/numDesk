@@ -95,10 +95,10 @@ export function AdminOffers() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-end justify-between">
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
             Offres & Plans
           </h1>
           <p className="mt-1 text-sm text-on-surface-variant">
@@ -115,9 +115,9 @@ export function AdminOffers() {
       </div>
 
       {showCreate && (
-        <div className="rounded-2xl border border-primary/20 bg-card p-6">
+        <div className="rounded-2xl border border-primary/20 bg-card p-4 sm:p-6">
           <h3 className="mb-4 text-sm font-bold text-on-surface">Creer une offre</h3>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="mb-1 block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Nom</label>
               <input value={newOffer.name} onChange={(e) => setNewOffer({ ...newOffer, name: e.target.value })} placeholder="Pro, Agency..." className="w-full rounded-lg bg-surface-container-lowest px-4 py-2.5 text-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary" />
@@ -166,7 +166,7 @@ export function AdminOffers() {
               const isEditing = editId === offer.id;
 
               return (
-                <div key={offer.id} className={`relative rounded-2xl border bg-gradient-to-b p-6 ${style.gradient} ${style.border} ${!offer.isActive ? "opacity-50" : ""}`}>
+                <div key={offer.id} className={`relative rounded-2xl border bg-gradient-to-b p-4 sm:p-6 ${style.gradient} ${style.border} ${!offer.isActive ? "opacity-50" : ""}`}>
                   {/* Badge */}
                   <div className="mb-4 flex items-center justify-between">
                     <span className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold ${style.badge}`}>
@@ -191,17 +191,17 @@ export function AdminOffers() {
                   <div className="mt-4">
                     {offer.slug === "trial" ? (
                       <div>
-                        <span className="text-3xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Gratuit</span>
+                        <span className="text-2xl sm:text-3xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Gratuit</span>
                         <p className="mt-1 text-xs text-on-surface-variant">{offer.minutesIncluded} minutes offertes</p>
                       </div>
                     ) : offer.slug === "enterprise" ? (
                       <div>
-                        <span className="text-3xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Sur mesure</span>
+                        <span className="text-2xl sm:text-3xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Sur mesure</span>
                         <p className="mt-1 text-xs text-on-surface-variant">Contactez-nous</p>
                       </div>
                     ) : (
                       <div>
-                        <span className="text-3xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
+                        <span className="text-2xl sm:text-3xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
                           {((offer.pricePerMinuteCents ?? 0) / 100).toFixed(2)} EUR
                         </span>
                         <span className="text-sm text-on-surface-variant"> / minute</span>
@@ -340,12 +340,12 @@ export function AdminOffers() {
           </div>
 
           {/* Comparison table */}
-          <div className="rounded-2xl border border-white/5 bg-card p-6">
+          <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
             <h3 className="mb-4 font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
               Comparaison des plans
             </h3>
             <div className="overflow-x-auto">
-              <table className="w-full">
+              <table className="w-full min-w-[500px]">
                 <thead>
                   <tr className="border-b border-white/5 text-left text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
                     <th className="px-4 py-3">Fonctionnalite</th>

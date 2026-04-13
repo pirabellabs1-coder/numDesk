@@ -70,31 +70,31 @@ export default function RecordingsPage() {
   };
 
   return (
-    <section className="mx-auto max-w-7xl space-y-8">
+    <section className="mx-auto max-w-7xl space-y-4 sm:space-y-6 lg:space-y-8">
       <div>
-        <h1 className="text-4xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
+        <h1 className="text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
           Enregistrements
         </h1>
         <p className="mt-2 text-on-surface-variant">Bibliothèque audio de vos appels enregistrés</p>
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-4">
-        <div className="rounded-2xl border border-white/5 bg-card p-5">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-5">
           <div className="mb-2 text-primary">
             <span className="material-symbols-outlined">graphic_eq</span>
           </div>
           <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Total enregistrements</p>
           <p className="text-3xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>{recordings.length}</p>
         </div>
-        <div className="rounded-2xl border border-white/5 bg-card p-5">
+        <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-5">
           <div className="mb-2 text-secondary">
             <span className="material-symbols-outlined">timer</span>
           </div>
           <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Durée totale</p>
           <p className="text-3xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>{formatDuration(totalDuration)}</p>
         </div>
-        <div className="rounded-2xl border border-white/5 bg-card p-5">
+        <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-5">
           <div className="mb-2 text-tertiary">
             <span className="material-symbols-outlined">avg_pace</span>
           </div>
@@ -112,7 +112,7 @@ export default function RecordingsPage() {
       ) : (
         <>
           {/* Filters */}
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
             <select
               value={filterAgent ?? ""}
               onChange={(e) => setFilterAgent(e.target.value || null)}
@@ -145,7 +145,7 @@ export default function RecordingsPage() {
               <p className="py-8 text-center text-sm text-on-surface-variant">Aucun enregistrement ne correspond aux filtres sélectionnés</p>
             ) : (
               filtered.map((rec: any) => (
-                <div key={rec.id} className="flex items-center gap-4 rounded-2xl border border-white/5 bg-card p-5 transition-all hover:border-white/10">
+                <div key={rec.id} className="flex flex-col sm:flex-row items-start sm:items-center gap-4 rounded-2xl border border-white/5 bg-card p-4 sm:p-5 transition-all hover:border-white/10">
                   {/* Play button */}
                   <button
                     onClick={() => handlePlay(rec)}

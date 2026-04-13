@@ -11,21 +11,22 @@ export default function AdminLeadsPage() {
   const list = leads ?? [];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Pipeline global</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Pipeline global</h1>
         <p className="mt-1 text-sm text-on-surface-variant">{list.length} leads</p>
       </div>
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {["new", "contacted", "qualified", "converted"].map((s) => (
-          <div key={s} className="rounded-2xl border border-white/5 bg-card p-5">
+          <div key={s} className="rounded-2xl border border-white/5 bg-card p-4 sm:p-5">
             <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">{stageLabels[s]}</p>
-            <p className="mt-1 text-3xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>{list.filter((l: any) => l.stage === s).length}</p>
+            <p className="mt-1 text-2xl sm:text-3xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>{list.filter((l: any) => l.stage === s).length}</p>
           </div>
         ))}
       </div>
       <div className="overflow-hidden rounded-2xl border border-white/5 bg-card">
-        <table className="w-full">
+        <div className="overflow-x-auto">
+        <table className="w-full min-w-[500px]">
           <thead><tr className="border-b border-white/5 text-left text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
             <th className="px-6 py-3">Lead</th><th className="px-6 py-3">Entreprise</th><th className="px-6 py-3">Étape</th><th className="px-6 py-3">Valeur</th>
           </tr></thead>
@@ -38,6 +39,7 @@ export default function AdminLeadsPage() {
             </tr>
           ))}</tbody>
         </table>
+        </div>
       </div>
     </div>
   );

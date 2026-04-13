@@ -57,9 +57,9 @@ export default function ChatPage() {
 
   return (
     <section className="mx-auto max-w-7xl">
-      <div className="flex h-[calc(100vh-8rem)] gap-0 overflow-hidden rounded-2xl border border-white/5 bg-card">
+      <div className="flex h-[calc(100vh-8rem)] flex-col sm:flex-row gap-0 overflow-hidden rounded-2xl border border-white/5 bg-card">
         {/* Channels */}
-        <div className="w-56 shrink-0 border-r border-white/5 bg-surface/50">
+        <div className="w-full sm:w-56 shrink-0 border-b sm:border-b-0 sm:border-r border-white/5 bg-surface/50 max-h-48 sm:max-h-none overflow-y-auto">
           <div className="flex items-center justify-between border-b border-white/5 p-4">
             <h2 className="text-sm font-bold text-on-surface">Messages</h2>
             <button onClick={() => setShowCreateChannel(true)} className="text-on-surface-variant hover:text-primary">
@@ -90,7 +90,7 @@ export default function ChatPage() {
             <div className="flex flex-1 items-center justify-center"><EmptyState icon="chat" title="Sélectionnez un channel" /></div>
           ) : (
             <>
-              <div className="flex items-center gap-3 border-b border-white/5 px-6 py-3">
+              <div className="flex items-center gap-3 border-b border-white/5 px-3 py-2 sm:px-4 sm:py-3 md:px-6">
                 <span className="material-symbols-outlined text-primary">{currentChannel?.icon || "tag"}</span>
                 <h3 className="text-sm font-bold text-on-surface">{currentChannel?.name}</h3>
               </div>

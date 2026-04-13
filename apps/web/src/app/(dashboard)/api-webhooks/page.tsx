@@ -90,15 +90,15 @@ export default function ApiWebhooksPage() {
   ];
 
   return (
-    <section className="mx-auto max-w-5xl space-y-8">
+    <section className="mx-auto max-w-5xl space-y-4 sm:space-y-6 lg:space-y-8">
       <div>
-        <h1 className="text-4xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>API & Webhooks</h1>
+        <h1 className="text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>API & Webhooks</h1>
         <p className="mt-2 text-on-surface-variant">Gérez vos tokens, webhooks et clés API de providers tiers</p>
       </div>
 
-      <div className="flex gap-0 border-b border-white/5">
+      <div className="flex flex-wrap gap-0 border-b border-white/5">
         {[{ id: "tokens", label: "Tokens API", icon: "key" }, { id: "providers", label: "Clés Providers", icon: "settings_suggest" }, { id: "webhooks", label: "Webhooks", icon: "webhook" }].map((t) => (
-          <button key={t.id} onClick={() => setTab(t.id)} className={`flex items-center gap-2 border-b-2 px-6 py-3 text-sm font-bold transition-all ${tab === t.id ? "border-primary text-primary" : "border-transparent text-on-surface-variant hover:text-on-surface"}`}>
+          <button key={t.id} onClick={() => setTab(t.id)} className={`flex items-center gap-2 border-b-2 px-3 py-2 text-xs sm:px-4 sm:py-3 sm:text-sm md:px-6 font-bold transition-all ${tab === t.id ? "border-primary text-primary" : "border-transparent text-on-surface-variant hover:text-on-surface"}`}>
             <span className="material-symbols-outlined text-sm">{t.icon}</span>{t.label}
           </button>
         ))}
@@ -119,31 +119,31 @@ export default function ApiWebhooksPage() {
             </div>
           )}
 
-          <div className="rounded-2xl border border-white/5 bg-card p-6">
+          <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
             <h3 className="mb-4 text-sm font-bold text-on-surface">Créer un nouveau token</h3>
             <div className="flex items-end gap-3">
               <div className="flex-1">
                 <label className="mb-1 block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Nom du token</label>
                 <input value={newTokenName} onChange={(e) => setNewTokenName(e.target.value)} placeholder="Ex: Production API" className="w-full rounded-lg bg-surface-container-lowest px-4 py-2.5 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-1 focus:ring-primary" onKeyDown={(e) => e.key === "Enter" && handleCreateToken()} />
               </div>
-              <button onClick={handleCreateToken} disabled={createToken.isPending || !newTokenName.trim()} className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-primary to-secondary px-5 py-2.5 text-sm font-bold text-white disabled:opacity-50">
+              <button onClick={handleCreateToken} disabled={createToken.isPending || !newTokenName.trim()} className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-primary to-secondary px-3 py-2 text-xs sm:px-5 sm:py-2.5 sm:text-sm font-bold text-white disabled:opacity-50">
                 <span className="material-symbols-outlined text-sm">add</span>{createToken.isPending ? "..." : "Créer le token"}
               </button>
             </div>
           </div>
 
           {tokenList.length === 0 ? <EmptyState icon="key" title="Aucun token API" description="Créez un token pour accéder à l'API Callpme." /> : (
-            <div className="overflow-hidden rounded-2xl border border-white/5 bg-card">
-              <table className="w-full">
+            <div className="overflow-x-auto overflow-hidden rounded-2xl border border-white/5 bg-card">
+              <table className="w-full min-w-[500px]">
                 <thead><tr className="border-b border-white/5 text-left text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
-                  <th className="px-6 py-3">Nom</th><th className="px-6 py-3">Préfixe</th><th className="px-6 py-3">Créé le</th><th className="px-6 py-3">Actions</th>
+                  <th className="px-3 py-2 sm:px-4 sm:py-3 md:px-6">Nom</th><th className="px-3 py-2 sm:px-4 sm:py-3 md:px-6">Préfixe</th><th className="px-3 py-2 sm:px-4 sm:py-3 md:px-6">Créé le</th><th className="px-3 py-2 sm:px-4 sm:py-3 md:px-6">Actions</th>
                 </tr></thead>
                 <tbody>{tokenList.map((tok: any) => (
                   <tr key={tok.id} className="border-b border-white/5 last:border-0 hover:bg-white/[0.02]">
-                    <td className="px-6 py-4"><div className="flex items-center gap-3"><div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10"><span className="material-symbols-outlined text-sm text-primary">key</span></div><span className="text-sm font-bold text-on-surface">{tok.name}</span></div></td>
-                    <td className="px-6 py-4"><code className="rounded bg-surface-container-lowest px-2 py-1 font-mono text-xs text-on-surface-variant">{tok.tokenPrefix}</code></td>
-                    <td className="px-6 py-4 text-sm text-on-surface-variant">{new Date(tok.createdAt).toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" })}</td>
-                    <td className="px-6 py-4"><button onClick={() => setShowRevoke(tok.id)} className="flex items-center gap-1 text-xs font-bold text-error hover:underline"><span className="material-symbols-outlined text-xs">delete</span>Révoquer</button></td>
+                    <td className="px-3 py-3 sm:px-4 md:px-6 md:py-4"><div className="flex items-center gap-3"><div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10"><span className="material-symbols-outlined text-sm text-primary">key</span></div><span className="text-sm font-bold text-on-surface">{tok.name}</span></div></td>
+                    <td className="px-3 py-3 sm:px-4 md:px-6 md:py-4"><code className="rounded bg-surface-container-lowest px-2 py-1 font-mono text-xs text-on-surface-variant">{tok.tokenPrefix}</code></td>
+                    <td className="px-3 py-3 sm:px-4 md:px-6 md:py-4 text-sm text-on-surface-variant">{new Date(tok.createdAt).toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" })}</td>
+                    <td className="px-3 py-3 sm:px-4 md:px-6 md:py-4"><button onClick={() => setShowRevoke(tok.id)} className="flex items-center gap-1 text-xs font-bold text-error hover:underline"><span className="material-symbols-outlined text-xs">delete</span>Révoquer</button></td>
                   </tr>
                 ))}</tbody>
               </table>
@@ -167,7 +167,7 @@ export default function ApiWebhooksPage() {
             </div>
           </div>
           {providers.map((p) => (
-            <div key={p.id} className="rounded-2xl border border-white/5 bg-card p-6 transition-all hover:border-white/10">
+            <div key={p.id} className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6 transition-all hover:border-white/10">
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-4">
                   <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-surface-container-high"><span className="material-symbols-outlined text-xl text-on-surface-variant">{p.icon}</span></div>
@@ -192,7 +192,7 @@ export default function ApiWebhooksPage() {
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <p className="text-sm text-on-surface-variant">{webhooks.length} webhook(s)</p>
-            <button onClick={() => setShowWebhookForm(true)} className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-primary to-secondary px-5 py-2.5 text-sm font-bold text-white"><span className="material-symbols-outlined text-sm">add</span>Nouveau webhook</button>
+            <button onClick={() => setShowWebhookForm(true)} className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-primary to-secondary px-3 py-2 text-xs sm:px-5 sm:py-2.5 sm:text-sm font-bold text-white"><span className="material-symbols-outlined text-sm">add</span>Nouveau webhook</button>
           </div>
 
           {showWebhookForm && (
@@ -202,7 +202,7 @@ export default function ApiWebhooksPage() {
                 <div><label className="mb-1 block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">URL</label>
                   <input value={newWebhook.url} onChange={(e) => setNewWebhook({ ...newWebhook, url: e.target.value })} placeholder="https://votre-app.com/webhook" className="w-full rounded-lg bg-surface-container-lowest px-4 py-2.5 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-1 focus:ring-primary" /></div>
                 <div><label className="mb-2 block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Événements</label>
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     {availableEvents.map((ev) => (
                       <button key={ev.id} onClick={() => toggleEvent(ev.id)} className={`flex items-center gap-3 rounded-lg border p-3 text-left transition-all ${newWebhook.events.includes(ev.id) ? "border-primary/30 bg-primary/5" : "border-white/5 hover:border-white/10"}`}>
                         <span className={`material-symbols-outlined text-lg ${newWebhook.events.includes(ev.id) ? "text-primary" : "text-on-surface-variant"}`}>{ev.icon}</span>
@@ -214,7 +214,7 @@ export default function ApiWebhooksPage() {
               </div>
               <div className="mt-5 flex justify-end gap-3">
                 <button onClick={() => setShowWebhookForm(false)} className="rounded-lg px-5 py-2.5 text-sm text-on-surface-variant">Annuler</button>
-                <button onClick={handleCreateWebhook} disabled={createWebhook.isPending || !newWebhook.url.trim() || newWebhook.events.length === 0} className="rounded-lg bg-gradient-to-r from-primary to-secondary px-5 py-2.5 text-sm font-bold text-white disabled:opacity-50">{createWebhook.isPending ? "..." : "Créer le webhook"}</button>
+                <button onClick={handleCreateWebhook} disabled={createWebhook.isPending || !newWebhook.url.trim() || newWebhook.events.length === 0} className="rounded-lg bg-gradient-to-r from-primary to-secondary px-3 py-2 text-xs sm:px-5 sm:py-2.5 sm:text-sm font-bold text-white disabled:opacity-50">{createWebhook.isPending ? "..." : "Créer le webhook"}</button>
               </div>
             </div>
           )}
@@ -222,7 +222,7 @@ export default function ApiWebhooksPage() {
           {webhooks.length === 0 && !showWebhookForm ? <EmptyState icon="webhook" title="Aucun webhook" description="Recevez des notifications en temps réel." actionLabel="Créer un webhook" onAction={() => setShowWebhookForm(true)} /> : (
             <div className="space-y-3">
               {webhooks.map((wh: any) => (
-                <div key={wh.id} className="rounded-2xl border border-white/5 bg-card p-5 transition-all hover:border-white/10">
+                <div key={wh.id} className="rounded-2xl border border-white/5 bg-card p-4 sm:p-5 transition-all hover:border-white/10">
                   <div className="flex items-start justify-between">
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-3">
@@ -250,7 +250,7 @@ export default function ApiWebhooksPage() {
             </div>
           )}
 
-          <div className="rounded-2xl border border-white/5 bg-card p-5">
+          <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-5">
             <div className="flex items-start gap-3"><span className="material-symbols-outlined text-secondary">security</span>
               <div><p className="text-sm font-bold text-on-surface">Signature HMAC-SHA256</p><p className="mt-1 text-xs text-on-surface-variant">Chaque requête webhook inclut <code className="text-primary">X-Callpme-Signature</code>. Utilisez le secret pour vérifier l&apos;authenticité.</p></div>
             </div>
@@ -260,7 +260,7 @@ export default function ApiWebhooksPage() {
 
       {showRevoke && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="w-full max-w-sm rounded-2xl border border-white/10 bg-surface p-8 text-center">
+          <div className="w-full max-w-sm rounded-2xl border border-white/10 bg-surface p-4 sm:p-6 md:p-8 text-center">
             <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-error/10"><span className="material-symbols-outlined text-3xl text-error">key_off</span></div>
             <h3 className="mb-2 text-lg font-bold text-on-surface">Révoquer ce token ?</h3>
             <p className="mb-6 text-sm text-on-surface-variant">Les applications utilisant ce token perdront l&apos;accès.</p>

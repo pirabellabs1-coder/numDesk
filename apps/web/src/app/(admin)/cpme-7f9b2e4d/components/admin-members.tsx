@@ -71,10 +71,10 @@ export function AdminMembers() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-end justify-between">
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Gestion des membres</h1>
+          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Gestion des membres</h1>
           <p className="mt-1 text-sm text-on-surface-variant">{memberList.length} membre(s) inscrits</p>
         </div>
       </div>
@@ -86,32 +86,33 @@ export function AdminMembers() {
       </div>
 
       {/* KPIs */}
-      <div className="grid grid-cols-4 gap-4">
-        <div className="rounded-2xl border border-white/5 bg-card p-5">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+        <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-5">
           <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Total membres</p>
-          <p className="mt-1 text-3xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>{memberList.length}</p>
+          <p className="mt-1 text-2xl sm:text-3xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>{memberList.length}</p>
         </div>
-        <div className="rounded-2xl border border-white/5 bg-card p-5">
+        <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-5">
           <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Membres actifs</p>
-          <p className="mt-1 text-3xl font-bold text-tertiary" style={{ fontFamily: "Inter, sans-serif" }}>{memberList.filter((m: any) => m.status === "active").length}</p>
+          <p className="mt-1 text-2xl sm:text-3xl font-bold text-tertiary" style={{ fontFamily: "Inter, sans-serif" }}>{memberList.filter((m: any) => m.status === "active").length}</p>
         </div>
-        <div className="rounded-2xl border border-white/5 bg-card p-5">
+        <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-5">
           <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Revenue total</p>
-          <p className="mt-1 text-3xl font-bold text-primary" style={{ fontFamily: "Inter, sans-serif" }}>{formatEuros(memberList.reduce((a: number, m: any) => a + (m.totalSpentCents ?? 0), 0))}</p>
+          <p className="mt-1 text-2xl sm:text-3xl font-bold text-primary" style={{ fontFamily: "Inter, sans-serif" }}>{formatEuros(memberList.reduce((a: number, m: any) => a + (m.totalSpentCents ?? 0), 0))}</p>
         </div>
-        <div className="rounded-2xl border border-white/5 bg-card p-5">
+        <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-5">
           <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Minutes totales</p>
-          <p className="mt-1 text-3xl font-bold text-secondary" style={{ fontFamily: "Inter, sans-serif" }}>{memberList.reduce((a: number, m: any) => a + (m.totalMinutesUsed ?? 0), 0)}</p>
+          <p className="mt-1 text-2xl sm:text-3xl font-bold text-secondary" style={{ fontFamily: "Inter, sans-serif" }}>{memberList.reduce((a: number, m: any) => a + (m.totalMinutesUsed ?? 0), 0)}</p>
         </div>
       </div>
 
       {memberList.length === 0 ? (
         <EmptyState icon="group" title="Aucun membre" description="Les membres apparaîtront ici après inscription." />
       ) : (
-        <div className="flex gap-6">
+        <div className="flex flex-col lg:flex-row gap-4 sm:gap-6">
           {/* Table */}
           <div className="flex-1 overflow-hidden rounded-2xl border border-white/5 bg-card">
-            <table className="w-full">
+            <div className="overflow-x-auto">
+            <table className="w-full min-w-[900px]">
               <thead>
                 <tr className="border-b border-white/5 text-left text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
                   <th className="px-5 py-3">Membre</th>
@@ -156,11 +157,12 @@ export function AdminMembers() {
                 ))}
               </tbody>
             </table>
+            </div>
           </div>
 
           {/* Detail panel */}
           {detail && (
-            <div className="w-72 shrink-0 space-y-4 rounded-2xl border border-white/5 bg-card p-5">
+            <div className="w-full lg:w-72 shrink-0 space-y-4 rounded-2xl border border-white/5 bg-card p-4 sm:p-5">
               <div className="flex items-center gap-3">
                 <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-secondary text-lg font-bold text-white">
                   {(detail.firstName?.[0] || "")}{(detail.lastName?.[0] || "")}

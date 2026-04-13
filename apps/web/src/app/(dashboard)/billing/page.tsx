@@ -97,9 +97,9 @@ export default function BillingPage() {
   const usageColor = ws.usagePercent >= 90 ? "bg-error" : ws.usagePercent >= 70 ? "bg-[#FF7F3F]" : "bg-tertiary";
 
   return (
-    <div className="mx-auto max-w-4xl space-y-8">
+    <div className="mx-auto max-w-4xl space-y-4 sm:space-y-6 lg:space-y-8">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
+        <h1 className="text-2xl font-bold tracking-tight sm:text-3xl text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
           Facturation
         </h1>
         <p className="mt-1 text-sm text-on-surface-variant">
@@ -108,10 +108,10 @@ export default function BillingPage() {
       </div>
 
       {/* Plan Card */}
-      <div className="rounded-2xl border border-white/5 bg-card p-6">
-        <div className="flex items-start justify-between">
+      <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3">
               <h2 className="font-display text-xl font-bold text-on-surface">
                 Plan {plan.name}
               </h2>
@@ -206,7 +206,7 @@ export default function BillingPage() {
       )}
 
       {/* Purchase History */}
-      <div className="rounded-2xl border border-white/5 bg-card p-6">
+      <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
         <h3 className="font-display text-lg font-bold text-on-surface">Historique des achats</h3>
         {purchases.length === 0 ? (
           <p className="mt-4 text-sm text-on-surface-variant">Aucun achat de minutes pour le moment.</p>

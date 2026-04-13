@@ -230,26 +230,26 @@ export default function VoiceStudioPage() {
   const filteredVoices = filterProvider ? voiceList.filter((v: any) => v.provider === filterProvider) : voiceList;
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-end justify-between">
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <div className="flex items-center gap-3">
-            <span className="material-symbols-outlined text-3xl text-secondary">graphic_eq</span>
-            <h1 className="text-3xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Voice Studio</h1>
+            <span className="material-symbols-outlined text-2xl sm:text-3xl text-secondary">graphic_eq</span>
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Voice Studio</h1>
           </div>
           <p className="mt-1 text-sm text-on-surface-variant">{voiceList.length} voix disponibles · Gérez vos voix TTS</p>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-0 border-b border-white/5">
+      <div className="flex gap-0 overflow-x-auto border-b border-white/5">
         {[
           { id: "library", label: "Bibliothèque", icon: "library_music" },
           { id: "studio", label: "Studio", icon: "mic" },
           { id: "test", label: "Test", icon: "play_circle" },
           { id: "providers", label: "Providers", icon: "settings_suggest" },
         ].map((t) => (
-          <button key={t.id} onClick={() => setTab(t.id)} className={`flex items-center gap-2 border-b-2 px-6 py-3 text-sm font-bold transition-all ${tab === t.id ? "border-primary text-primary" : "border-transparent text-on-surface-variant hover:text-on-surface"}`}>
+          <button key={t.id} onClick={() => setTab(t.id)} className={`flex shrink-0 items-center gap-2 border-b-2 px-4 sm:px-6 py-3 text-sm font-bold transition-all ${tab === t.id ? "border-primary text-primary" : "border-transparent text-on-surface-variant hover:text-on-surface"}`}>
             <span className="material-symbols-outlined text-sm">{t.icon}</span>{t.label}
           </button>
         ))}
@@ -257,7 +257,7 @@ export default function VoiceStudioPage() {
 
       {/* ── BIBLIOTHÈQUE ── */}
       {tab === "library" && (
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           {/* Header + Import button */}
           <div className="flex items-center justify-between">
             <p className="text-sm text-on-surface-variant">{filteredVoices.length} voix affichées</p>
@@ -268,10 +268,10 @@ export default function VoiceStudioPage() {
 
           {/* Import form */}
           {showImport && (
-            <div className="rounded-2xl border border-primary/20 bg-card p-6">
+            <div className="rounded-2xl border border-primary/20 bg-card p-4 sm:p-6">
               <h3 className="mb-4 text-sm font-bold text-on-surface">Importer une voix par ID</h3>
               <p className="mb-4 text-xs text-on-surface-variant">Ajoutez une voix depuis Cartesia, ElevenLabs ou Google Cloud TTS en utilisant son Voice ID.</p>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="mb-1 block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Provider</label>
                   <select value={importVoice.provider} onChange={(e) => setImportVoice({ ...importVoice, provider: e.target.value })} className="w-full rounded-lg bg-surface-container-lowest px-4 py-2.5 text-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary">
@@ -352,7 +352,7 @@ export default function VoiceStudioPage() {
                 const quality = qualityConfig[voice.quality as string] ?? qualityConfig["standard"]!;
                 const training = trainingConfig[voice.trainingStatus as string] ?? trainingConfig["ready"]!;
                 return (
-                  <div key={voice.id} className="rounded-2xl border border-white/5 bg-card p-5 transition-all hover:border-white/10">
+                  <div key={voice.id} className="rounded-2xl border border-white/5 bg-card p-4 sm:p-5 transition-all hover:border-white/10">
                     <div className="mb-4 flex items-start justify-between">
                       <div className="flex items-center gap-3">
                         <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-surface-container-high">
@@ -415,8 +415,8 @@ export default function VoiceStudioPage() {
 
       {/* ── STUDIO ── */}
       {tab === "studio" && (
-        <div className="space-y-6">
-          <div className="flex items-end justify-between">
+        <div className="space-y-4 sm:space-y-6">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <h2 className="text-xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Studio de création vocale</h2>
               <p className="mt-1 text-xs text-on-surface-variant">Entraînez vos propres voix à partir d&apos;échantillons audio</p>
@@ -427,7 +427,7 @@ export default function VoiceStudioPage() {
           </div>
 
           {/* Pipeline steps */}
-          <div className="grid grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {[
               { step: 1, icon: "settings", label: "Configurer", desc: "Nom, langue, genre" },
               { step: 2, icon: "cloud_upload", label: "Uploader", desc: "3-30 min d'audio" },
@@ -445,10 +445,10 @@ export default function VoiceStudioPage() {
           </div>
 
           {showCreate && (
-            <div className="rounded-2xl border border-primary/20 bg-card p-6">
+            <div className="rounded-2xl border border-primary/20 bg-card p-4 sm:p-6">
               <h3 className="mb-2 text-sm font-bold text-on-surface">Étape 1 — Configuration</h3>
               <p className="mb-4 text-xs text-on-surface-variant">Définissez les caractéristiques de votre voix</p>
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
                   <label className="mb-1 block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Nom de la voix</label>
                   <input value={newVoice.name} onChange={(e) => setNewVoice({ ...newVoice, name: e.target.value })} placeholder="Ex: Marie FR, Assistant Pro..." className="w-full rounded-lg bg-surface-container-lowest px-4 py-2.5 text-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary" />
@@ -492,7 +492,7 @@ export default function VoiceStudioPage() {
                 </div>
 
                 {/* Requirements */}
-                <div className="mt-3 grid grid-cols-4 gap-3">
+                <div className="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-3">
                   {[
                     { icon: "timer", label: "Durée", value: "3-30 min", desc: "d'audio total" },
                     { icon: "mic", label: "Qualité", value: "Voix claire", desc: "sans bruit de fond" },
@@ -646,7 +646,7 @@ export default function VoiceStudioPage() {
                       <span className="material-symbols-outlined text-xs">tune</span>Effets
                     </div>
 
-                    <div className="grid grid-cols-3 gap-0 divide-x divide-white/5">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-0 sm:divide-x divide-white/5">
                       {/* Speed */}
                       <div className="p-4">
                         <div className="mb-3 flex items-center justify-between">
@@ -679,7 +679,7 @@ export default function VoiceStudioPage() {
                     </div>
 
                     {/* Second row effects */}
-                    <div className="grid grid-cols-3 gap-0 divide-x divide-white/5 border-t border-white/5">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-0 sm:divide-x divide-white/5 border-t border-white/5">
                       {/* Noise */}
                       <div className="p-4">
                         <div className="mb-3 flex items-center justify-between">
@@ -758,7 +758,7 @@ export default function VoiceStudioPage() {
             ) : (
               <div className="space-y-3">
                 {voiceList.filter((v: any) => v.provider === "custom").map((v: any) => (
-                  <div key={v.id} className="rounded-2xl border border-white/5 bg-card p-5">
+                  <div key={v.id} className="rounded-2xl border border-white/5 bg-card p-4 sm:p-5">
                     <div className="flex items-center gap-4">
                       <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-orange-400/10">
                         <span className="material-symbols-outlined text-xl text-orange-400">auto_awesome</span>
@@ -813,12 +813,12 @@ export default function VoiceStudioPage() {
           </div>
 
           {/* Tips */}
-          <div className="rounded-2xl border border-white/5 bg-card p-5">
+          <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-5">
             <div className="flex items-start gap-3">
               <span className="material-symbols-outlined text-secondary">tips_and_updates</span>
               <div>
                 <p className="text-sm font-bold text-on-surface">Conseils pour un meilleur résultat</p>
-                <div className="mt-2 grid grid-cols-2 gap-3 text-xs text-on-surface-variant">
+                <div className="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-on-surface-variant">
                   <div className="flex items-start gap-2"><span className="material-symbols-outlined text-xs text-tertiary">check</span>Utilisez un micro de qualité (USB ou XLR)</div>
                   <div className="flex items-start gap-2"><span className="material-symbols-outlined text-xs text-tertiary">check</span>Enregistrez dans un environnement silencieux</div>
                   <div className="flex items-start gap-2"><span className="material-symbols-outlined text-xs text-tertiary">check</span>Parlez naturellement, pas comme un robot</div>
@@ -834,20 +834,20 @@ export default function VoiceStudioPage() {
 
       {/* ── TEST ── */}
       {tab === "test" && (
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           <div>
             <h2 className="text-xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Test de synthèse vocale</h2>
             <p className="mt-1 text-xs text-on-surface-variant">Testez n&apos;importe quelle voix avec votre texte</p>
           </div>
 
-          <div className="rounded-2xl border border-white/5 bg-card p-6">
+          <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
             <div className="space-y-4">
               <div>
                 <label className="mb-1 block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Texte à synthétiser</label>
                 <textarea value={synthText} onChange={(e) => setSynthText(e.target.value)} rows={3} className="w-full rounded-lg bg-surface-container-lowest px-4 py-3 text-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary" />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="mb-1 block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Provider</label>
                   <select value={synthProvider} onChange={(e) => setSynthProvider(e.target.value)} className="w-full rounded-lg bg-surface-container-lowest px-4 py-2.5 text-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary">
@@ -866,7 +866,7 @@ export default function VoiceStudioPage() {
               {/* Voice controls */}
               <div className="rounded-xl border border-white/5 bg-surface-container-lowest p-4">
                 <h4 className="mb-3 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Contrôles de voix</h4>
-                <div className="grid grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
                   <div>
                     <div className="mb-1 flex items-center justify-between">
                       <label className="text-xs text-on-surface-variant">Vitesse</label>
@@ -929,7 +929,7 @@ export default function VoiceStudioPage() {
 
       {/* ── PROVIDERS ── */}
       {tab === "providers" && (
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           <div>
             <h2 className="text-xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Configuration des providers TTS</h2>
             <p className="mt-1 text-xs text-on-surface-variant">Configurez les clés API pour chaque fournisseur de voix</p>
@@ -942,8 +942,8 @@ export default function VoiceStudioPage() {
           ].map((provider) => {
             const cfg = providerConfig[provider.id]!;
             return (
-              <div key={provider.id} className="rounded-2xl border border-white/5 bg-card p-6">
-                <div className="flex items-start justify-between">
+              <div key={provider.id} className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                   <div className="flex items-center gap-4">
                     <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-surface-container-high">
                       <span className={`material-symbols-outlined text-xl ${cfg.color}`}>{cfg.icon}</span>
@@ -964,7 +964,7 @@ export default function VoiceStudioPage() {
             );
           })}
 
-          <div className="rounded-2xl border border-primary/10 bg-primary/[0.03] p-5">
+          <div className="rounded-2xl border border-primary/10 bg-primary/[0.03] p-4 sm:p-5">
             <div className="flex items-start gap-3">
               <span className="material-symbols-outlined text-primary">info</span>
               <div>

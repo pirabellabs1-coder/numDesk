@@ -10,36 +10,36 @@ export function AdminRevenue() {
   const rev = revenue ?? { mrr: 0, totalRevenue: 0, activeSubscriptions: 0, cycles: [], recentPurchases: [] };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Revenus & Facturation</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Revenus & Facturation</h1>
         <p className="mt-1 text-sm text-on-surface-variant">Vue globale des revenus de la plateforme</p>
       </div>
 
-      <div className="grid grid-cols-3 gap-4">
-        <div className="rounded-2xl border border-white/5 bg-card p-6">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
           <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">MRR</p>
-          <p className="mt-2 text-4xl font-bold text-tertiary" style={{ fontFamily: "Inter, sans-serif" }}>{rev.mrr.toLocaleString("fr-FR")} €</p>
+          <p className="mt-2 text-2xl sm:text-3xl lg:text-4xl font-bold text-tertiary" style={{ fontFamily: "Inter, sans-serif" }}>{rev.mrr.toLocaleString("fr-FR")} €</p>
           <p className="mt-1 text-xs text-on-surface-variant">Revenu mensuel récurrent</p>
         </div>
-        <div className="rounded-2xl border border-white/5 bg-card p-6">
+        <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
           <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Revenu total</p>
-          <p className="mt-2 text-4xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>{rev.totalRevenue.toLocaleString("fr-FR")} €</p>
+          <p className="mt-2 text-2xl sm:text-3xl lg:text-4xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>{rev.totalRevenue.toLocaleString("fr-FR")} €</p>
           <p className="mt-1 text-xs text-on-surface-variant">Depuis le lancement</p>
         </div>
-        <div className="rounded-2xl border border-white/5 bg-card p-6">
+        <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
           <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Abonnements actifs</p>
-          <p className="mt-2 text-4xl font-bold text-primary" style={{ fontFamily: "Inter, sans-serif" }}>{rev.activeSubscriptions}</p>
+          <p className="mt-2 text-2xl sm:text-3xl lg:text-4xl font-bold text-primary" style={{ fontFamily: "Inter, sans-serif" }}>{rev.activeSubscriptions}</p>
           <p className="mt-1 text-xs text-on-surface-variant">Workspaces avec plan actif</p>
         </div>
       </div>
 
       {/* Recent credit purchases */}
       {rev.recentPurchases?.length > 0 && (
-        <div className="rounded-2xl border border-white/5 bg-card p-6">
+        <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
           <h3 className="mb-4 font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Achats de crédits récents</h3>
-          <div className="overflow-hidden rounded-lg">
-            <table className="w-full">
+          <div className="overflow-x-auto rounded-lg">
+            <table className="w-full min-w-[500px]">
               <thead><tr className="text-left text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
                 <th className="px-4 py-2">Date</th><th className="px-4 py-2">Workspace</th><th className="px-4 py-2">Minutes</th><th className="px-4 py-2">Montant</th>
               </tr></thead>
@@ -58,10 +58,10 @@ export function AdminRevenue() {
 
       {/* Billing cycles */}
       {rev.cycles.length > 0 && (
-        <div className="rounded-2xl border border-white/5 bg-card p-6">
+        <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
           <h3 className="mb-4 font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Derniers cycles de facturation</h3>
-          <div className="overflow-hidden rounded-lg">
-            <table className="w-full">
+          <div className="overflow-x-auto rounded-lg">
+            <table className="w-full min-w-[500px]">
               <thead><tr className="text-left text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
                 <th className="px-4 py-2">Période</th><th className="px-4 py-2">Min. utilisées</th><th className="px-4 py-2">Montant</th><th className="px-4 py-2">Statut</th>
               </tr></thead>

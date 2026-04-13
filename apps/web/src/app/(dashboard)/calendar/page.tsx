@@ -121,31 +121,30 @@ export default function CalendarPage() {
 
   return (
     <section className="mx-auto max-w-7xl space-y-6">
-      <div className="flex items-end justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-4xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
+          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
             Calendrier
           </h1>
-          <p className="mt-2 text-on-surface-variant">Semaine du {week[0]?.date.toLocaleDateString("fr-FR")} — {week[6]?.date.toLocaleDateString("fr-FR")}</p>
+          <p className="mt-1 text-sm text-on-surface-variant sm:mt-2">Semaine du {week[0]?.date.toLocaleDateString("fr-FR")} — {week[6]?.date.toLocaleDateString("fr-FR")}</p>
         </div>
-        <div className="flex items-center gap-3">
-          {/* Week navigation */}
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           <div className="flex items-center gap-1">
-            <button onClick={() => setWeekOffset((o) => o - 1)} className="rounded-lg p-2 text-on-surface-variant hover:text-on-surface">
+            <button onClick={() => setWeekOffset((o) => o - 1)} className="rounded-lg p-1.5 text-on-surface-variant hover:text-on-surface sm:p-2">
               <span className="material-symbols-outlined text-sm">chevron_left</span>
             </button>
-            <button onClick={() => setWeekOffset(0)} className="rounded-lg px-3 py-1.5 text-xs font-bold text-on-surface-variant hover:text-on-surface">
+            <button onClick={() => setWeekOffset(0)} className="rounded-lg px-2 py-1 text-[10px] font-bold text-on-surface-variant hover:text-on-surface sm:px-3 sm:py-1.5 sm:text-xs">
               Aujourd&apos;hui
             </button>
-            <button onClick={() => setWeekOffset((o) => o + 1)} className="rounded-lg p-2 text-on-surface-variant hover:text-on-surface">
+            <button onClick={() => setWeekOffset((o) => o + 1)} className="rounded-lg p-1.5 text-on-surface-variant hover:text-on-surface sm:p-2">
               <span className="material-symbols-outlined text-sm">chevron_right</span>
             </button>
           </div>
           <div className="flex rounded-lg border border-white/5">
-            <button onClick={() => setView("week")} className={`px-4 py-2 text-xs font-bold ${view === "week" ? "bg-primary/10 text-primary" : "text-on-surface-variant"}`}>Semaine</button>
-            <button onClick={() => setView("list")} className={`px-4 py-2 text-xs font-bold ${view === "list" ? "bg-primary/10 text-primary" : "text-on-surface-variant"}`}>Liste</button>
+            <button onClick={() => setView("week")} className={`px-3 py-1.5 text-[10px] font-bold sm:px-4 sm:py-2 sm:text-xs ${view === "week" ? "bg-primary/10 text-primary" : "text-on-surface-variant"}`}>Semaine</button>
+            <button onClick={() => setView("list")} className={`px-3 py-1.5 text-[10px] font-bold sm:px-4 sm:py-2 sm:text-xs ${view === "list" ? "bg-primary/10 text-primary" : "text-on-surface-variant"}`}>Liste</button>
           </div>
-          <button onClick={() => setShowSchedule(true)} className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-primary to-secondary px-4 py-2 text-sm font-bold text-white">
+          <button onClick={() => setShowSchedule(true)} className="flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-primary to-secondary px-3 py-1.5 text-xs font-bold text-white sm:gap-2 sm:px-4 sm:py-2 sm:text-sm">
             <span className="material-symbols-outlined text-sm">add</span>
             Planifier
           </button>
@@ -153,21 +152,21 @@ export default function CalendarPage() {
       </div>
 
       {view === "week" ? (
-        <div className="overflow-hidden rounded-2xl border border-white/5 bg-card">
+        <div className="overflow-x-auto rounded-2xl border border-white/5 bg-card">
           {/* Days header */}
-          <div className="grid grid-cols-8 border-b border-white/5">
-            <div className="p-3" />
+          <div className="grid min-w-[640px] grid-cols-8 border-b border-white/5">
+            <div className="p-2 sm:p-3" />
             {week.map((d) => {
               const isToday = d.date.toDateString() === today.toDateString();
               return (
-                <div key={d.label} className={`border-l border-white/5 p-3 text-center text-xs font-bold ${
+                <div key={d.label} className={`border-l border-white/5 p-2 text-center text-[10px] font-bold sm:p-3 sm:text-xs ${
                   isToday ? "bg-primary/5 text-primary" : d.date.getDay() === 0 || d.date.getDay() === 6 ? "text-on-surface-variant/50" : "text-on-surface-variant"
                 }`}>{d.label}</div>
               );
             })}
           </div>
           {/* Grid */}
-          <div className="grid grid-cols-8">
+          <div className="grid min-w-[640px] grid-cols-8">
             {hours.map((hour) => (
               <div key={hour} className="contents">
                 <div className="border-b border-white/5 p-2 text-right text-[10px] text-on-surface-variant/50">{hour}</div>
@@ -204,7 +203,7 @@ export default function CalendarPage() {
             calendarEvents.map((evt) => {
               const type = typeColors[evt.type] || typeColors.campaign!;
               return (
-                <div key={evt.id} className="flex items-center gap-4 rounded-2xl border border-white/5 bg-card px-6 py-4">
+                <div key={evt.id} className="flex items-center gap-4 rounded-2xl border border-white/5 bg-card px-3 py-3 sm:px-4 md:px-6 md:py-4">
                   <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${type.bg}`}>
                     <span className={`material-symbols-outlined ${type.text}`}>campaign</span>
                   </div>
@@ -229,7 +228,7 @@ export default function CalendarPage() {
       {/* Schedule Modal */}
       {showSchedule && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="w-full max-w-lg rounded-2xl border border-white/10 bg-surface p-8">
+          <div className="w-full max-w-lg rounded-2xl border border-white/10 bg-surface p-4 sm:p-6 md:p-8">
             <h2 className="mb-6 text-xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Planifier une campagne</h2>
             <div className="space-y-4">
               {/* Name */}
@@ -326,7 +325,7 @@ export default function CalendarPage() {
               <button
                 onClick={handleSchedule}
                 disabled={createCampaign.isPending || !newEvent.name.trim() || !newEvent.agentId}
-                className="rounded-lg bg-gradient-to-r from-primary to-secondary px-5 py-2.5 text-sm font-bold text-white disabled:opacity-50"
+                className="rounded-lg bg-gradient-to-r from-primary to-secondary px-3 py-2 text-xs sm:px-5 sm:py-2.5 sm:text-sm font-bold text-white disabled:opacity-50"
               >
                 {createCampaign.isPending ? "Planification..." : "Planifier"}
               </button>

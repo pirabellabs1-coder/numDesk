@@ -103,21 +103,56 @@ function buildFallbackEmail(params: CreateNotificationParams) {
 }
 
 /**
- * Send email via Brevo SMTP API
+ * Send email via Brevo SMTP relay using nodemailer.
+ * Falls back to Brevo REST API if SMTP credentials are not configured.
  * Returns true if sent successfully, false otherwise.
  */
 async function sendBrevoEmail(to: string, subject: string, html: string): Promise<boolean> {
-  const brevoKey = process.env.BREVO_SMTP_KEY;
-  if (!brevoKey) {
+  const smtpHost = process.env.BREVO_SMTP_HOST;
+  const smtpUser = process.env.BREVO_SMTP_USER;
+  const smtpKey = process.env.BREVO_SMTP_KEY;
+
+  if (!smtpKey) {
     console.warn("[Email] BREVO_SMTP_KEY not configured — skipping email to", to);
     return false;
   }
 
+  // Use SMTP relay (preferred — works with xsmtpsib keys)
+  if (smtpHost && smtpUser) {
+    try {
+      const nodemailer = await import("nodemailer");
+      const transporter = nodemailer.default.createTransport({
+        host: smtpHost,
+        port: 587,
+        secure: false,
+        auth: {
+          user: smtpUser,
+          pass: smtpKey,
+        },
+      });
+
+      await transporter.sendMail({
+        from: '"Callpme" <allo@callpme.com>',
+        to,
+        subject,
+        html,
+      });
+
+      console.log(`[Email] SMTP sent to ${to} — subject: "${subject}"`);
+      return true;
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      console.error(`[Email] SMTP error sending to ${to}: ${message}`);
+      // Fall through to REST API attempt
+    }
+  }
+
+  // Fallback: Brevo REST API (requires xkeysib API key)
   try {
     const res = await fetch("https://api.brevo.com/v3/smtp/email", {
       method: "POST",
       headers: {
-        "api-key": brevoKey,
+        "api-key": smtpKey,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -130,11 +165,11 @@ async function sendBrevoEmail(to: string, subject: string, html: string): Promis
 
     if (!res.ok) {
       const body = await res.text().catch(() => "");
-      console.error(`[Email] Brevo API error ${res.status} for ${to}: ${body}`);
+      console.error(`[Email] Brevo REST API error ${res.status} for ${to}: ${body}`);
       return false;
     }
 
-    console.log(`[Email] Sent to ${to} — subject: "${subject}"`);
+    console.log(`[Email] REST API sent to ${to} — subject: "${subject}"`);
     return true;
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : String(err);

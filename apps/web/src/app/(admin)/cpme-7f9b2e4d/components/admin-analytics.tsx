@@ -62,30 +62,30 @@ export function AdminAnalytics() {
   const heatmap: number[][] = stats?.heatmap ?? Array.from({ length: 7 }, () => Array(24).fill(0));
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* KPI summary */}
-      <div className="grid grid-cols-4 gap-4">
-        <div className="rounded-2xl border border-white/5 bg-card p-5">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-5">
           <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Total appels</p>
-          <p className="mt-1 text-3xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>{totalCalls.toLocaleString("fr-FR")}</p>
+          <p className="mt-1 text-2xl sm:text-3xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>{totalCalls.toLocaleString("fr-FR")}</p>
         </div>
-        <div className="rounded-2xl border border-white/5 bg-card p-5">
+        <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-5">
           <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Minutes totales</p>
-          <p className="mt-1 text-3xl font-bold text-primary" style={{ fontFamily: "Inter, sans-serif" }}>{totalMinutes.toLocaleString("fr-FR")}</p>
+          <p className="mt-1 text-2xl sm:text-3xl font-bold text-primary" style={{ fontFamily: "Inter, sans-serif" }}>{totalMinutes.toLocaleString("fr-FR")}</p>
         </div>
-        <div className="rounded-2xl border border-white/5 bg-card p-5">
+        <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-5">
           <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Workspaces actifs</p>
-          <p className="mt-1 text-3xl font-bold text-secondary" style={{ fontFamily: "Inter, sans-serif" }}>{stats?.workspaces ?? 0}</p>
+          <p className="mt-1 text-2xl sm:text-3xl font-bold text-secondary" style={{ fontFamily: "Inter, sans-serif" }}>{stats?.workspaces ?? 0}</p>
         </div>
-        <div className="rounded-2xl border border-white/5 bg-card p-5">
+        <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-5">
           <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Agents déployés</p>
-          <p className="mt-1 text-3xl font-bold text-tertiary" style={{ fontFamily: "Inter, sans-serif" }}>{stats?.agents ?? 0}</p>
+          <p className="mt-1 text-2xl sm:text-3xl font-bold text-tertiary" style={{ fontFamily: "Inter, sans-serif" }}>{stats?.agents ?? 0}</p>
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
         {/* Sentiments */}
-        <div className="rounded-2xl border border-white/5 bg-card p-6">
+        <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
           <h3 className="mb-4 font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Répartition des sentiments</h3>
           <div className="space-y-3">
             {sentiments.map((s) => (
@@ -101,7 +101,7 @@ export function AdminAnalytics() {
         </div>
 
         {/* Top workspaces */}
-        <div className="rounded-2xl border border-white/5 bg-card p-6">
+        <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
           <h3 className="mb-4 font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Top Workspaces</h3>
           {topWorkspaces.length === 0 ? (
             <p className="text-center text-xs text-on-surface-variant">Aucun workspace</p>
@@ -124,7 +124,7 @@ export function AdminAnalytics() {
       </div>
 
       {/* Heatmap */}
-      <div className="rounded-2xl border border-white/5 bg-card p-6">
+      <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
         <h3 className="mb-4 font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Heatmap — Heures de pointe</h3>
         <div className="overflow-x-auto">
           <div className="inline-grid gap-[2px]" style={{ gridTemplateColumns: `50px repeat(24, 1fr)` }}>

@@ -68,19 +68,19 @@ export default function AgentComparePage() {
   });
 
   return (
-    <section className="mx-auto max-w-5xl space-y-8">
+    <section className="mx-auto max-w-5xl space-y-4 sm:space-y-6 lg:space-y-8">
       <div className="flex items-center gap-4">
         <Link href="/agents" className="text-on-surface-variant hover:text-on-surface">
           <span className="material-symbols-outlined">arrow_back</span>
         </Link>
         <div>
-          <h1 className="text-4xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Comparer les agents</h1>
+          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Comparer les agents</h1>
           <p className="mt-1 text-on-surface-variant">Performances côte à côte basées sur les données réelles</p>
         </div>
       </div>
 
       {/* Agent selectors */}
-      <div className="grid grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8">
         <div className="space-y-2">
           <label className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Agent A</label>
           <select value={agentA} onChange={(e) => setAgentA(e.target.value)} className="w-full rounded-xl bg-surface-container-lowest px-4 py-3 text-sm font-bold text-on-surface focus:outline-none focus:ring-1 focus:ring-primary">
@@ -106,10 +106,10 @@ export default function AgentComparePage() {
           const winner = getWinner(valA, valB);
 
           return (
-            <div key={key} className="rounded-2xl border border-white/5 bg-card p-5">
+            <div key={key} className="rounded-2xl border border-white/5 bg-card p-4 sm:p-5">
               <p className="mb-4 text-center text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">{label}</p>
-              <div className="flex items-center gap-6">
-                <div className="w-20 text-right">
+              <div className="flex items-center gap-3 sm:gap-6">
+                <div className="w-14 sm:w-20 text-right">
                   <span className={`text-2xl font-bold ${winner === "a" ? "text-tertiary" : "text-on-surface"}`} style={{ fontFamily: "Inter, sans-serif" }}>{valA}{suffix}</span>
                 </div>
                 <div className="flex flex-1 flex-col gap-1.5">
@@ -120,7 +120,7 @@ export default function AgentComparePage() {
                     <div className={`h-full rounded-full transition-all ${winner === "b" ? "bg-tertiary" : "bg-secondary/40"}`} style={{ width: `${(valB / max) * 100}%` }} />
                   </div>
                 </div>
-                <div className="w-20">
+                <div className="w-14 sm:w-20">
                   <span className={`text-2xl font-bold ${winner === "b" ? "text-tertiary" : "text-on-surface"}`} style={{ fontFamily: "Inter, sans-serif" }}>{valB}{suffix}</span>
                 </div>
               </div>

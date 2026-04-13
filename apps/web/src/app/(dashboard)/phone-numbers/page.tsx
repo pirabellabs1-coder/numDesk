@@ -112,31 +112,31 @@ export default function PhoneNumbersPage() {
   const activeCount = numList.filter((n: any) => n.isActive).length;
 
   return (
-    <section className="mx-auto max-w-5xl space-y-8">
-      <div className="flex items-end justify-between">
+    <section className="mx-auto max-w-5xl space-y-4 sm:space-y-6 lg:space-y-8">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-4xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Numéros de téléphone</h1>
+          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Numéros de téléphone</h1>
           <p className="mt-2 text-on-surface-variant">{activeCount} actif(s) sur {numList.length} numéro(s)</p>
         </div>
-        <button onClick={openChoose} className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-primary to-secondary px-5 py-2.5 text-sm font-bold text-white transition-all hover:brightness-110">
+        <button onClick={openChoose} className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-primary to-secondary px-3 py-2 text-xs sm:px-5 sm:py-2.5 sm:text-sm font-bold text-white transition-all hover:brightness-110">
           <span className="material-symbols-outlined text-sm">add</span>
           Ajouter un numéro
         </button>
       </div>
 
       {/* KPIs */}
-      <div className="grid grid-cols-3 gap-4">
-        <div className="rounded-2xl border border-white/5 bg-card p-5">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-5">
           <div className="mb-2 text-primary"><span className="material-symbols-outlined">call</span></div>
           <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Total numéros</p>
           <p className="text-3xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>{numList.length}</p>
         </div>
-        <div className="rounded-2xl border border-white/5 bg-card p-5">
+        <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-5">
           <div className="mb-2 text-tertiary"><span className="material-symbols-outlined">check_circle</span></div>
           <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Actifs</p>
           <p className="text-3xl font-bold text-tertiary" style={{ fontFamily: "Inter, sans-serif" }}>{activeCount}</p>
         </div>
-        <div className="rounded-2xl border border-white/5 bg-card p-5">
+        <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-5">
           <div className="mb-2 text-secondary"><span className="material-symbols-outlined">router</span></div>
           <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Providers</p>
           <div className="mt-1 flex items-center gap-2">
@@ -182,7 +182,7 @@ export default function PhoneNumbersPage() {
       )}
 
       {/* Info box */}
-      <div className="rounded-2xl border border-white/5 bg-card p-5">
+      <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-5">
         <div className="flex items-start gap-3">
           <span className="material-symbols-outlined text-primary">info</span>
           <div>
@@ -199,7 +199,7 @@ export default function PhoneNumbersPage() {
       {/* ─── CHOICE MODAL ─── */}
       {addMode === "choose" && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setAddMode(null)}>
-          <div className="w-full max-w-md rounded-2xl border border-white/10 bg-surface p-8" onClick={(e) => e.stopPropagation()}>
+          <div className="w-full max-w-md rounded-2xl border border-white/10 bg-surface p-4 sm:p-6 md:p-8" onClick={(e) => e.stopPropagation()}>
             <h2 className="mb-2 text-xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Ajouter un numéro</h2>
             <p className="mb-6 text-sm text-on-surface-variant">Choisissez le fournisseur pour votre numéro de téléphone.</p>
 
@@ -245,7 +245,7 @@ export default function PhoneNumbersPage() {
       {/* ─── SIP MODAL ─── */}
       {addMode === "sip" && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="w-full max-w-lg rounded-2xl border border-white/10 bg-surface p-8">
+          <div className="w-full max-w-lg rounded-2xl border border-white/10 bg-surface p-4 sm:p-6 md:p-8">
             <h2 className="mb-6 text-xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Ajouter un numéro SIP</h2>
             <div className="space-y-4">
               <div>
@@ -270,7 +270,7 @@ export default function PhoneNumbersPage() {
             </div>
             <div className="mt-6 flex justify-end gap-3">
               <button onClick={() => setAddMode("choose")} className="rounded-lg px-5 py-2.5 text-sm font-bold uppercase tracking-wider text-on-surface-variant hover:text-on-surface">Retour</button>
-              <button onClick={handleCreateSip} disabled={createNumber.isPending || !sipForm.number.trim()} className="rounded-lg bg-gradient-to-r from-primary to-secondary px-5 py-2.5 text-sm font-bold uppercase tracking-wider text-white disabled:opacity-50">
+              <button onClick={handleCreateSip} disabled={createNumber.isPending || !sipForm.number.trim()} className="rounded-lg bg-gradient-to-r from-primary to-secondary px-3 py-2 text-xs sm:px-5 sm:py-2.5 sm:text-sm font-bold uppercase tracking-wider text-white disabled:opacity-50">
                 {createNumber.isPending ? "Enregistrement..." : "Enregistrer"}
               </button>
             </div>
@@ -281,7 +281,7 @@ export default function PhoneNumbersPage() {
       {/* ─── TWILIO MODAL ─── */}
       {addMode === "twilio" && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="w-full max-w-lg rounded-2xl border border-white/10 bg-surface p-8">
+          <div className="w-full max-w-lg rounded-2xl border border-white/10 bg-surface p-4 sm:p-6 md:p-8">
             <h2 className="mb-6 text-xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Ajouter un numéro Twilio</h2>
 
             {twilioStep === 1 ? (
@@ -307,7 +307,7 @@ export default function PhoneNumbersPage() {
                 </div>
                 <div className="mt-6 flex justify-end gap-3">
                   <button onClick={() => setAddMode("choose")} className="rounded-lg px-5 py-2.5 text-sm font-bold uppercase tracking-wider text-on-surface-variant hover:text-on-surface">Retour</button>
-                  <button onClick={handleTwilioContinue} disabled={twilioLoading || !twilioForm.accountSid.trim() || !twilioForm.authToken.trim()} className="rounded-lg bg-gradient-to-r from-primary to-secondary px-5 py-2.5 text-sm font-bold uppercase tracking-wider text-white disabled:opacity-50">
+                  <button onClick={handleTwilioContinue} disabled={twilioLoading || !twilioForm.accountSid.trim() || !twilioForm.authToken.trim()} className="rounded-lg bg-gradient-to-r from-primary to-secondary px-3 py-2 text-xs sm:px-5 sm:py-2.5 sm:text-sm font-bold uppercase tracking-wider text-white disabled:opacity-50">
                     {twilioLoading ? "Chargement..." : "Continuer"}
                   </button>
                 </div>
@@ -347,7 +347,7 @@ export default function PhoneNumbersPage() {
                 <div className="mt-6 flex justify-end gap-3">
                   <button onClick={() => setTwilioStep(1)} className="rounded-lg px-5 py-2.5 text-sm font-bold uppercase tracking-wider text-on-surface-variant hover:text-on-surface">Retour</button>
                   {twilioNumbers.length === 0 && (
-                    <button onClick={() => handleCreateTwilio()} disabled={createNumber.isPending || !twilioForm.number.trim()} className="rounded-lg bg-gradient-to-r from-primary to-secondary px-5 py-2.5 text-sm font-bold uppercase tracking-wider text-white disabled:opacity-50">
+                    <button onClick={() => handleCreateTwilio()} disabled={createNumber.isPending || !twilioForm.number.trim()} className="rounded-lg bg-gradient-to-r from-primary to-secondary px-3 py-2 text-xs sm:px-5 sm:py-2.5 sm:text-sm font-bold uppercase tracking-wider text-white disabled:opacity-50">
                       {createNumber.isPending ? "Enregistrement..." : "Enregistrer"}
                     </button>
                   )}
@@ -361,7 +361,7 @@ export default function PhoneNumbersPage() {
       {/* Delete confirmation */}
       {showDelete && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="w-full max-w-sm rounded-2xl border border-white/10 bg-surface p-8 text-center">
+          <div className="w-full max-w-sm rounded-2xl border border-white/10 bg-surface p-4 sm:p-6 md:p-8 text-center">
             <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-error/10">
               <span className="material-symbols-outlined text-3xl text-error">call_end</span>
             </div>

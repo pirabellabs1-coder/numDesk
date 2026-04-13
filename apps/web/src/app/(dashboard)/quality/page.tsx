@@ -70,16 +70,16 @@ export default function QualityPage() {
   const avgScore = Math.round(agentScores.reduce((a: number, s: any) => a + s.score, 0) / agentScores.length);
 
   return (
-    <section className="mx-auto max-w-6xl space-y-8">
+    <section className="mx-auto max-w-6xl space-y-4 sm:space-y-6 lg:space-y-8">
       <div>
-        <h1 className="text-4xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
+        <h1 className="text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
           Score de qualité
         </h1>
         <p className="mt-2 text-on-surface-variant">Évaluation automatique et recommandations d&apos;amélioration</p>
       </div>
 
       {/* Global score */}
-      <div className="flex items-center gap-8 rounded-2xl border border-white/5 bg-card p-6">
+      <div className="flex flex-col items-center gap-4 rounded-2xl border border-white/5 bg-card p-4 sm:flex-row sm:gap-8 sm:p-6">
         <div className="relative h-28 w-28 shrink-0">
           <svg className="h-full w-full -rotate-90" viewBox="0 0 100 100">
             <circle cx="50" cy="50" r="42" fill="none" stroke="#1F1F24" strokeWidth="8" />
@@ -107,7 +107,7 @@ export default function QualityPage() {
           const sc = getScoreColor(agent.score);
           const recs = getRecommendations(agent);
           return (
-            <div key={agent.agentId} className="rounded-2xl border border-white/5 bg-card p-6">
+            <div key={agent.agentId} className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
               <div className="mb-4 flex items-start justify-between">
                 <div>
                   <p className="text-lg font-bold text-on-surface">{agent.name}</p>

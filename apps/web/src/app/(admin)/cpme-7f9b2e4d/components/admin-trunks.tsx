@@ -34,10 +34,10 @@ export function AdminTrunks() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-end justify-between">
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>SIP Trunks globaux</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>SIP Trunks globaux</h1>
           <p className="mt-1 text-sm text-on-surface-variant">{trunkList.length} trunk(s) configuré(s)</p>
         </div>
         <button onClick={() => setShowForm(true)} className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-primary to-secondary px-4 py-2 text-sm font-bold text-white">
@@ -45,16 +45,16 @@ export function AdminTrunks() {
         </button>
       </div>
 
-      <div className="rounded-2xl border border-primary/10 bg-primary/[0.03] p-5">
+      <div className="rounded-2xl border border-primary/10 bg-primary/[0.03] p-4 sm:p-5">
         <div className="flex items-start gap-3"><span className="material-symbols-outlined text-primary">security</span>
           <div><p className="text-sm font-bold text-on-surface">Sécurité</p><p className="mt-1 text-xs text-on-surface-variant">Les credentials SIP sont chiffrés AES-256 au repos. Les mots de passe ne sont jamais affichés en clair.</p></div>
         </div>
       </div>
 
       {showForm && (
-        <div className="rounded-2xl border border-primary/20 bg-card p-6">
+        <div className="rounded-2xl border border-primary/20 bg-card p-4 sm:p-6">
           <h3 className="mb-4 text-sm font-bold text-on-surface">Configurer un trunk SIP</h3>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div><label className="mb-1 block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Nom</label><input value={newTrunk.name} onChange={(e) => setNewTrunk({ ...newTrunk, name: e.target.value })} placeholder="Trunk Principal FR" className="w-full rounded-lg bg-surface-container-lowest px-4 py-2.5 text-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary" /></div>
             <div><label className="mb-1 block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Host</label><input value={newTrunk.host} onChange={(e) => setNewTrunk({ ...newTrunk, host: e.target.value })} placeholder="sip.provider.com" className="w-full rounded-lg bg-surface-container-lowest px-4 py-2.5 text-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary" /></div>
             <div><label className="mb-1 block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Port</label><input type="number" value={newTrunk.port} onChange={(e) => setNewTrunk({ ...newTrunk, port: +e.target.value })} className="w-full rounded-lg bg-surface-container-lowest px-4 py-2.5 text-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary" /></div>
@@ -74,7 +74,7 @@ export function AdminTrunks() {
       ) : (
         <div className="space-y-3">
           {trunkList.map((trunk: any) => (
-            <div key={trunk.id} className="flex items-center gap-4 rounded-2xl border border-white/5 bg-card px-6 py-4">
+            <div key={trunk.id} className="flex items-center gap-4 rounded-2xl border border-white/5 bg-card px-4 sm:px-6 py-4">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-surface-container-high"><span className="material-symbols-outlined text-on-surface-variant">router</span></div>
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2"><p className="text-sm font-bold text-on-surface">{trunk.name}</p>{trunk.isGlobal && <span className="rounded-full bg-secondary/10 px-2 py-0.5 text-[10px] font-bold text-secondary">Global</span>}</div>

@@ -48,10 +48,10 @@ export default function TemplatesPage() {
   };
 
   return (
-    <section className="mx-auto max-w-7xl space-y-8">
+    <section className="mx-auto max-w-7xl space-y-4 sm:space-y-6 lg:space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-4xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
+        <h1 className="text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
           Templates d&apos;agents
         </h1>
         <p className="mt-2 text-on-surface-variant">
@@ -60,10 +60,10 @@ export default function TemplatesPage() {
       </div>
 
       {/* Filters */}
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-2">
         <button
           onClick={() => setFilter(null)}
-          className={`rounded-lg px-4 py-2 text-sm font-bold transition-all ${
+          className={`rounded-lg px-3 py-2 text-xs sm:px-4 sm:text-sm font-bold transition-all ${
             !filter ? "bg-primary/10 text-primary" : "text-on-surface-variant hover:text-on-surface"
           }`}
         >
@@ -73,7 +73,7 @@ export default function TemplatesPage() {
           <button
             key={cat}
             onClick={() => setFilter(filter === cat ? null : cat)}
-            className={`rounded-lg px-4 py-2 text-sm font-bold transition-all ${
+            className={`rounded-lg px-3 py-2 text-xs sm:px-4 sm:text-sm font-bold transition-all ${
               filter === cat ? "bg-primary/10 text-primary" : "text-on-surface-variant hover:text-on-surface"
             }`}
           >
@@ -87,7 +87,7 @@ export default function TemplatesPage() {
         {filtered.map((tpl) => (
           <div
             key={tpl.id}
-            className="group flex flex-col rounded-2xl border border-white/5 bg-card p-6 transition-all hover:border-primary/20"
+            className="group flex flex-col rounded-2xl border border-white/5 bg-card p-4 sm:p-6 transition-all hover:border-primary/20"
           >
             {/* Icon + Category */}
             <div className="mb-4 flex items-start justify-between">
@@ -140,7 +140,7 @@ export default function TemplatesPage() {
       {/* Preview Modal */}
       {selectedTemplate && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="w-full max-w-2xl rounded-2xl border border-white/10 bg-surface p-8">
+          <div className="w-full max-w-2xl rounded-2xl border border-white/10 bg-surface p-4 sm:p-6 md:p-8">
             <div className="mb-6 flex items-start justify-between">
               <div className="flex items-center gap-4">
                 <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-secondary/20">
@@ -187,7 +187,7 @@ export default function TemplatesPage() {
               <button
                 onClick={() => handleUseTemplate(selectedTemplate)}
                 disabled={createAgent.isPending}
-                className="rounded-lg bg-gradient-to-r from-primary to-secondary px-5 py-2.5 text-sm font-bold text-white disabled:opacity-50"
+                className="rounded-lg bg-gradient-to-r from-primary to-secondary px-3 py-2 text-xs sm:px-5 sm:py-2.5 sm:text-sm font-bold text-white disabled:opacity-50"
               >
                 {createAgent.isPending ? "Création..." : "Créer un agent avec ce template"}
               </button>

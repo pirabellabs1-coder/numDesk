@@ -9,15 +9,16 @@ export default function AdminTeamsPage() {
   const teamList = teams ?? [];
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-end justify-between">
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Gestion des équipes</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Gestion des équipes</h1>
           <p className="mt-1 text-sm text-on-surface-variant">{teamList.length} équipes</p>
         </div>
       </div>
       <div className="overflow-hidden rounded-2xl border border-white/5 bg-card">
-        <table className="w-full">
+        <div className="overflow-x-auto">
+        <table className="w-full min-w-[400px]">
           <thead><tr className="border-b border-white/5 text-left text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
             <th className="px-6 py-3">Équipe</th><th className="px-6 py-3">Membres</th><th className="px-6 py-3">Actions</th>
           </tr></thead>
@@ -29,6 +30,7 @@ export default function AdminTeamsPage() {
             </tr>
           ))}</tbody>
         </table>
+        </div>
       </div>
     </div>
   );

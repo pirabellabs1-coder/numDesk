@@ -83,10 +83,10 @@ export default function ContactsPage() {
   const selected = contactList.find((c: any) => c.id === selectedId);
 
   return (
-    <section className="mx-auto max-w-7xl space-y-6">
-      <div className="flex items-end justify-between">
+    <section className="mx-auto max-w-7xl space-y-4 sm:space-y-6">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-4xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Contacts</h1>
+          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Contacts</h1>
           <p className="mt-2 text-on-surface-variant">{contactList.length} contacts enregistrés</p>
         </div>
         <div className="flex gap-3">
@@ -94,7 +94,7 @@ export default function ContactsPage() {
             <span className="material-symbols-outlined text-sm">download</span>
             Exporter
           </button>
-          <button onClick={() => setShowAddModal(true)} className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-primary to-secondary px-5 py-2.5 text-sm font-bold text-white">
+          <button onClick={() => setShowAddModal(true)} className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-primary to-secondary px-3 py-2 text-xs sm:px-5 sm:py-2.5 sm:text-sm font-bold text-white">
             <span className="material-symbols-outlined text-sm">add</span>
             Nouveau contact
           </button>
@@ -116,10 +116,10 @@ export default function ContactsPage() {
       {contactList.length === 0 ? (
         <EmptyState icon="contacts" title="Aucun contact" description="Ajoutez votre premier contact." actionLabel="Nouveau contact" onAction={() => setShowAddModal(true)} />
       ) : (
-        <div className="flex gap-6">
+        <div className="flex flex-col lg:flex-row gap-4 sm:gap-6">
           {/* Table */}
-          <div className="flex-1 overflow-hidden rounded-2xl border border-white/5 bg-card">
-            <table className="w-full">
+          <div className="flex-1 overflow-x-auto overflow-hidden rounded-2xl border border-white/5 bg-card">
+            <table className="w-full min-w-[600px]">
               <thead>
                 <tr className="border-b border-white/5 text-left text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
                   <th className="px-5 py-3">Contact</th>
@@ -162,7 +162,7 @@ export default function ContactsPage() {
 
           {/* Detail panel */}
           {selected && (
-            <div className="w-80 shrink-0 space-y-5 rounded-2xl border border-white/5 bg-card p-6">
+            <div className="w-full lg:w-80 shrink-0 space-y-5 rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
               <div className="flex items-center gap-4">
                 <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-secondary text-lg font-bold text-white">
                   {selected.firstName?.[0]}{selected.lastName?.[0]}
@@ -195,7 +195,7 @@ export default function ContactsPage() {
       {/* Add Contact Modal */}
       {showAddModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="w-full max-w-md rounded-2xl border border-white/10 bg-surface p-8">
+          <div className="w-full max-w-md rounded-2xl border border-white/10 bg-surface p-4 sm:p-6 md:p-8">
             <h2 className="mb-6 text-xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Nouveau contact</h2>
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
@@ -208,7 +208,7 @@ export default function ContactsPage() {
             </div>
             <div className="mt-6 flex justify-end gap-3">
               <button onClick={() => setShowAddModal(false)} className="rounded-lg px-5 py-2.5 text-sm text-on-surface-variant hover:text-on-surface">Annuler</button>
-              <button onClick={handleCreate} disabled={createContact.isPending || !newContact.firstName.trim() || !newContact.lastName.trim()} className="rounded-lg bg-gradient-to-r from-primary to-secondary px-5 py-2.5 text-sm font-bold text-white disabled:opacity-50">
+              <button onClick={handleCreate} disabled={createContact.isPending || !newContact.firstName.trim() || !newContact.lastName.trim()} className="rounded-lg bg-gradient-to-r from-primary to-secondary px-3 py-2 text-xs sm:px-5 sm:py-2.5 sm:text-sm font-bold text-white disabled:opacity-50">
                 {createContact.isPending ? "Création..." : "Créer le contact"}
               </button>
             </div>

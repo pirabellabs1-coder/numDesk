@@ -10,21 +10,22 @@ export default function AdminAnomaliesPage() {
   const unresolved = list.filter((a: any) => !a.resolved).length;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Anomalies plateforme</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Anomalies plateforme</h1>
         <p className="mt-1 text-sm text-on-surface-variant">{unresolved} non résolue(s) · {list.length} totales</p>
       </div>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {[{ label: "Critiques", sev: "high", color: "text-error" }, { label: "Moyennes", sev: "medium", color: "text-orange-400" }, { label: "Faibles", sev: "low", color: "text-primary" }].map((s) => (
-          <div key={s.sev} className="rounded-2xl border border-white/5 bg-card p-5">
+          <div key={s.sev} className="rounded-2xl border border-white/5 bg-card p-4 sm:p-5">
             <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">{s.label}</p>
-            <p className={`mt-1 text-3xl font-bold ${s.color}`} style={{ fontFamily: "Inter, sans-serif" }}>{list.filter((a: any) => a.severity === s.sev).length}</p>
+            <p className={`mt-1 text-2xl sm:text-3xl font-bold ${s.color}`} style={{ fontFamily: "Inter, sans-serif" }}>{list.filter((a: any) => a.severity === s.sev).length}</p>
           </div>
         ))}
       </div>
       <div className="overflow-hidden rounded-2xl border border-white/5 bg-card">
-        <table className="w-full">
+        <div className="overflow-x-auto">
+        <table className="w-full min-w-[600px]">
           <thead><tr className="border-b border-white/5 text-left text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
             <th className="px-6 py-3">Anomalie</th><th className="px-6 py-3">Sévérité</th><th className="px-6 py-3">Détecté</th><th className="px-6 py-3">Statut</th>
           </tr></thead>
@@ -37,6 +38,7 @@ export default function AdminAnomaliesPage() {
             </tr>
           ))}</tbody>
         </table>
+        </div>
       </div>
     </div>
   );

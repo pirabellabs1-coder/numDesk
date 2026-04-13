@@ -53,10 +53,10 @@ export default function ComparePage() {
   ];
 
   return (
-    <section className="mx-auto max-w-5xl space-y-8">
-      <div className="flex items-end justify-between">
+    <section className="mx-auto max-w-5xl space-y-4 sm:space-y-6 lg:space-y-8">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-4xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Comparaison de périodes</h1>
+          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Comparaison de périodes</h1>
           <p className="mt-2 text-on-surface-variant">{displayCurrent.label} vs {displayPrevious.label}</p>
         </div>
         <div className="flex rounded-lg border border-white/5">
@@ -66,13 +66,13 @@ export default function ComparePage() {
       </div>
 
       {/* Summary cards */}
-      <div className="grid grid-cols-2 gap-4">
-        <div className="rounded-2xl border border-primary/20 bg-primary/[0.03] p-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="rounded-2xl border border-primary/20 bg-primary/[0.03] p-4 sm:p-6">
           <p className="text-[10px] font-bold uppercase tracking-widest text-primary">{displayCurrent.label}</p>
           <p className="mt-2 text-3xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>{displayCurrent.calls} appels</p>
           <p className="mt-1 text-xs text-on-surface-variant">{displayCurrent.minutes} min · {displayCurrent.completion}% complétion</p>
         </div>
-        <div className="rounded-2xl border border-white/5 bg-card p-6">
+        <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
           <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">{displayPrevious.label}</p>
           <p className="mt-2 text-3xl font-bold text-on-surface-variant" style={{ fontFamily: "Inter, sans-serif" }}>{displayPrevious.calls} appels</p>
           <p className="mt-1 text-xs text-on-surface-variant">{displayPrevious.minutes} min · {displayPrevious.completion}% complétion</p>
@@ -88,7 +88,7 @@ export default function ComparePage() {
           const max = Math.max(m.currentVal, m.prevVal) || 1;
 
           return (
-            <div key={m.label} className="rounded-2xl border border-white/5 bg-card p-6">
+            <div key={m.label} className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
               <div className="mb-4 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <span className="material-symbols-outlined text-on-surface-variant">{m.icon}</span>
@@ -100,7 +100,7 @@ export default function ComparePage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                 <div>
                   <p className="mb-2 text-[10px] font-bold uppercase tracking-widest text-primary">{displayCurrent.label}</p>
                   <p className="text-3xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>{m.currentVal.toLocaleString("fr-FR")}{m.suffix}</p>

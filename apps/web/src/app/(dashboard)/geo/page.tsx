@@ -46,15 +46,15 @@ export default function GeoPage() {
   const selected = geoData.find((r) => r.code === selectedRegion);
 
   return (
-    <section className="mx-auto max-w-6xl space-y-8">
+    <section className="mx-auto max-w-6xl space-y-4 sm:space-y-6 lg:space-y-8">
       <div>
-        <h1 className="text-4xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Carte géographique</h1>
+        <h1 className="text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Carte géographique</h1>
         <p className="mt-2 text-on-surface-variant">Répartition des {totalCalls.toLocaleString("fr-FR")} appels par région</p>
       </div>
 
-      <div className="grid grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
         {/* Map visualization */}
-        <div className="col-span-2 rounded-2xl border border-white/5 bg-card p-8">
+        <div className="lg:col-span-2 rounded-2xl border border-white/5 bg-card p-4 sm:p-8">
           <div className="relative mx-auto" style={{ width: "100%", paddingBottom: "90%" }}>
             <svg viewBox="0 0 100 90" className="absolute inset-0 h-full w-full">
               {/* France silhouette approximation */}
@@ -94,7 +94,7 @@ export default function GeoPage() {
         </div>
 
         {/* Ranking */}
-        <div className="rounded-2xl border border-white/5 bg-card p-6">
+        <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
           <h3 className="mb-4 font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Classement par région</h3>
           <div className="space-y-3">
             {geoData.map((region, i) => (

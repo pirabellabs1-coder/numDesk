@@ -67,26 +67,26 @@ export default function CampaignsPage() {
   const active = campList.filter((c: any) => c.status === "active").length;
 
   return (
-    <section className="mx-auto max-w-7xl space-y-8">
-      <div className="flex items-end justify-between">
+    <section className="mx-auto max-w-7xl space-y-4 sm:space-y-6 lg:space-y-8">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-4xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Campagnes</h1>
+          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Campagnes</h1>
           <p className="mt-2 text-on-surface-variant">{active} campagne(s) active(s)</p>
         </div>
-        <button onClick={() => setShowModal(true)} className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-primary to-secondary px-5 py-2.5 text-sm font-bold text-white">
+        <button onClick={() => setShowModal(true)} className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-primary to-secondary px-3 py-2 text-xs sm:px-5 sm:py-2.5 sm:text-sm font-bold text-white">
           <span className="material-symbols-outlined text-sm">add</span>
           Nouvelle Campagne
         </button>
       </div>
 
       {/* KPIs */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {[
           { label: "Total contacts", value: total, icon: "group", color: "text-primary" },
           { label: "Appels réussis", value: success, icon: "check_circle", color: "text-tertiary" },
           { label: "Campagnes actives", value: active, icon: "campaign", color: "text-secondary" },
         ].map((s) => (
-          <div key={s.label} className="rounded-2xl border border-white/5 bg-card p-5">
+          <div key={s.label} className="rounded-2xl border border-white/5 bg-card p-4 sm:p-5">
             <div className={`mb-2 ${s.color}`}><span className="material-symbols-outlined">{s.icon}</span></div>
             <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">{s.label}</p>
             <p className="text-3xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>{s.value}</p>
@@ -101,13 +101,13 @@ export default function CampaignsPage() {
           {campList.map((camp: any) => {
             const pct = camp.totalContacts > 0 ? Math.round((camp.calledCount / camp.totalContacts) * 100) : 0;
             return (
-              <div key={camp.id} className="rounded-2xl border border-white/5 bg-card p-5">
-                <div className="flex items-center justify-between">
+              <div key={camp.id} className="rounded-2xl border border-white/5 bg-card p-4 sm:p-5">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                   <div>
                     <p className="text-lg font-bold text-on-surface">{camp.name}</p>
                     <p className="text-xs text-on-surface-variant">{camp.calledCount ?? 0}/{camp.totalContacts ?? 0} contacts appelés</p>
                   </div>
-                  <div className="flex items-center gap-3">
+                  <div className="flex flex-wrap items-center gap-3">
                     <span className={`rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider ${statusStyles[camp.status] || statusStyles.draft}`}>
                       {statusLabels[camp.status] || camp.status}
                     </span>
@@ -137,7 +137,7 @@ export default function CampaignsPage() {
       {/* Create Modal */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="w-full max-w-lg rounded-2xl border border-white/10 bg-surface p-8">
+          <div className="w-full max-w-lg rounded-2xl border border-white/10 bg-surface p-4 sm:p-6 md:p-8">
             <h2 className="mb-6 text-xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Nouvelle campagne</h2>
             <div className="space-y-4">
               <input value={newCamp.name} onChange={(e) => setNewCamp({ ...newCamp, name: e.target.value })} placeholder="Nom de la campagne" className="w-full rounded-lg bg-surface-container-lowest px-4 py-2.5 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-1 focus:ring-primary" />
@@ -163,7 +163,7 @@ export default function CampaignsPage() {
             </div>
             <div className="mt-6 flex justify-end gap-3">
               <button onClick={() => setShowModal(false)} className="rounded-lg px-5 py-2.5 text-sm text-on-surface-variant hover:text-on-surface">Annuler</button>
-              <button onClick={handleCreate} disabled={createCampaign.isPending || !newCamp.name.trim() || !newCamp.agentId} className="rounded-lg bg-gradient-to-r from-primary to-secondary px-5 py-2.5 text-sm font-bold text-white disabled:opacity-50">
+              <button onClick={handleCreate} disabled={createCampaign.isPending || !newCamp.name.trim() || !newCamp.agentId} className="rounded-lg bg-gradient-to-r from-primary to-secondary px-3 py-2 text-xs sm:px-5 sm:py-2.5 sm:text-sm font-bold text-white disabled:opacity-50">
                 {createCampaign.isPending ? "Création..." : "Créer la campagne"}
               </button>
             </div>

@@ -35,8 +35,8 @@ export default function SipConfigPage() {
   const trunkList = trunks ?? [];
 
   return (
-    <section className="mx-auto max-w-3xl space-y-8">
-      <div className="flex items-end justify-between">
+    <section className="mx-auto max-w-3xl space-y-4 sm:space-y-6 lg:space-y-8">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <div className="mb-1">
             <Link href="/phone-numbers" className="flex items-center gap-1 text-xs text-on-surface-variant hover:text-on-surface">
@@ -44,14 +44,14 @@ export default function SipConfigPage() {
               Retour aux numéros
             </Link>
           </div>
-          <h1 className="text-4xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
+          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
             Configuration SIP
           </h1>
           <p className="mt-2 text-on-surface-variant">Gérez vos SIP trunks pour les appels entrants et sortants</p>
         </div>
         <button
           onClick={() => setShowForm(true)}
-          className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-primary to-secondary px-5 py-2.5 text-sm font-bold text-white"
+          className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-primary to-secondary px-3 py-2 text-xs sm:px-5 sm:py-2.5 sm:text-sm font-bold text-white"
         >
           <span className="material-symbols-outlined text-sm">add</span>
           Nouveau Trunk
@@ -92,7 +92,7 @@ export default function SipConfigPage() {
           </div>
         ) : (
           trunkList.map((trunk: any) => (
-            <div key={trunk.id} className="rounded-2xl border border-white/5 bg-card p-6">
+            <div key={trunk.id} className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
               <div className="flex items-start justify-between">
                 <div>
                   <div className="flex items-center gap-2">

@@ -67,10 +67,10 @@ export default function AgentsPage() {
   const agentList = agents ?? [];
 
   return (
-    <section className="mx-auto max-w-7xl space-y-8">
-      <div className="flex items-end justify-between">
+    <section className="mx-auto max-w-7xl space-y-4 sm:space-y-6 lg:space-y-8">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-4xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
+          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
             Mes Agents
           </h1>
           <p className="mt-2 text-on-surface-variant">
@@ -85,7 +85,7 @@ export default function AgentsPage() {
             }
             setShowCreate(true);
           }}
-          className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-primary to-secondary px-5 py-2.5 text-sm font-bold text-white"
+          className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-primary to-secondary px-3 py-2 text-xs sm:px-5 sm:py-2.5 sm:text-sm font-bold text-white"
         >
           <span className="material-symbols-outlined text-sm">add</span>
           Créer un agent
@@ -106,7 +106,7 @@ export default function AgentsPage() {
       ) : (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {agentList.map((agent: any) => (
-            <div key={agent.id} className="group rounded-2xl border border-white/5 bg-card p-5 transition-all hover:border-white/10">
+            <div key={agent.id} className="group rounded-2xl border border-white/5 bg-card p-4 sm:p-5 transition-all hover:border-white/10">
               <div className="mb-4 flex items-start justify-between">
                 <div className={`flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${agent.color || "from-primary to-secondary"}`}>
                   <span className="material-symbols-outlined text-2xl text-white">smart_toy</span>
@@ -150,7 +150,7 @@ export default function AgentsPage() {
       {/* Create Modal */}
       {showCreate && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="w-full max-w-lg rounded-2xl border border-white/10 bg-surface p-8">
+          <div className="w-full max-w-lg rounded-2xl border border-white/10 bg-surface p-4 sm:p-6 md:p-8">
             <h2 className="mb-6 text-xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Créer un agent</h2>
             <div className="space-y-4">
               <div>
@@ -182,7 +182,7 @@ export default function AgentsPage() {
             </div>
             <div className="mt-6 flex justify-end gap-3">
               <button onClick={() => setShowCreate(false)} className="rounded-lg px-5 py-2.5 text-sm text-on-surface-variant hover:text-on-surface">Annuler</button>
-              <button onClick={handleCreate} disabled={createAgent.isPending || !newAgent.name.trim()} className="rounded-lg bg-gradient-to-r from-primary to-secondary px-5 py-2.5 text-sm font-bold text-white disabled:opacity-50">
+              <button onClick={handleCreate} disabled={createAgent.isPending || !newAgent.name.trim()} className="rounded-lg bg-gradient-to-r from-primary to-secondary px-3 py-2 text-xs sm:px-5 sm:py-2.5 sm:text-sm font-bold text-white disabled:opacity-50">
                 {createAgent.isPending ? "Création..." : "Créer l'agent"}
               </button>
             </div>
@@ -193,7 +193,7 @@ export default function AgentsPage() {
       {/* Delete confirmation */}
       {deletingId && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="w-full max-w-sm rounded-2xl border border-white/10 bg-surface p-8 text-center">
+          <div className="w-full max-w-sm rounded-2xl border border-white/10 bg-surface p-4 sm:p-6 md:p-8 text-center">
             <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-error/10">
               <span className="material-symbols-outlined text-3xl text-error">delete</span>
             </div>

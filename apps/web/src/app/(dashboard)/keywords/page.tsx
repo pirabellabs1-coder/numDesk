@@ -41,10 +41,10 @@ export default function KeywordsPage() {
   const totalMentions = keywords.reduce((a, k) => a + k.count, 0);
 
   return (
-    <section className="mx-auto max-w-5xl space-y-8">
-      <div className="flex items-end justify-between">
+    <section className="mx-auto max-w-5xl space-y-4 sm:space-y-6 lg:space-y-8">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-4xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Mots-clés fréquents</h1>
+          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Mots-clés fréquents</h1>
           <p className="mt-2 text-on-surface-variant">{keywords.length} mots-clés extraits · {totalMentions} mentions</p>
         </div>
         <div className="flex rounded-lg border border-white/5">
@@ -73,18 +73,18 @@ export default function KeywordsPage() {
           })}
         </div>
       ) : (
-        <div className="overflow-hidden rounded-2xl border border-white/5 bg-card">
-          <table className="w-full">
+        <div className="overflow-x-auto overflow-hidden rounded-2xl border border-white/5 bg-card">
+          <table className="w-full min-w-[600px]">
             <thead><tr className="border-b border-white/5 text-left text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
-              <th className="px-6 py-3">#</th><th className="px-6 py-3">Mot-clé</th><th className="px-6 py-3">Mentions</th><th className="px-6 py-3">Fréquence</th><th className="px-6 py-3">Tendance</th>
+              <th className="px-3 py-2 sm:px-4 sm:py-3 md:px-6">#</th><th className="px-3 py-2 sm:px-4 sm:py-3 md:px-6">Mot-clé</th><th className="px-3 py-2 sm:px-4 sm:py-3 md:px-6">Mentions</th><th className="px-3 py-2 sm:px-4 sm:py-3 md:px-6">Fréquence</th><th className="px-3 py-2 sm:px-4 sm:py-3 md:px-6">Tendance</th>
             </tr></thead>
             <tbody>{keywords.map((kw, i) => (
               <tr key={kw.word} className="border-b border-white/5 last:border-0">
-                <td className="px-6 py-3 text-sm text-on-surface-variant">{i + 1}</td>
-                <td className="px-6 py-3 text-sm font-bold text-on-surface">{kw.word}</td>
-                <td className="px-6 py-3 text-sm text-on-surface">{kw.count}</td>
-                <td className="px-6 py-3"><div className="flex items-center gap-2"><div className="h-1.5 w-24 overflow-hidden rounded-full bg-white/5"><div className="h-full rounded-full bg-gradient-to-r from-primary to-secondary" style={{ width: `${(kw.count / maxCount) * 100}%` }} /></div></div></td>
-                <td className="px-6 py-3"><span className={`flex items-center gap-1 text-xs font-bold ${kw.trend > 0 ? "text-tertiary" : kw.trend < 0 ? "text-error" : "text-on-surface-variant"}`}><span className="material-symbols-outlined text-xs">{kw.trend > 0 ? "trending_up" : kw.trend < 0 ? "trending_down" : "trending_flat"}</span>{kw.trend > 0 ? "+" : ""}{kw.trend}%</span></td>
+                <td className="px-3 py-2 sm:px-4 sm:py-3 md:px-6 text-sm text-on-surface-variant">{i + 1}</td>
+                <td className="px-3 py-2 sm:px-4 sm:py-3 md:px-6 text-sm font-bold text-on-surface">{kw.word}</td>
+                <td className="px-3 py-2 sm:px-4 sm:py-3 md:px-6 text-sm text-on-surface">{kw.count}</td>
+                <td className="px-3 py-2 sm:px-4 sm:py-3 md:px-6"><div className="flex items-center gap-2"><div className="h-1.5 w-24 overflow-hidden rounded-full bg-white/5"><div className="h-full rounded-full bg-gradient-to-r from-primary to-secondary" style={{ width: `${(kw.count / maxCount) * 100}%` }} /></div></div></td>
+                <td className="px-3 py-2 sm:px-4 sm:py-3 md:px-6"><span className={`flex items-center gap-1 text-xs font-bold ${kw.trend > 0 ? "text-tertiary" : kw.trend < 0 ? "text-error" : "text-on-surface-variant"}`}><span className="material-symbols-outlined text-xs">{kw.trend > 0 ? "trending_up" : kw.trend < 0 ? "trending_down" : "trending_flat"}</span>{kw.trend > 0 ? "+" : ""}{kw.trend}%</span></td>
               </tr>
             ))}</tbody>
           </table>

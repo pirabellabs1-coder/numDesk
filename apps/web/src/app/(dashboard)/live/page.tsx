@@ -55,11 +55,11 @@ export default function LiveCallMonitorPage() {
   const ringingCount = liveCalls.filter((c) => c.status === "ringing").length;
 
   return (
-    <section className="mx-auto max-w-7xl space-y-8">
+    <section className="mx-auto max-w-7xl space-y-4 sm:space-y-6 lg:space-y-8">
       {/* Header */}
-      <div className="flex items-end justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-4xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
+          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
             Appels en direct
           </h1>
           <p className="mt-2 text-on-surface-variant">Suivi en temps réel de tous les appels actifs</p>
@@ -84,7 +84,7 @@ export default function LiveCallMonitorPage() {
       {/* Active calls */}
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3">
         {liveCalls.map((call) => (
-          <div key={call.id} className="relative overflow-hidden rounded-2xl border border-white/5 bg-card p-6">
+          <div key={call.id} className="relative overflow-hidden rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
             {/* Live pulse */}
             {call.status === "in_progress" && (
               <div className="absolute right-4 top-4">
@@ -155,24 +155,24 @@ export default function LiveCallMonitorPage() {
         <h2 className="mb-4 text-lg font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
           Derniers appels terminés
         </h2>
-        <div className="overflow-hidden rounded-2xl border border-white/5 bg-card">
-          <table className="w-full">
+        <div className="overflow-x-auto overflow-hidden rounded-2xl border border-white/5 bg-card">
+          <table className="w-full min-w-[600px]">
             <thead>
               <tr className="border-b border-white/5 text-left text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
-                <th className="px-6 py-3">Agent</th>
-                <th className="px-6 py-3">Appelant</th>
-                <th className="px-6 py-3">Durée</th>
-                <th className="px-6 py-3">Statut</th>
-                <th className="px-6 py-3">Terminé</th>
+                <th className="px-3 py-2 sm:px-4 sm:py-3 md:px-6">Agent</th>
+                <th className="px-3 py-2 sm:px-4 sm:py-3 md:px-6">Appelant</th>
+                <th className="px-3 py-2 sm:px-4 sm:py-3 md:px-6">Durée</th>
+                <th className="px-3 py-2 sm:px-4 sm:py-3 md:px-6">Statut</th>
+                <th className="px-3 py-2 sm:px-4 sm:py-3 md:px-6">Terminé</th>
               </tr>
             </thead>
             <tbody>
               {recentEnded.map((call) => (
                 <tr key={call.id} className="border-b border-white/5 last:border-0">
-                  <td className="px-6 py-3 text-sm text-on-surface">{call.agentName || call.agentId?.slice(0, 8) || "Agent"}</td>
-                  <td className="px-6 py-3 text-sm text-on-surface-variant">{call.callerNumber || "—"}</td>
-                  <td className="px-6 py-3 font-mono text-sm text-on-surface">{call.duration || (call.durationSeconds ? `${Math.floor(call.durationSeconds / 60)}:${String(call.durationSeconds % 60).padStart(2, "0")}` : "—")}</td>
-                  <td className="px-6 py-3">
+                  <td className="px-3 py-2 sm:px-4 sm:py-3 md:px-6 text-sm text-on-surface">{call.agentName || call.agentId?.slice(0, 8) || "Agent"}</td>
+                  <td className="px-3 py-2 sm:px-4 sm:py-3 md:px-6 text-sm text-on-surface-variant">{call.callerNumber || "—"}</td>
+                  <td className="px-3 py-2 sm:px-4 sm:py-3 md:px-6 font-mono text-sm text-on-surface">{call.duration || (call.durationSeconds ? `${Math.floor(call.durationSeconds / 60)}:${String(call.durationSeconds % 60).padStart(2, "0")}` : "—")}</td>
+                  <td className="px-3 py-2 sm:px-4 sm:py-3 md:px-6">
                     <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
                       call.status === "success" ? "bg-tertiary/10 text-tertiary" :
                       call.status === "missed" ? "bg-white/5 text-on-surface-variant" :
@@ -181,7 +181,7 @@ export default function LiveCallMonitorPage() {
                       {call.status === "success" ? "Succès" : call.status === "missed" ? "Manqué" : "Messagerie"}
                     </span>
                   </td>
-                  <td className="px-6 py-3 text-sm text-on-surface-variant">{call.endedAt ? new Date(call.endedAt).toLocaleString("fr-FR") : call.createdAt ? new Date(call.createdAt).toLocaleString("fr-FR") : "—"}</td>
+                  <td className="px-3 py-2 sm:px-4 sm:py-3 md:px-6 text-sm text-on-surface-variant">{call.endedAt ? new Date(call.endedAt).toLocaleString("fr-FR") : call.createdAt ? new Date(call.createdAt).toLocaleString("fr-FR") : "—"}</td>
                 </tr>
               ))}
             </tbody>

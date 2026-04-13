@@ -9,13 +9,14 @@ export default function AdminTagsPage() {
   const list = tags ?? [];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Gestion des tags</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Gestion des tags</h1>
         <p className="mt-1 text-sm text-on-surface-variant">{list.length} tags</p>
       </div>
       <div className="overflow-hidden rounded-2xl border border-white/5 bg-card">
-        <table className="w-full">
+        <div className="overflow-x-auto">
+        <table className="w-full min-w-[400px]">
           <thead><tr className="border-b border-white/5 text-left text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
             <th className="px-6 py-3">Tag</th><th className="px-6 py-3">Aperçu</th><th className="px-6 py-3">Conversations</th>
           </tr></thead>
@@ -27,6 +28,7 @@ export default function AdminTagsPage() {
             </tr>
           ))}</tbody>
         </table>
+        </div>
       </div>
     </div>
   );

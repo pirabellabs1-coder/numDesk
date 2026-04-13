@@ -206,7 +206,7 @@ export default function DocsPage() {
   );
 
   const Code = ({ code, id, lang }: { code: string; id: string; lang: string }) => (
-    <div className="rounded-2xl border border-white/5 bg-card p-6">
+    <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
       <div className="mb-3 flex items-center justify-between">
         <h3 className="text-sm font-bold text-on-surface">{lang}</h3>
         <CopyBtn code={code} id={id} />
@@ -220,9 +220,9 @@ export default function DocsPage() {
   const EndpointList = ({ endpoints }: { endpoints: Endpoint[] }) => (
     <div className="space-y-2">
       {endpoints.map((ep, i) => (
-        <div key={i} className="flex items-center gap-4 rounded-xl border border-white/5 bg-card px-5 py-3.5 transition-all hover:border-white/10">
+        <div key={i} className="flex flex-col gap-2 rounded-xl border border-white/5 bg-card px-4 py-3 transition-all hover:border-white/10 sm:flex-row sm:items-center sm:gap-4 sm:px-5 sm:py-3.5">
           <span className={`w-16 shrink-0 rounded px-2 py-1 text-center text-[10px] font-bold ${methodColors[ep.method]}`}>{ep.method}</span>
-          <code className="min-w-0 flex-1 text-sm text-on-surface">{ep.path}</code>
+          <code className="min-w-0 flex-1 break-all text-xs text-on-surface sm:text-sm">{ep.path}</code>
           <span className="shrink-0 text-xs text-on-surface-variant">{ep.description}</span>
         </div>
       ))}
@@ -367,14 +367,14 @@ await fetch("https://app.callpme.com/api/vapi/call-test", {
 
   return (
     <section className="mx-auto max-w-7xl">
-      <div className="flex gap-8">
+      <div className="flex flex-col lg:flex-row gap-4 sm:gap-8">
         {/* Sidebar */}
-        <aside className="w-48 shrink-0">
+        <aside className="w-full lg:w-48 shrink-0">
           <h1 className="mb-2 text-2xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Documentation</h1>
-          <p className="mb-6 text-[10px] text-on-surface-variant">{totalEndpoints} endpoints</p>
-          <nav className="space-y-[2px]">
+          <p className="mb-4 lg:mb-6 text-[10px] text-on-surface-variant">{totalEndpoints} endpoints</p>
+          <nav className="flex flex-wrap gap-1 lg:flex-col lg:gap-0 lg:space-y-[2px]">
             {sections.map((s) => (
-              <button key={s.id} onClick={() => setActiveSection(s.id)} className={`flex w-full items-center gap-2 rounded-lg px-3 py-[7px] text-[13px] transition-all ${activeSection === s.id ? "bg-primary/10 font-bold text-primary" : "text-on-surface-variant hover:text-on-surface"}`}>
+              <button key={s.id} onClick={() => setActiveSection(s.id)} className={`flex items-center gap-2 rounded-lg px-3 py-[7px] text-[13px] transition-all ${activeSection === s.id ? "bg-primary/10 font-bold text-primary" : "text-on-surface-variant hover:text-on-surface"}`}>
                 <span className="material-symbols-outlined text-[16px]">{s.icon}</span>
                 {s.label}
               </button>
@@ -393,7 +393,7 @@ await fetch("https://app.callpme.com/api/vapi/call-test", {
                 <p className="mt-2 text-on-surface-variant">L&apos;API REST Callpme vous permet de gérer vos agents IA, contacts, campagnes, leads et bien plus depuis vos applications.</p>
               </div>
 
-              <div className="rounded-2xl border border-white/5 bg-card p-6">
+              <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
                 <h3 className="mb-3 text-sm font-bold text-on-surface">Base URL</h3>
                 <div className="flex items-center gap-3 rounded-lg bg-surface-container-lowest px-4 py-3">
                   <code className="flex-1 text-sm text-primary">https://app.callpme.com/api</code>
@@ -404,9 +404,9 @@ await fetch("https://app.callpme.com/api/vapi/call-test", {
               <Code code={examples.response} id="response-format" lang="Format des réponses (succès)" />
               <Code code={examples.error} id="error-format" lang="Format des erreurs" />
 
-              <div className="rounded-2xl border border-white/5 bg-card p-6">
+              <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
                 <h3 className="mb-4 text-sm font-bold text-on-surface">Toutes les ressources ({totalEndpoints} endpoints)</h3>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {Object.entries(endpointGroups).map(([key, eps]) => (
                     <button key={key} onClick={() => setActiveSection(key)} className="flex items-center gap-3 rounded-lg bg-surface-container-lowest px-4 py-3 text-left transition-all hover:bg-surface-container-low">
                       <span className="text-sm font-bold text-on-surface">{sectionInfo[key]?.title || key}</span>
@@ -425,13 +425,13 @@ await fetch("https://app.callpme.com/api/vapi/call-test", {
                 <h2 className="text-3xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Authentification</h2>
                 <p className="mt-2 text-on-surface-variant">Toutes les requêtes nécessitent un token Bearer.</p>
               </div>
-              <div className="rounded-2xl border border-white/5 bg-card p-6">
+              <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
                 <h3 className="mb-3 text-sm font-bold text-on-surface">Header requis</h3>
                 <div className="rounded-lg bg-surface-container-lowest px-4 py-3">
                   <code className="text-sm text-primary">Authorization: Bearer voc_xxxxxxxxxxxxxxxxxxxx</code>
                 </div>
               </div>
-              <div className="rounded-2xl border border-white/5 bg-card p-6">
+              <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
                 <h3 className="mb-3 text-sm font-bold text-on-surface">Créer un token</h3>
                 <ol className="space-y-2 text-sm text-on-surface-variant">
                   <li className="flex items-start gap-2"><span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-[10px] font-bold text-primary">1</span>Allez dans <strong className="text-on-surface">API & Webhooks</strong></li>
@@ -534,7 +534,7 @@ await fetch("https://app.callpme.com/api/vapi/call-test", {
 
               {activeSection === "conversations" && (
                 <>
-                  <div className="rounded-2xl border border-white/5 bg-card p-6">
+                  <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
                     <h3 className="mb-3 text-sm font-bold text-on-surface">Paramètres de query</h3>
                     <div className="space-y-2">
                       {[
@@ -613,7 +613,7 @@ await fetch("https://app.callpme.com/api/vapi/call-test", {
                       <li>4. Arrêt : <code className="text-primary">POST .../stop</code> → statut <code className="text-primary">completed</code></li>
                     </ol>
                   </Info>
-                  <div className="rounded-2xl border border-white/5 bg-card p-6">
+                  <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
                     <h3 className="mb-3 text-sm font-bold text-on-surface">Statuts possibles</h3>
                     <div className="flex flex-wrap gap-2">
                       {[
@@ -746,7 +746,7 @@ await fetch("https://app.callpme.com/api/vapi/call-test", {
 }
 
 // Un secret HMAC est auto-généré : whsec_xxxxxxxxxxxx`} id="wh-body" lang="Body — Créer un webhook" />
-                  <div className="rounded-2xl border border-white/5 bg-card p-6">
+                  <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
                     <h3 className="mb-3 text-sm font-bold text-on-surface">Événements disponibles</h3>
                     <div className="space-y-2">
                       {[
@@ -933,7 +933,7 @@ await fetch("https://app.callpme.com/api/vapi/call-test", {
                 <p className="mt-2 text-on-surface-variant">Format standardisé pour toutes les erreurs.</p>
               </div>
               <Code code={examples.error} id="err-format" lang="Format d'erreur" />
-              <div className="rounded-2xl border border-white/5 bg-card p-6">
+              <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
                 <h3 className="mb-4 text-sm font-bold text-on-surface">Codes HTTP</h3>
                 <div className="space-y-2">
                   {[
@@ -954,7 +954,7 @@ await fetch("https://app.callpme.com/api/vapi/call-test", {
                   ))}
                 </div>
               </div>
-              <div className="rounded-2xl border border-white/5 bg-card p-6">
+              <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
                 <h3 className="mb-4 text-sm font-bold text-on-surface">Codes d&apos;erreur</h3>
                 <div className="space-y-2">
                   {[

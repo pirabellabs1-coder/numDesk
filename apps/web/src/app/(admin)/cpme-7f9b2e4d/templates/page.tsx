@@ -9,10 +9,10 @@ export default function AdminTemplatesPage() {
   const list = templates ?? [];
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-end justify-between">
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Gestion des templates</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Gestion des templates</h1>
           <p className="mt-1 text-sm text-on-surface-variant">{list.length} templates disponibles</p>
         </div>
         <button className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-primary to-secondary px-4 py-2 text-sm font-bold text-white">
@@ -20,7 +20,8 @@ export default function AdminTemplatesPage() {
         </button>
       </div>
       <div className="overflow-hidden rounded-2xl border border-white/5 bg-card">
-        <table className="w-full">
+        <div className="overflow-x-auto">
+        <table className="w-full min-w-[500px]">
           <thead><tr className="border-b border-white/5 text-left text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
             <th className="px-6 py-3">Nom</th><th className="px-6 py-3">Catégorie</th><th className="px-6 py-3">Voix</th><th className="px-6 py-3">LLM</th>
           </tr></thead>
@@ -33,6 +34,7 @@ export default function AdminTemplatesPage() {
             </tr>
           ))}</tbody>
         </table>
+        </div>
       </div>
     </div>
   );

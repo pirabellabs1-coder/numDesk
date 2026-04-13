@@ -29,20 +29,20 @@ export default function ActivityPage() {
     : activityLog;
 
   return (
-    <section className="mx-auto max-w-4xl space-y-8">
+    <section className="mx-auto max-w-4xl space-y-4 sm:space-y-6 lg:space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-4xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
+        <h1 className="text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
           Journal d&apos;activité
         </h1>
         <p className="mt-2 text-on-surface-variant">Historique de toutes les actions sur la plateforme</p>
       </div>
 
       {/* Filters */}
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-2">
         <button
           onClick={() => setFilterType(null)}
-          className={`rounded-lg px-4 py-2 text-sm font-bold transition-all ${
+          className={`rounded-lg px-3 py-2 text-xs sm:px-4 sm:text-sm font-bold transition-all ${
             !filterType ? "bg-primary/10 text-primary" : "text-on-surface-variant hover:text-on-surface"
           }`}
         >
@@ -54,7 +54,7 @@ export default function ActivityPage() {
             <button
               key={type}
               onClick={() => setFilterType(filterType === type ? null : type)}
-              className={`flex items-center gap-1.5 rounded-lg px-4 py-2 text-sm font-bold transition-all ${
+              className={`flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs sm:px-4 sm:text-sm font-bold transition-all ${
                 filterType === type ? `${cfg.bg} ${cfg.color}` : "text-on-surface-variant hover:text-on-surface"
               }`}
             >

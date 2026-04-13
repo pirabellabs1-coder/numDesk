@@ -41,10 +41,10 @@ export function AdminAlerts() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-end justify-between">
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Centre d&apos;alertes</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Centre d&apos;alertes</h1>
           <p className="mt-1 text-sm text-on-surface-variant">{unacked} alerte(s) non acquittée(s)</p>
         </div>
         <button onClick={handleScan} disabled={scanning} className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-primary to-secondary px-4 py-2 text-sm font-bold text-white disabled:opacity-50">
@@ -60,7 +60,7 @@ export function AdminAlerts() {
           {alertList.map((alert: any) => {
             const sev = severityConfig[alert.severity as string] ?? severityConfig["info"]!;
             return (
-              <div key={alert.id} className={`rounded-2xl border p-5 ${alert.isAcknowledged ? "border-white/5 bg-card opacity-50" : "border-white/5 bg-card"}`}>
+              <div key={alert.id} className={`rounded-2xl border p-4 sm:p-5 ${alert.isAcknowledged ? "border-white/5 bg-card opacity-50" : "border-white/5 bg-card"}`}>
                 <div className="flex items-start gap-4">
                   <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${sev.bg}`}>
                     <span className={`material-symbols-outlined ${sev.color}`}>{sev.icon}</span>

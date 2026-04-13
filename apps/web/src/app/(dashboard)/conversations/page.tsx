@@ -34,7 +34,7 @@ export default function ConversationsPage() {
     <section className="mx-auto max-w-7xl">
       <div className="mb-6">
         <h1
-          className="text-4xl font-bold tracking-tight text-on-surface"
+          className="text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl text-on-surface"
           style={{ fontFamily: "Inter, sans-serif" }}
         >
           Conversations
@@ -66,10 +66,11 @@ export default function ConversationsPage() {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
+      <div className="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-5">
         {/* List */}
         <div className="overflow-hidden rounded-2xl border border-white/5 bg-card lg:col-span-3">
-          <table className="w-full border-collapse text-left">
+          <div className="overflow-x-auto">
+          <table className="w-full min-w-[540px] border-collapse text-left">
             <thead>
               <tr className="bg-surface-container-low/50">
                 {["Appelant", "Agent", "Durée", "Statut", "Date"].map((h) => (
@@ -116,6 +117,7 @@ export default function ConversationsPage() {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
 
         {/* Detail panel */}
@@ -123,7 +125,7 @@ export default function ConversationsPage() {
           {selected ? (
             <div className="space-y-4">
               {/* Header */}
-              <div className="rounded-2xl border border-white/5 bg-card p-5">
+              <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-5">
                 <div className="mb-4 flex items-center justify-between">
                   <div>
                     <p className="text-base font-bold text-on-surface">{selected.callerNumber}</p>
@@ -149,7 +151,7 @@ export default function ConversationsPage() {
 
               {/* Summary */}
               {selected.summary && (
-                <div className="rounded-2xl border border-white/5 bg-card p-5">
+                <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-5">
                   <p className="mb-2 flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-on-surface-variant">
                     <span className="material-symbols-outlined text-sm text-secondary">auto_awesome</span>
                     Résumé IA
@@ -159,7 +161,7 @@ export default function ConversationsPage() {
               )}
 
               {/* Transcript */}
-              <div className="rounded-2xl border border-white/5 bg-card p-5">
+              <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-5">
                 <p className="mb-4 text-xs font-bold uppercase tracking-widest text-on-surface-variant">
                   Transcript
                 </p>

@@ -10,13 +10,14 @@ export default function AdminQualityPage() {
   const avg = list.length > 0 ? Math.round(list.reduce((a: number, s: any) => a + s.score, 0) / list.length) : 0;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Qualité des agents</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Qualité des agents</h1>
         <p className="mt-1 text-sm text-on-surface-variant">Score moyen : {avg}/100</p>
       </div>
       <div className="overflow-hidden rounded-2xl border border-white/5 bg-card">
-        <table className="w-full">
+        <div className="overflow-x-auto">
+        <table className="w-full min-w-[600px]">
           <thead><tr className="border-b border-white/5 text-left text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
             <th className="px-6 py-3">Agent</th><th className="px-6 py-3">Score</th><th className="px-6 py-3">Complétion</th><th className="px-6 py-3">Sentiment +</th><th className="px-6 py-3">Tendance</th>
           </tr></thead>
@@ -30,6 +31,7 @@ export default function AdminQualityPage() {
             </tr>
           ))}</tbody>
         </table>
+        </div>
       </div>
     </div>
   );

@@ -15,14 +15,14 @@ const VOICE_PROVIDERS = [
 
 export function AdminConfig() {
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Configuration IA</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Configuration IA</h1>
         <p className="mt-1 text-sm text-on-surface-variant">Modèles LLM, providers TTS et limites globales de la plateforme</p>
       </div>
 
       {/* LLM Models */}
-      <div className="rounded-2xl border border-white/5 bg-card p-6">
+      <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
         <h3 className="mb-4 font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Modèles LLM disponibles</h3>
         <div className="space-y-3">
           {LLM_MODELS.map((model) => (
@@ -38,7 +38,7 @@ export function AdminConfig() {
       </div>
 
       {/* Voice Providers */}
-      <div className="rounded-2xl border border-white/5 bg-card p-6">
+      <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
         <h3 className="mb-4 font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Providers TTS</h3>
         <div className="space-y-3">
           {VOICE_PROVIDERS.map((provider) => (
@@ -54,12 +54,12 @@ export function AdminConfig() {
       </div>
 
       {/* Global Limits */}
-      <div className="rounded-2xl border border-white/5 bg-card p-6">
-        <div className="flex items-center justify-between mb-4">
+      <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between mb-4">
           <h3 className="font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Limites globales de la plateforme</h3>
           <span className="rounded-full bg-secondary/10 px-3 py-1 text-[10px] font-bold text-secondary uppercase tracking-wider">Référence</span>
         </div>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {[
             { label: "Rate limit", value: "100 req/min", icon: "speed" },
             { label: "Agents max / workspace", value: "Selon plan", icon: "smart_toy" },

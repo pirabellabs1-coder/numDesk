@@ -70,16 +70,16 @@ export default function ReportsPage() {
   const trendColor = (val: number) => val > 0 ? "text-tertiary" : val < 0 ? "text-error" : "text-on-surface-variant";
 
   return (
-    <section className="mx-auto max-w-5xl space-y-8">
+    <section className="mx-auto max-w-5xl space-y-4 sm:space-y-6 lg:space-y-8">
       {/* Header */}
-      <div className="flex items-end justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-4xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
+          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
             Rapports
           </h1>
           <p className="mt-2 text-on-surface-variant">Période : {report.period}</p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           <div className="flex rounded-lg border border-white/5">
             {[
               { id: "week", label: "Cette semaine" },
@@ -89,7 +89,7 @@ export default function ReportsPage() {
               <button
                 key={p.id}
                 onClick={() => setPeriod(p.id)}
-                className={`px-4 py-2 text-xs font-bold transition-all ${
+                className={`px-3 py-2 text-xs font-bold transition-all sm:px-4 ${
                   period === p.id ? "bg-primary/10 text-primary" : "text-on-surface-variant hover:text-on-surface"
                 }`}
               >
@@ -97,11 +97,11 @@ export default function ReportsPage() {
               </button>
             ))}
           </div>
-          <button onClick={() => toast("Export PDF en cours de génération...", "info")} className="flex items-center gap-2 rounded-lg border border-white/10 px-4 py-2 text-sm text-on-surface-variant hover:text-on-surface">
+          <button onClick={() => toast("Export PDF en cours de génération...", "info")} className="flex items-center gap-2 rounded-lg border border-white/10 px-3 py-2 text-sm text-on-surface-variant hover:text-on-surface sm:px-4">
             <span className="material-symbols-outlined text-sm">download</span>
             PDF
           </button>
-          <button onClick={() => toast("Rapport envoyé par email", "info")} className="flex items-center gap-2 rounded-lg border border-white/10 px-4 py-2 text-sm text-on-surface-variant hover:text-on-surface">
+          <button onClick={() => toast("Rapport envoyé par email", "info")} className="flex items-center gap-2 rounded-lg border border-white/10 px-3 py-2 text-sm text-on-surface-variant hover:text-on-surface sm:px-4">
             <span className="material-symbols-outlined text-sm">mail</span>
             Envoyer
           </button>
@@ -109,7 +109,7 @@ export default function ReportsPage() {
       </div>
 
       {/* Executive summary */}
-      <div className="rounded-2xl border border-primary/10 bg-primary/[0.03] p-6">
+      <div className="rounded-2xl border border-primary/10 bg-primary/[0.03] p-4 sm:p-6">
         <div className="mb-2 flex items-center gap-2">
           <span className="material-symbols-outlined text-primary">auto_awesome</span>
           <span className="text-[10px] font-bold uppercase tracking-widest text-primary">Résumé exécutif</span>
@@ -118,14 +118,14 @@ export default function ReportsPage() {
       </div>
 
       {/* KPIs */}
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {[
           { label: "Appels traités", value: report.kpis.totalCalls, trend: report.kpis.callsTrend, suffix: "" },
           { label: "Durée moyenne", value: report.kpis.avgDuration, trend: report.kpis.durationTrend, suffix: "" },
           { label: "Taux complétion", value: report.kpis.completionRate, trend: report.kpis.completionTrend, suffix: "%" },
           { label: "Satisfaction", value: report.kpis.satisfactionRate, trend: report.kpis.satisfactionTrend, suffix: "%" },
         ].map((kpi) => (
-          <div key={kpi.label} className="rounded-2xl border border-white/5 bg-card p-5">
+          <div key={kpi.label} className="rounded-2xl border border-white/5 bg-card p-4 sm:p-5">
             <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">{kpi.label}</p>
             <p className="mt-2 text-3xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
               {kpi.value}{kpi.suffix}
@@ -138,9 +138,9 @@ export default function ReportsPage() {
         ))}
       </div>
 
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         {/* Top Agents */}
-        <div className="rounded-2xl border border-white/5 bg-card p-6">
+        <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
           <h3 className="mb-4 text-sm font-bold text-on-surface">Top 3 agents</h3>
           <div className="space-y-3">
             {report.topAgents.map((agent, i) => (
@@ -160,7 +160,7 @@ export default function ReportsPage() {
         </div>
 
         {/* Sentiment breakdown */}
-        <div className="rounded-2xl border border-white/5 bg-card p-6">
+        <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
           <h3 className="mb-4 text-sm font-bold text-on-surface">Répartition des sentiments</h3>
           <div className="space-y-3">
             {[
@@ -181,7 +181,7 @@ export default function ReportsPage() {
       </div>
 
       {/* Heatmap */}
-      <div className="rounded-2xl border border-white/5 bg-card p-6">
+      <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
         <h3 className="mb-4 text-sm font-bold text-on-surface">Heures de pointe</h3>
         <div className="overflow-x-auto">
           <table className="w-full">
@@ -212,7 +212,7 @@ export default function ReportsPage() {
       </div>
 
       {/* Alerts */}
-      <div className="rounded-2xl border border-white/5 bg-card p-6">
+      <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
         <h3 className="mb-4 text-sm font-bold text-on-surface">Alertes & Recommandations</h3>
         <div className="space-y-2">
           {report.alerts.map((alert, i) => (
@@ -225,7 +225,7 @@ export default function ReportsPage() {
       </div>
 
       {/* Auto send */}
-      <div className="flex items-center justify-between rounded-2xl border border-white/5 bg-card px-6 py-4">
+      <div className="flex items-center justify-between rounded-2xl border border-white/5 bg-card px-3 py-3 sm:px-4 md:px-6 md:py-4">
         <div>
           <p className="text-sm font-bold text-on-surface">Envoi automatique</p>
           <p className="text-xs text-on-surface-variant">Recevoir ce rapport par email chaque lundi à 9h</p>

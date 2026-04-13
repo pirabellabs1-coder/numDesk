@@ -13,8 +13,8 @@ function AdminContent({ children }: { children: React.ReactNode }) {
     <div className="flex min-h-screen bg-background">
       <AdminSidebar />
       <AdminTopbar />
-      <main className={`flex-1 overflow-x-hidden px-8 pb-12 pt-20 transition-all duration-300 ${
-        isOpen ? "ml-[220px]" : "ml-0"
+      <main className={`flex-1 overflow-x-hidden px-4 pb-8 pt-16 sm:px-6 sm:pt-18 md:px-8 md:pb-12 md:pt-20 transition-all duration-300 ${
+        isOpen ? "lg:ml-[220px]" : "ml-0"
       }`}>
         {children}
       </main>

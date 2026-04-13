@@ -34,11 +34,11 @@ export function AdminKpis() {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Platform health */}
-      <div className="relative overflow-hidden rounded-2xl border border-white/5 bg-card p-6">
+      <div className="relative overflow-hidden rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
         <div className="absolute -right-8 -top-8 h-40 w-40 rounded-full bg-tertiary/5 blur-3xl" />
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Santé de la plateforme</p>
             <div className="mt-2 flex items-center gap-2">
@@ -46,17 +46,17 @@ export function AdminKpis() {
                 <span className={`absolute inline-flex h-full w-full animate-ping rounded-full ${overallConfig.dotColor} opacity-75`} />
                 <span className={`relative inline-flex h-2.5 w-2.5 rounded-full ${overallConfig.dotColor}`} />
               </span>
-              <span className={`text-sm font-bold ${overallConfig.color}`}>{overallLabel}</span>
+              <span className={`text-xs sm:text-sm font-bold ${overallConfig.color}`}>{overallLabel}</span>
             </div>
             {(activity.callsLast24h > 0 || activity.callsLast7d > 0) && (
-              <div className="mt-2 flex gap-4 text-[10px] text-on-surface-variant">
+              <div className="mt-2 flex flex-wrap gap-3 sm:gap-4 text-[10px] text-on-surface-variant">
                 <span>{activity.callsLast24h} appel(s) / 24h</span>
                 <span>{activity.callsLast7d} appel(s) / 7j</span>
                 <span>{activity.publishedAgents} agent(s) publiés</span>
               </div>
             )}
           </div>
-          <div className="flex gap-6">
+          <div className="hidden md:flex gap-6">
             {services.length > 0 ? services.map((s: any) => {
               const sc = statusConfig[s.status] ?? statusConfig["operational"]!;
               return (
@@ -75,25 +75,25 @@ export function AdminKpis() {
               ))
             )}
           </div>
-          <div className="rounded-2xl border border-primary/20 bg-primary/5 p-5 text-center">
-            <span className="material-symbols-outlined text-3xl text-primary">call</span>
-            <div className="mt-1 text-2xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>{totalCalls.toLocaleString("fr-FR")}</div>
+          <div className="rounded-2xl border border-primary/20 bg-primary/5 p-3 sm:p-5 text-center">
+            <span className="material-symbols-outlined text-2xl sm:text-3xl text-primary">call</span>
+            <div className="mt-1 text-xl sm:text-2xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>{totalCalls.toLocaleString("fr-FR")}</div>
             <p className="text-[10px] text-primary font-bold uppercase tracking-wider">Appels traités</p>
           </div>
         </div>
       </div>
 
       {/* KPI Grid */}
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
         {kpiData.map((k) => (
-          <div key={k.label} className="group rounded-2xl border border-white/5 bg-card p-5 transition-all hover:border-white/10">
-            <div className="mb-4 flex items-start justify-between">
-              <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${k.bg}`}>
-                <span className={`material-symbols-outlined ${k.color}`}>{k.icon}</span>
+          <div key={k.label} className="group rounded-2xl border border-white/5 bg-card p-4 sm:p-5 transition-all hover:border-white/10">
+            <div className="mb-3 sm:mb-4 flex items-start justify-between">
+              <div className={`flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-xl ${k.bg}`}>
+                <span className={`material-symbols-outlined text-lg sm:text-xl ${k.color}`}>{k.icon}</span>
               </div>
             </div>
             <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">{k.label}</p>
-            <p className="mt-1 text-3xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
+            <p className="mt-1 text-2xl sm:text-3xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
               {k.value.toLocaleString("fr-FR")}{k.unit}
             </p>
           </div>
@@ -101,9 +101,9 @@ export function AdminKpis() {
       </div>
 
       {/* Charts row */}
-      <div className="grid grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
         {/* Daily calls chart */}
-        <div className="col-span-2 rounded-2xl border border-white/5 bg-card p-6">
+        <div className="lg:col-span-2 rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
           <div className="mb-6 flex items-center justify-between">
             <div>
               <h3 className="font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Appels quotidiens</h3>
@@ -129,7 +129,7 @@ export function AdminKpis() {
         </div>
 
         {/* Revenue trend */}
-        <div className="rounded-2xl border border-white/5 bg-card p-6">
+        <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
           <h3 className="mb-2 font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Revenus</h3>
           <p className="mb-4 text-xs text-on-surface-variant">Revenus de la plateforme</p>
           <div className="space-y-3">
@@ -150,9 +150,9 @@ export function AdminKpis() {
       </div>
 
       {/* Top workspaces + Distribution */}
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
         {/* Top 5 workspaces */}
-        <div className="rounded-2xl border border-white/5 bg-card p-6">
+        <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
           <h3 className="mb-4 font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Top 5 Workspaces</h3>
           <div className="space-y-3">
             {(() => {
@@ -181,7 +181,7 @@ export function AdminKpis() {
         </div>
 
         {/* Status distribution */}
-        <div className="rounded-2xl border border-white/5 bg-card p-6">
+        <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
           <h3 className="mb-1 font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Distribution des statuts</h3>
           <p className="mb-4 text-[10px] text-on-surface-variant">Basé sur les conversations enregistrées</p>
           <div className="flex items-center gap-8">

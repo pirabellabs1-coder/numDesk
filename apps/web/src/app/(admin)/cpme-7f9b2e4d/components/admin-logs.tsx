@@ -24,10 +24,10 @@ export function AdminLogs() {
   const filtered = filterType ? logList.filter((l: any) => l.type === filterType) : logList;
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-end justify-between">
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Journal des événements</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Journal des événements</h1>
           <p className="mt-1 text-sm text-on-surface-variant">{logList.length} événement(s) · Rafraîchi toutes les 10s</p>
         </div>
         <div className="flex items-center gap-2">
@@ -50,11 +50,11 @@ export function AdminLogs() {
       {filtered.length === 0 ? (
         <EmptyState icon="terminal" title="Aucun événement" description="Les logs apparaîtront ici au fur et à mesure de l'activité." />
       ) : (
-        <div className="space-y-1">
+        <div className="space-y-1 overflow-x-auto">
           {filtered.map((log: any) => {
             const cfg = typeConfig[log.type] ?? typeConfig["creation"]!;
             return (
-              <div key={log.id} className="flex items-center gap-3 rounded-lg px-4 py-2.5 transition-all hover:bg-white/[0.02]">
+              <div key={log.id} className="flex items-center gap-3 rounded-lg px-3 sm:px-4 py-2.5 transition-all hover:bg-white/[0.02] min-w-[500px]">
                 <span className={`material-symbols-outlined text-sm ${cfg.color}`}>{cfg.icon}</span>
                 <span className="font-mono text-[10px] text-on-surface-variant/50">{new Date(log.createdAt).toLocaleTimeString("fr-FR")}</span>
                 <span className="flex-1 text-sm text-on-surface">{log.description}</span>

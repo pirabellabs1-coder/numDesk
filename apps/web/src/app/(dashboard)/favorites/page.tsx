@@ -33,9 +33,9 @@ export default function FavoritesPage() {
   const favList = favorites ?? [];
 
   return (
-    <section className="mx-auto max-w-3xl space-y-8">
+    <section className="mx-auto max-w-3xl space-y-4 sm:space-y-6 lg:space-y-8">
       <div>
-        <h1 className="text-4xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Favoris</h1>
+        <h1 className="text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Favoris</h1>
         <p className="mt-2 text-on-surface-variant">{favList.length} éléments épinglés</p>
       </div>
 
@@ -48,7 +48,7 @@ export default function FavoritesPage() {
       ) : (
         <div className="space-y-2">
           {favList.map((fav: any) => (
-            <div key={fav.id} className="flex items-center gap-4 rounded-2xl border border-white/5 bg-card px-6 py-4 transition-all hover:border-white/10">
+            <div key={fav.id} className="flex items-center gap-4 rounded-2xl border border-white/5 bg-card px-3 py-3 sm:px-4 md:px-6 md:py-4 transition-all hover:border-white/10">
               <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${typeColors[fav.type] || "bg-white/5 text-on-surface-variant"}`}>
                 <span className="material-symbols-outlined">{fav.icon || "star"}</span>
               </div>

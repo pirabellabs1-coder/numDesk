@@ -62,20 +62,20 @@ export default function LeadsPage() {
   const totalValue = leadList.reduce((a: number, l: any) => a + parseInt((l.value || "0").replace(/\D/g, "") || "0"), 0);
 
   return (
-    <section className="mx-auto max-w-7xl space-y-6">
-      <div className="flex items-end justify-between">
+    <section className="mx-auto max-w-7xl space-y-4 sm:space-y-6">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-4xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Pipeline Leads</h1>
+          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Pipeline Leads</h1>
           <p className="mt-2 text-on-surface-variant">{leadList.length} leads · {totalValue.toLocaleString("fr-FR")} € valeur totale</p>
         </div>
-        <button onClick={() => setShowCreate(true)} className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-primary to-secondary px-5 py-2.5 text-sm font-bold text-white">
+        <button onClick={() => setShowCreate(true)} className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-primary to-secondary px-3 py-2 text-xs sm:px-5 sm:py-2.5 sm:text-sm font-bold text-white">
           <span className="material-symbols-outlined text-sm">add</span>
           Nouveau lead
         </button>
       </div>
 
       {/* Kanban */}
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 overflow-x-auto">
         {stages.map((stage) => {
           const stageLeads = leadList.filter((l: any) => l.stage === stage.id);
           const stageValue = stageLeads.reduce((a: number, l: any) => a + parseInt((l.value || "0").replace(/\D/g, "") || "0"), 0);
@@ -117,7 +117,7 @@ export default function LeadsPage() {
       {/* Create Modal */}
       {showCreate && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="w-full max-w-md rounded-2xl border border-white/10 bg-surface p-8">
+          <div className="w-full max-w-md rounded-2xl border border-white/10 bg-surface p-4 sm:p-6 md:p-8">
             <h2 className="mb-6 text-xl font-bold text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>Nouveau lead</h2>
             <div className="space-y-4">
               <input value={newLead.name} onChange={(e) => setNewLead({ ...newLead, name: e.target.value })} placeholder="Nom du contact" className="w-full rounded-lg bg-surface-container-lowest px-4 py-2.5 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-1 focus:ring-primary" />
@@ -133,7 +133,7 @@ export default function LeadsPage() {
             </div>
             <div className="mt-6 flex justify-end gap-3">
               <button onClick={() => setShowCreate(false)} className="rounded-lg px-5 py-2.5 text-sm text-on-surface-variant hover:text-on-surface">Annuler</button>
-              <button onClick={handleCreate} disabled={createLead.isPending || !newLead.name.trim()} className="rounded-lg bg-gradient-to-r from-primary to-secondary px-5 py-2.5 text-sm font-bold text-white disabled:opacity-50">
+              <button onClick={handleCreate} disabled={createLead.isPending || !newLead.name.trim()} className="rounded-lg bg-gradient-to-r from-primary to-secondary px-3 py-2 text-xs sm:px-5 sm:py-2.5 sm:text-sm font-bold text-white disabled:opacity-50">
                 {createLead.isPending ? "Création..." : "Créer le lead"}
               </button>
             </div>

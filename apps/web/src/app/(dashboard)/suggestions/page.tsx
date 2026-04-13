@@ -49,23 +49,23 @@ export default function SuggestionsPage() {
   };
 
   return (
-    <section className="mx-auto max-w-5xl space-y-8">
-      <div className="flex items-end justify-between">
+    <section className="mx-auto max-w-5xl space-y-4 sm:space-y-6 lg:space-y-8">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <div className="flex items-center gap-3">
-            <span className="material-symbols-outlined text-3xl text-secondary">auto_awesome</span>
-            <h1 className="text-4xl font-bold tracking-tight text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
+          <div className="flex items-center gap-2 sm:gap-3">
+            <span className="material-symbols-outlined text-2xl text-secondary sm:text-3xl">auto_awesome</span>
+            <h1 className="text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl text-on-surface" style={{ fontFamily: "Inter, sans-serif" }}>
               Suggestions IA
             </h1>
           </div>
-          <p className="mt-2 text-on-surface-variant">
+          <p className="mt-1 text-sm text-on-surface-variant sm:mt-2">
             {pendingCount > 0
               ? `${pendingCount} suggestion(s) pour améliorer vos agents`
               : "Vos agents sont bien configurés !"
             }
           </p>
         </div>
-        <button onClick={() => refetch()} className="flex items-center gap-2 rounded-lg border border-white/10 px-4 py-2 text-sm text-on-surface-variant hover:text-on-surface">
+        <button onClick={() => refetch()} className="flex w-fit items-center gap-2 rounded-lg border border-white/10 px-3 py-1.5 text-xs text-on-surface-variant hover:text-on-surface sm:px-4 sm:py-2 sm:text-sm">
           <span className="material-symbols-outlined text-sm">refresh</span>
           Actualiser
         </button>
@@ -73,12 +73,12 @@ export default function SuggestionsPage() {
 
       {/* Impact summary */}
       {allSuggestions.length > 0 && (
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 gap-2 sm:gap-4">
           {(["high", "medium", "low"] as const).map((impact) => {
             const cfg = impactConfig[impact]!;
             const count = allSuggestions.filter((s: any) => s.impact === impact && !s.applied && !appliedIds.has(s.id)).length;
             return (
-              <div key={impact} className="rounded-2xl border border-white/5 bg-card p-5">
+              <div key={impact} className="rounded-2xl border border-white/5 bg-card p-4 sm:p-5">
                 <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">{cfg.label}</p>
                 <p className={`mt-1 text-3xl font-bold ${cfg.color}`} style={{ fontFamily: "Inter, sans-serif" }}>{count}</p>
               </div>
@@ -103,28 +103,28 @@ export default function SuggestionsPage() {
             const type = typeConfig[sug.type as string] ?? typeConfig["tool"]!;
 
             return (
-              <div key={sug.id} className={`rounded-2xl border p-6 transition-all ${
+              <div key={sug.id} className={`rounded-2xl border p-4 transition-all sm:p-6 ${
                 isApplied ? "border-white/5 bg-card opacity-40" : "border-secondary/10 bg-card hover:border-secondary/20"
               }`}>
-                <div className="flex items-start gap-4">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:gap-4">
                   {/* Icon */}
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-secondary/10">
-                    <span className="material-symbols-outlined text-xl text-secondary">{type.icon}</span>
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-secondary/10 sm:h-11 sm:w-11">
+                    <span className="material-symbols-outlined text-lg text-secondary sm:text-xl">{type.icon}</span>
                   </div>
 
                   {/* Content */}
                   <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-3">
+                    <div className="flex flex-wrap items-center gap-1.5 sm:gap-3">
                       <p className="text-sm font-bold text-on-surface">{sug.title}</p>
                       <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${impact.bg} ${impact.color}`}>{impact.label}</span>
                       <span className="rounded-full bg-white/5 px-2 py-0.5 text-[10px] text-on-surface-variant">{type.label}</span>
                       {isApplied && <span className="rounded-full bg-tertiary/10 px-2 py-0.5 text-[10px] font-bold text-tertiary">Appliqué</span>}
                     </div>
-                    <p className="mt-2 text-sm leading-relaxed text-on-surface-variant">{sug.description}</p>
+                    <p className="mt-2 text-xs leading-relaxed text-on-surface-variant sm:text-sm">{sug.description}</p>
 
                     {/* Action recommendation */}
                     {sug.action && !isApplied && (
-                      <div className="mt-3 flex items-start gap-2 rounded-lg border border-secondary/10 bg-secondary/[0.03] px-4 py-3">
+                      <div className="mt-3 flex items-start gap-2 rounded-lg border border-secondary/10 bg-secondary/[0.03] px-3 py-2 sm:px-4 sm:py-3">
                         <span className="material-symbols-outlined text-sm text-secondary">lightbulb</span>
                         <p className="text-xs text-on-surface">{sug.action}</p>
                       </div>
@@ -143,13 +143,13 @@ export default function SuggestionsPage() {
                     <div className="flex shrink-0 gap-2">
                       <button
                         onClick={() => handleDismiss(sug.id)}
-                        className="rounded-lg border border-white/10 px-3 py-2 text-xs text-on-surface-variant hover:text-on-surface"
+                        className="rounded-lg border border-white/10 px-2.5 py-1.5 text-[10px] text-on-surface-variant hover:text-on-surface sm:px-3 sm:py-2 sm:text-xs"
                       >
                         Ignorer
                       </button>
                       <button
                         onClick={() => handleApply(sug)}
-                        className="flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-primary to-secondary px-4 py-2 text-xs font-bold text-white"
+                        className="flex items-center gap-1 rounded-lg bg-gradient-to-r from-primary to-secondary px-2.5 py-1.5 text-[10px] font-bold text-white sm:gap-1.5 sm:px-4 sm:py-2 sm:text-xs"
                       >
                         <span className="material-symbols-outlined text-sm">auto_fix_high</span>
                         Appliquer
@@ -164,7 +164,7 @@ export default function SuggestionsPage() {
       )}
 
       {/* How it works */}
-      <div className="rounded-2xl border border-white/5 bg-card p-6">
+      <div className="rounded-2xl border border-white/5 bg-card p-4 sm:p-6">
         <div className="flex items-start gap-3">
           <span className="material-symbols-outlined text-secondary">psychology</span>
           <div>
