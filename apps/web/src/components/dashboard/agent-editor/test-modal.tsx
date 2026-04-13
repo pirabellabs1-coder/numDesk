@@ -91,6 +91,32 @@ function VocalMode({ agent }: { agent: TestModalProps["agent"] }) {
     setTranscript([]);
 
     try {
+      // Step 1: Sync the current voice selection to Vapi before starting
+      // This ensures the stored assistant has the right voice config
+      const syncRes = await fetch("/api/vapi/sync-agent", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          agentId: agent.id,
+          voiceProvider: agent.voiceProvider,
+          voiceId: agent.voiceId,
+        }),
+      });
+      const syncData = await syncRes.json();
+      if (!syncRes.ok) {
+        toast(syncData.error?.message || "Erreur synchronisation", "error");
+        setStatus("idle");
+        return;
+      }
+      const assistantId = syncData.data?.vapiAssistantId;
+      if (!assistantId) {
+        toast("Impossible de synchroniser l'agent avec Vapi", "error");
+        setStatus("idle");
+        return;
+      }
+
+      // Step 2: Start the call using the stored Vapi assistant
+      // This avoids chunking issues that occur with inline assistants
       const { default: Vapi } = await import("@vapi-ai/web");
       const publicKey = process.env.NEXT_PUBLIC_VAPI_PUBLIC_KEY;
       if (!publicKey) {
@@ -127,46 +153,7 @@ function VocalMode({ agent }: { agent: TestModalProps["agent"] }) {
         vapiRef.current = null;
       });
 
-      // Build voice from current editor selection
-      const voiceProvider = agent.voiceProvider || "cartesia";
-      const voiceId = agent.voiceId || "a8a1eb38-5f15-4c1d-8722-7ac0f329727d";
-      const vapiVoiceProvider = voiceProvider === "elevenlabs" ? "11labs" : voiceProvider;
-
-      // Determine transcriber language from agent language
-      const lang = agent.language || "fr-FR";
-      const transcriberLang = lang.startsWith("fr") ? "fr" : lang.split("-")[0] || "fr";
-
-      // Build voice config — disable chunking so the voice provider handles
-      // the full audio stream naturally without Vapi splitting it into fragments
-      const voiceConfig: Record<string, unknown> = {
-        provider: vapiVoiceProvider,
-        voiceId: voiceId,
-        chunkPlan: { enabled: false },
-      };
-      if (voiceProvider === "cartesia") {
-        voiceConfig.model = "sonic-2";
-        voiceConfig.language = transcriberLang;
-        voiceConfig.experimentalControls = { speed: "normal" };
-      }
-      if (voiceProvider === "elevenlabs") {
-        voiceConfig.model = "eleven_multilingual_v2";
-      }
-
-      // Use inline assistant config so the test ALWAYS matches the editor selection
-      await vapi.start({
-        model: {
-          provider: "google",
-          model: "gemini-2.5-flash",
-          messages: [{ role: "system", content: agent.prompt || "Tu es un assistant téléphonique professionnel. Réponds toujours en français avec des phrases complètes et naturelles." }],
-          temperature: 0.4,
-        },
-        voice: voiceConfig,
-        transcriber: {
-          provider: "deepgram",
-          language: transcriberLang,
-        },
-        firstMessage: agent.firstMessage || "Bonjour, comment puis-je vous aider ?",
-      } as any);
+      await vapi.start(assistantId);
     } catch (e: any) {
       toast(e.message || "Impossible de démarrer l'appel vocal", "error");
       setStatus("idle");
@@ -254,7 +241,7 @@ function VocalMode({ agent }: { agent: TestModalProps["agent"] }) {
           </div>
         )}
         <p className="text-center text-xs text-on-surface-variant">
-          Le test vocal utilise la voix et le prompt actuels de l&apos;éditeur.
+          Le test synchronise automatiquement la voix avant de démarrer.
         </p>
       </div>
     </div>
